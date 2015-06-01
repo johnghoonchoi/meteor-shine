@@ -115,7 +115,7 @@ Template.blogOne.onRendered(function(){
   // Initiate Editor
   inlineEditor.init(editor, editorTitle);
 
-/*
+
   Cloudinary.uploadImagePreset({
     config: {
       cloud_name: Meteor.settings.public.cloudinary.cloudName,
@@ -126,12 +126,13 @@ Template.blogOne.onRendered(function(){
       }
     },
     preset: Meteor.settings.public.cloudinary.presets.blogs,
-*/
+/*
   Cloudinary.uploadImage({
     config: {
       cloud_name: Meteor.settings.public.cloudinary.cloudName,
       api_key: Meteor.settings.public.cloudinary.apiKey
     },
+*/
     buttonHTML: '<i class="fa fa-upload"> 업로드',
     showProgress: true,
     options: {

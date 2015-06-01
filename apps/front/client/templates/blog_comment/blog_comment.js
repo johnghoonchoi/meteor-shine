@@ -15,7 +15,14 @@ Template.blogCommentNew.events({
       msg: $(e.target).find('[name=msg]').html()
     };
 
-    BlogCommentValidator.validateInsert(object);
+    var validation = BlogCommentValidator.validateInsert(object);
+    if (validation.errors().length > 0) {
+      validation.errors().forEach(function(error) {
+        Alerts.notify('error', error.messages);
+      });
+      return;
+    }
+
 
     Meteor.call('blogCommentInsert', object, function(error) {
       if (error)

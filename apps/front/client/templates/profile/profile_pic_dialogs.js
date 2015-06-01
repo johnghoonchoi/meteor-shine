@@ -3,13 +3,17 @@ Template.profilePicDialogs.helpers({
   getOriginUrl: function() {
     var user = Meteor.user();
 
-    if(user.profile.tempUrl) {
-     return user.profile.tempUrl
-    } else if(user.profile.originUrl) {
-      return user.profile.originUrl
-    }
+    if (user && user.profile) {
+      if (user.profile.tempUrl) {
+        return user.profile.tempUrl
+      } else if(user.profile.originUrl) {
+        return user.profile.originUrl
+      }
 
-    return user.profile.avatarUrl
+      return user.profile.avatarUrl
+    } else {
+      return "";
+    }
   }
 
 });
@@ -80,11 +84,16 @@ Template.profilePicDialogs.onRendered(function() {
     Meteor.call('deleteTempUrl');
   });
 
-  Cloudinary.uploadImage({
+  Cloudinary.uploadImagePreset({
     config: {
       cloud_name: Meteor.settings.public.cloudinary.cloudName,
-      api_key: Meteor.settings.public.cloudinary.apiKey
+      api_key: Meteor.settings.public.cloudinary.apiKey,
+      presets: {
+        accounts: Meteor.settings.public.cloudinary.presets.accounts,
+        blogs: Meteor.settings.public.cloudinary.presets.blogs
+      }
     },
+    preset: Meteor.settings.public.cloudinary.presets.blogs,
     buttonHTML: '<i class="fa fa-upload">사진선택',
     showProgress: true,
     options: {
@@ -127,4 +136,5 @@ Template.profilePicDialogs.onRendered(function() {
 
     Meteor.call('uploadOriginImage', tempId, tempUrl, userId);
   });
+
 });

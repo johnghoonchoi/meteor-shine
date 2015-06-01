@@ -122,8 +122,18 @@ Template.profileView.onRendered(function() {
     }
   });
 
-
-  Cloudinary.uploadImage({
+/*
+  Cloudinary.uploadImagePreset({
+    config: {
+    cloud_name: Meteor.settings.public.cloudinary.cloudName,
+    api_key: Meteor.settings.public.cloudinary.apiKey,
+    presets: {
+    accounts: Meteor.settings.public.cloudinary.presets.accounts,
+    blogs: Meteor.settings.public.cloudinary.presets.blogs
+    }
+    },
+    preset: Meteor.settings.public.cloudinary.presets.accounts,
+    /*
     config: {
       cloud_name: Meteor.settings.public.cloudinary.cloudName,
       api_key: Meteor.settings.public.cloudinary.apiKey
@@ -169,5 +179,6 @@ Template.profileView.onRendered(function() {
       preview: '.avatar-preview'
     });
   });
+*/
 });
 
