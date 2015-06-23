@@ -35,16 +35,17 @@
 </template>
 
 <template name="myBlogsListItem">
-  <div class="panel panel-default">
+  <div class="panel panel-default bottom-padding10">
     <div class="panel-heading">
-      <h4>
-        <a href="{{pathFor 'blogOne'}}">{{title}} <small>{{userDisplayName user}} {{momentFromNow createdAt}}</small></a>
-      </h4>
+        <h4>
+            <a href="{{pathFor 'blogOne'}}">{{title}}  <small>{{commentCount}} 개의 댓글 | {{userDisplayName user}} | {{momentFromNow createdAt}}</small></a>
+        </h4>
     </div>
     <!--<div class="panel-body">-->
       <!--<div class="line-clamp-2">-->
         <!--{{blog_content}}-->
       <!--</div>-->
     <!--</div>-->
+          <a href="#" class="delete-btn pull-right"><i class="fa fa-trash-o"></i>Delete&nbsp;</a>
   </div>
 </template>
