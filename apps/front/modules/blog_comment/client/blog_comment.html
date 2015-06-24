@@ -11,14 +11,14 @@
   </form>
 </template>
 
-<template name="blogComments">
+<template name="blogCommentsList">
   <div class="comments panel panel-default">
     <div class="panel-heading">
       <h4>{{_ 'title_comments'}} <small>{{blogCommentsCount}}</small></h4>
     </div>
 
     <div class="panel-body comments-list-frame">
-      {{#if Template.subscriptionsReady}}
+      {{#if loaded}}
         {{#if hasMore}}
           <div class="row-fluid">
             <a class="btn btn-block btn-default load-more">Load More</a>

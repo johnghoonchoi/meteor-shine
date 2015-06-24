@@ -1,5 +1,5 @@
 <template name="blogOne">
-	{{showDataContext}}
+
   <article class="page">
     {{#if editMode}}
       <p style="color: #1cbb8d;">편집모드</p>
@@ -52,7 +52,10 @@
 
     </form>
 
-    {{> blogComments}}
+    {{#with blog}}
+      {{> blogCommentsList blogId=_id}}
+    {{/with}}
+
     {{> cloudinaryProgressBar}}
   </article>
 

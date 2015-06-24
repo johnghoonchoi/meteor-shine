@@ -1,4 +1,4 @@
-<template name="blogsList">
+<template name="blogsList1">
   <article class="page">
     <h3>{{_ 'title_blogs'}}</h3>
 
@@ -36,8 +36,19 @@
 
 </template>
 
+<template name="blogsList">
+  <article class="page">
+    {{#if Template.subscriptionsReady}}
+      <!-- This is displayed when all data is ready. -->
+      List...
+    {{else}}
+      Loading...
+    {{/if}}
+  </article>
+</template>
+
 <template name="blogsListItem">
-	{{showDataContext}}
+
   <div class="panel panel-default bottom-padding10">
     <div class="panel-heading">
       <h4>

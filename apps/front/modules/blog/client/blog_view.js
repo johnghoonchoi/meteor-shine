@@ -1,27 +1,17 @@
-Template.blogOne.onCreated( function () {
-  Session.set('editMode', false);
-  Session.set('draftsLimit', 5);
-});
-
-Template.blogOne.onDestroyed( function () {
-  delete Session.keys['editMode'];
-  delete Session.keys['draftsLimit'];
-});
-
 Template.blogOne.helpers({
   editable: function () {
-  var content = this.blog.content;
-  return '<div class="editable" id="editor" contenteditable="false" name="content" data-default="false">'+ content +'</div>';
+    var content = this.blog.content;
+    return '<div class="editable" id="editor" contenteditable="false" name="content" data-default="false">'+ content +'</div>';
   },
   title: function () {
-  var title = this.blog.title;
-  return '<h2 class="newTitle" id="newTitle" name="title" contenteditable="false" data-default="false">' + title + '</h2>';
+    var title = this.blog.title;
+    return '<h2 class="newTitle" id="newTitle" name="title" contenteditable="false" data-default="false">' + title + '</h2>';
   },
   ownPost: function () {
     return this.blog.user._id === Meteor.userId();
   },
   editMode: function () {
-    return Session.get('editMode') == true;
+    return Session.get('editMode') === true;
   },
   author: function() {
     return Meteor.users.findOne(this.blog.user._id);
@@ -96,9 +86,26 @@ Template.blogOne.events({
   }
 });
 
+Template.blogOne.onCreated( function () {
+/*
+  Session.set('editMode', false);
+  Session.set('draftsLimit', 5);
+*/
+  console.log('blogOne onCreated');
+});
+
+Template.blogOne.onDestroyed( function () {
+/*
+  delete Session.keys['editMode'];
+  delete Session.keys['draftsLimit'];
+*/
+  console.log('blogOne onDestroyed');
+});
+
+
 Template.blogOne.onRendered( function () {
   var editor = document.getElementById('editor');
-
+/*
   // Save last cursor position to blurSavedSel (global var)
   // saveSelection() defined at selection_restore.js
   $(editor).on('blur', function () {
@@ -116,6 +123,8 @@ Template.blogOne.onRendered( function () {
       }, 1);
     }
   });
+*/
+  console.log('blogOne onRendered');
 });
 
 
