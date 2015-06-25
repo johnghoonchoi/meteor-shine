@@ -1,3 +1,44 @@
+Template.blogOne.onCreated( function () {
+  /*
+   Session.set('editMode', false);
+   Session.set('draftsLimit', 5);
+   */
+  console.log('blogOne onCreated');
+});
+
+Template.blogOne.onDestroyed( function () {
+  /*
+   delete Session.keys['editMode'];
+   delete Session.keys['draftsLimit'];
+   */
+  console.log('blogOne onDestroyed');
+});
+
+
+Template.blogOne.onRendered( function () {
+  var editor = document.getElementById('editor');
+  /*
+   // Save last cursor position to blurSavedSel (global var)
+   // saveSelection() defined at selection_restore.js
+   $(editor).on('blur', function () {
+   blurSavedSel = saveSelection();
+   });
+
+   // Nasty hack to create Default Selection
+   // Focus and then Blur to save first selection
+   this.autorun( function () {
+   if (Session.get('editMode') === true) {
+   setTimeout( function () {
+   placeCaretAtEnd(editor);
+   blurSavedSel = saveSelection();
+   $(editor).blur();
+   }, 1);
+   }
+   });
+   */
+  console.log('blogOne onRendered');
+});
+
 Template.blogOne.helpers({
   editable: function () {
     var content = this.blog.content;
@@ -84,47 +125,6 @@ Template.blogOne.events({
     $('#editor').attr('contenteditable', 'true');
     $('#newTitle').attr('contenteditable', 'true');
   }
-});
-
-Template.blogOne.onCreated( function () {
-/*
-  Session.set('editMode', false);
-  Session.set('draftsLimit', 5);
-*/
-  console.log('blogOne onCreated');
-});
-
-Template.blogOne.onDestroyed( function () {
-/*
-  delete Session.keys['editMode'];
-  delete Session.keys['draftsLimit'];
-*/
-  console.log('blogOne onDestroyed');
-});
-
-
-Template.blogOne.onRendered( function () {
-  var editor = document.getElementById('editor');
-/*
-  // Save last cursor position to blurSavedSel (global var)
-  // saveSelection() defined at selection_restore.js
-  $(editor).on('blur', function () {
-    blurSavedSel = saveSelection();
-  });
-
-  // Nasty hack to create Default Selection
-  // Focus and then Blur to save first selection
-  this.autorun( function () {
-    if (Session.get('editMode') === true) {
-      setTimeout( function () {
-        placeCaretAtEnd(editor);
-        blurSavedSel = saveSelection();
-        $(editor).blur();
-      }, 1);
-    }
-  });
-*/
-  console.log('blogOne onRendered');
 });
 
 

@@ -28,33 +28,6 @@ Template.blogCommentNew.events({
 });
 
 
-Template.blogCommentsList.helpers({
-  blogCommentsCount: function() {
-    return Template.instance().commentsCount();
-  },
-
-  blogComments: function() {
-    return Template.instance().comments();
-  },
-
-  loaded: function() {
-    return Template.instance().limit.get() === Template.instance().loaded.get();
-  },
-
-  hasMore: function() {
-    var total = Counts.get('blogCommentsCount');
-    return (total > Template.instance().limit.get());
-  }
-});
-
-Template.blogCommentsList.events({
-  'click .load-more': function(e, instance) {
-    e.preventDefault();
-
-    instance.limit.set(instance.limit.get() + instance.increment);
-  }
-});
-
 
 Template.blogCommentsList.onCreated(function() {
   var instance = this;
@@ -71,7 +44,7 @@ Template.blogCommentsList.onCreated(function() {
       { blogId: data.blogId });
     instance.subscribe('blogCommentsList',
       { blogId: data.blogId }, { limit: limit, sort: { createdAt: -1 }},
-      { onReady: function() { instance.loaded.set(limit); }});
+      function() { instance.loaded.set(limit); });
   });
 
   instance.commentsCount = function() {
@@ -84,14 +57,39 @@ Template.blogCommentsList.onCreated(function() {
   };
 });
 
+Template.blogCommentsList.onDestroyed(function() {
+  this.limit = null;
+  this.comments = null;
+});
+
 Template.blogCommentsList.onRendered(function() {
   this.frame = $('.comments-list-frame');
   this.frame.animate({ scrollTop: this.frame[0].scrollHeight }, "slow");
 });
 
-Template.blogCommentsList.onDestroyed(function() {
-  this.limit = null;
-  this.comments = null;
+Template.blogCommentsList.helpers({
+  blogCommentsCount: function() {
+    return Template.instance().commentsCount();
+  },
+
+  blogComments: function() {
+    return Template.instance().comments();
+  },
+
+  loaded: function() {
+    return Template.instance().limit.get() === Template.instance().loaded.get();
+  },
+
+  hasMore: function() {
+    return (Template.instance().commentsCount() > Template.instance().limit.get());
+  }
+});
+
+Template.blogCommentsList.events({
+  'click .load-more': function(e, instance) {
+    e.preventDefault();
+    instance.limit.set(instance.limit.get() + instance.increment);
+  }
 });
 
 

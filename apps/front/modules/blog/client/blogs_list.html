@@ -38,11 +38,26 @@
 
 <template name="blogsList">
   <article class="page">
-    {{#if Template.subscriptionsReady}}
-      <!-- This is displayed when all data is ready. -->
-      List...
+    <h3>{{_ 'title_blogs'}}</h3>
+
+    {{#if noBlogs}}
+      {{_ 'text_no_blogs'}}
     {{else}}
-      Loading...
+      <div class="row-fluid">
+        {{#each blogs}}
+          {{> blogsListItem}}
+        {{/each}}
+      </div>
+
+      {{#if Template.subscriptionsReady}}
+        <div class="row-fluid">
+          {{#if hasMore}}
+            <a class="btn btn-default btn-block load-more">Load More</a>
+          {{/if}}
+        </div>
+      {{else}}
+        {{> listLoading}}
+      {{/if}}
     {{/if}}
   </article>
 </template>

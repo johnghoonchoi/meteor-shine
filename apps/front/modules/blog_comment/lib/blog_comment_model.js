@@ -40,12 +40,19 @@ Meteor.methods({
     };
 
     // write to database
-    comment._id = BlogComments.insert(comment);
+    try {
+      // insert the comment
+      comment._id = BlogComments.insert(comment);
 
-    // push notification
-    createCommentNotification(comment);
+      // increment comment count +1
+      Blogs.update({ _id: comment.blogId }, { $inc: { 'count.comment': 1 }});
+
+      // push notification
+      createCommentNotification(comment);
+    } catch (ex) {
+      console.log('error: ' + ex.message);
+    }
 
     return comment._id;
-
   }
 });

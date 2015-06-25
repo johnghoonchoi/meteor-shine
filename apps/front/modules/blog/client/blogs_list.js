@@ -12,47 +12,59 @@
 //     InfiniteScrollTrigger.unbind(triggerHandle);
 // });
 
-Template.blogsList.events({
-  'click .load-more': function () {
-    Router.go(Router.current().nextPath());
-  }
-});
-
-
-Template.blogsList.helpers({
-  noBlogs: function() {
-    return Counts.get('blogsCount') === 0;
-  },
-  blogsCount: function() {
-    return Counts.get('blogsCount');
-  }
-});
-
 Template.blogsList.onCreated(function() {
   var instance = this;
 
-  instance.limit = new ReactiveVar(5);
+  instance.increment = 2;
+  instance.limit = new ReactiveVar(instance.increment);
   instance.loaded = new ReactiveVar(0);
 
+
   instance.autorun(function() {
-    instance.subscribe('blogsList', {
-      onReady: function() {
-        instance.loaded.set(instance.limit.get());
-      }
-    });
-/*
-    if (Template.instance().subscriptionsReady()) {
-      console.log('> subscriptions ready.');
-    } else {
-      console.log('> subscriptions NOT ready...');
-    }
-*/
+    var limit = instance.limit.get();
+
+    instance.subscribe('blogsList',
+      {}, { limit: limit, sort: { createdAt: -1 }},
+      function() { instance.loaded.set(limit); });
   });
 
-  instance.blogs = function() {
-    return Blogs.find({});
+  instance.blogsCount = function() {
+    return Counts.get('blogsCount');
   };
+
+  instance.blogs = function() {
+    return Blogs.find({}, {
+      limit: instance.loaded.get(), sort: { createdAt: 1 }
+    });
+  };
+
 });
+
+Template.blogsList.helpers({
+  noBlogs: function() {
+    return Template.instance().blogsCount() === 0;
+  },
+
+  blogsCount: function() {
+    return Template.instance().blogsCount();
+  },
+
+  blogs: function() {
+    return Template.instance().blogs();
+  },
+
+  hasMore: function() {
+    return (Template.instance().blogsCount() > Template.instance().limit.get());
+  }
+});
+
+Template.blogsList.events({
+  'click .load-more': function(e, instance) {
+    e.preventDefault();
+    instance.limit.set(instance.limit.get() + instance.increment);
+  }
+});
+
 
 Template.blogsListItem.helpers({
   blog_content: function() {
@@ -61,9 +73,11 @@ Template.blogsListItem.helpers({
     //return content.replace(/(<([^>]+)>)/ig, "");
     return content;
   },
+
   commentCount: function() {
-    return BlogComments.find({blogId: this._id}).count();
+    return (this.count && this.count.comment) ? this.count.comment : 0;
   },
+
   ownBlog: function() {
     return this.user._id === Meteor.userId();
   }

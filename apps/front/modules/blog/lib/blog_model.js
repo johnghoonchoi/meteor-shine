@@ -29,6 +29,9 @@ Meteor.methods({
     var data = {
       title: object.title,
       content: object.content,
+      count: {
+        comment: 0
+      },
       user: {
         _id: user._id,
         username: user.username,
