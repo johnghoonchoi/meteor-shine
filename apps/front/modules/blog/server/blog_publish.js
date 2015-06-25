@@ -24,7 +24,7 @@ Meteor.publishComposite('blogOne', function(query) {
         }
       }
     ]
-  }
+  };
 });
 
 Meteor.publish('myBlogsList', function(query, options) {

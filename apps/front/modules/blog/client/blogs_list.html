@@ -1,4 +1,4 @@
-<template name="blogsList">
+<template name="blogsList1">
   <article class="page">
     <h3>{{_ 'title_blogs'}}</h3>
 
@@ -36,8 +36,34 @@
 
 </template>
 
+<template name="blogsList">
+  <article class="page">
+    <h3>{{_ 'title_blogs'}}</h3>
+
+    {{#if noBlogs}}
+      {{_ 'text_no_blogs'}}
+    {{else}}
+      <div class="row-fluid">
+        {{#each blogs}}
+          {{> blogsListItem}}
+        {{/each}}
+      </div>
+
+      {{#if Template.subscriptionsReady}}
+        <div class="row-fluid">
+          {{#if hasMore}}
+            <a class="btn btn-default btn-block load-more">Load More</a>
+          {{/if}}
+        </div>
+      {{else}}
+        {{> listLoading}}
+      {{/if}}
+    {{/if}}
+  </article>
+</template>
+
 <template name="blogsListItem">
-	{{showDataContext}}
+
   <div class="panel panel-default bottom-padding10">
     <div class="panel-heading">
       <h4>

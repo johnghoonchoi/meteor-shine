@@ -1,9 +1,30 @@
-Meteor.publishComposite('blogCommentsList', function(query, options) {
+Meteor.publish('blogCommentsListCount', function(query) {
+  console.log('query = ' + JSON.stringify(query));
 
   Counts.publish(this, 'blogCommentsCount', BlogComments.find(query),
-  { noReady: true });
+    { noReady: true });
 
-  return {
+  console.log('blogCommentsListCount publish done...');
+});
+
+
+Meteor.publish('blogCommentsList', function(query, options) {
+  console.log('query = ' + JSON.stringify(query));
+  console.log('options = ' + JSON.stringify(options));
+
+  var res = BlogComments.find(query, options);
+
+  console.log('blogCommentsList publish: ' + res.count());
+
+  return res;
+});
+
+/*
+Meteor.publishComposite('blogCommentsList', function(query, options) {
+  console.log('query = ' + JSON.stringify(query));
+  console.log('options = ' + JSON.stringify(options));
+
+  var res = {
     find: function() {
       return BlogComments.find(query, options);
     },
@@ -16,5 +37,10 @@ Meteor.publishComposite('blogCommentsList', function(query, options) {
         }
       }
     ]
-  }
+  };
+
+  console.log('blogCommentsList publish: ' + res.find().count());
+
+  return res;
 });
+*/

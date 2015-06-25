@@ -1,4 +1,5 @@
 BlogsListController = RouteController.extend({
+  /*
   increment: 5,
   limit: function() {
     return parseInt(this.params.query.r) || this.increment;
@@ -30,7 +31,7 @@ BlogsListController = RouteController.extend({
       blogs: this.blogs()
     };
   }
-
+*/
 });
 
 BlogOneController = RouteController.extend({
@@ -120,7 +121,11 @@ Router.route('/blogs', {
   name: 'blogsList',
   controller: 'BlogsListController'
 });
-
+/*
+Router.route('/blogs', function() {
+  this.render('blogsList');
+});
+*/
 Router.route('/blog/:_id', {
   name: 'blogOne',
   controller: 'BlogOneController'
