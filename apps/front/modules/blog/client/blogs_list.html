@@ -67,7 +67,7 @@
   <div class="panel panel-default bottom-padding10">
     <div class="panel-heading">
       <h4>
-        <a href="{{pathFor 'blogOne'}}">{{title}}  <small>{{commentCount}} 개의 댓글 | {{userDisplayName user}} | {{momentFromNow createdAt}}</small></a>
+        <a href="{{pathFor 'blogOne'}}">{{title}}  <small>by {{userDisplayName user}} | {{commentCount}} 개의 댓글 | {{momentFromNow createdAt}}</small></a>
       </h4>
     </div>
     <!--<div class="panel-body">-->
@@ -75,8 +75,5 @@
         <!--{{blog_content}}-->
       <!--</div>-->
     <!--</div>-->
-	  {{#if ownBlog}}
-    <a href="#" class="delete-btn pull-right"><i class="fa fa-trash-o"></i>Delete&nbsp;</a>
-	  {{/if}}
   </div>
 </template>

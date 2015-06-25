@@ -1,0 +1,169 @@
+// for debug
+//* {
+//  outline: 1px solid rgba(134, 134, 134, 0.66);
+//}
+
+html,
+body {
+  height: 100%;
+}
+
+.logout-btn {
+  background-color: transparent;
+  border : 0;
+  outline: none;
+}
+
+#wrapper {
+  position: relative;
+  overflow-x: hidden;
+  height: 100%;
+}
+
+#canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding-top: 80px;
+  -webkit-transition: 0.3s ease all;
+          transition: 0.3s ease all;
+  -webkit-transform: translateX(0);
+          transform: translateX(0);
+}
+
+article.page {
+  padding-top: 55px !important;
+}
+
+.btn-toolbar .btn-group {
+  padding: 5px 0;
+  .btn {
+    margin-top: 0;
+    vertical-align: top;
+  }
+}
+
+a.navbar-brand {
+  position: absolute;
+  display: block;
+  left: 50%;
+  padding-right: 0;
+  padding-left: 0;
+  width: auto;
+  text-align: center;
+  -webkit-transform: translate3d(-50%, 0, 0);
+          transform: translate3d(-50%, 0, 0);
+}
+
+.navbar-custom {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  height: 45px;
+  z-index: 5;
+  width: 100%;
+
+}
+
+.aside-left,
+.aside-right,
+article.page {
+  -webkit-transition: all @slide-transition-time ease-out;
+       -o-transition: all @slide-transition-time ease-out;
+          transition: all @slide-transition-time ease-out;
+}
+
+.aside-right {
+  position: fixed;
+  top: 45px;
+  bottom: 0;
+  right: -@aside-right-width;
+  padding: 5px 5px;
+  min-height: 100%;
+  width: @aside-right-width;
+  border-left: 1px solid @navbar-default-border;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+#wrapper.aside-right-set {
+  .aside-right {
+    -webkit-transform: translateX(-@aside-right-width);
+            transform: translateX(-@aside-right-width);
+  }
+}
+
+.aside-left {
+  position: fixed;
+  top: @navbar-height;
+  left: 0;
+  padding: 5px 5px;
+  min-height: 100%;
+  width: @aside-left-width;
+  border-right: 1px solid @navbar-default-border;
+  background-color: @body-bg;
+  z-index: 5;
+  .panel-heading {
+    height: 54px;
+    a {
+      display: block;
+      width:150px;
+      height:32px;
+      float:left;
+      img{
+        width: 36px;
+        height:  36px;
+      }
+    }
+    button {
+      display: block;
+    }
+  }
+}
+
+article.page {
+  position: absolute;
+  top: 0;
+  padding: 5px;
+  width: calc(~'100% - @{aside-left-width}');
+  -webkit-transform: translateX(@aside-left-width);
+          transform: translateX(@aside-left-width);
+}
+
+// Aside Left Set in Desktop means Aside is ***"OFF"***
+#wrapper.aside-left-set {
+  .aside-left {
+    -webkit-transform: translateX(-@aside-left-width);
+            transform: translateX(-@aside-left-width);
+  }
+  article.page {
+    width: 100%;
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+
+@media screen and (max-width: @container-sm) {
+  .aside-left {
+
+    -webkit-transform: translateX(-@aside-left-width);
+            transform: translateX(-@aside-left-width);
+  }
+
+  article.page {
+    width: 100%;
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+
+  #wrapper.aside-left-set {
+    .aside-left {
+      -webkit-transform: translateX(0);
+              transform: translateX(0);
+    }
+    article.page {
+      width: 100%;
+      -wekbit-transform: translateX(0);
+              transform: translateX(0);
+    }
+  }
+}

@@ -82,22 +82,29 @@
 }
 
 .cloudinary-progress {
-  width: 300px;
-  display: none;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 50%;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 15px;
-  border: solid 1px #ccc;
-  background: #fff;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-  /**/
-  z-index: 9999;
+    width: 100%;
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+    background: #464545;
+    border:none;
+    z-index: 9999;
 }
 
 .cloudinary-progress .progress {
-  margin: 0;
+    height: 4px;
+    background: #464545;
+    border:none;
+    margin: 0;
+}
+
+.progress-bar.progress-bar-success {
+    height: 4px;
+    background: #5bc0de;
+    border:none;
 }
