@@ -1,38 +1,3 @@
-BlogsListController = RouteController.extend({
-  /*
-  increment: 5,
-  limit: function() {
-    return parseInt(this.params.query.r) || this.increment;
-  },
-  nextPath: function() {
-    this.params.query.r = this.limit() + this.increment;
-    return this.route.path({}, { query: this.params.query });
-  },
-
-  findQuery: function() {
-    return {}
-  },
-  findOptions: function() {
-    return { limit: this.limit(), sort: { createdAt: -1 }}
-  },
-
-  blogs: function() {
-    return Blogs.find(this.findQuery(), this.findOptions());
-  },
-
-  subscriptions: function() {
-    this.subs = Meteor.subscribe('blogsList', this.findQuery(), this.findOptions());
-  },
-
-  data: function() {
-    return {
-      ready: this.subs.ready,
-      hasMore: this.blogs().count() === this.limit(),
-      blogs: this.blogs()
-    };
-  }
-*/
-});
 
 BlogOneController = RouteController.extend({
 
@@ -117,15 +82,8 @@ BlogEditController = RouteController.extend({
 
 
 
-Router.route('/blogs', {
-  name: 'blogsList',
-  controller: 'BlogsListController'
-});
-/*
-Router.route('/blogs', function() {
-  this.render('blogsList');
-});
-*/
+Router.route('/blogs', function() { this.render('blogsList'); }, { name: 'blogsList' });
+
 Router.route('/blog/:_id', {
   name: 'blogOne',
   controller: 'BlogOneController'
