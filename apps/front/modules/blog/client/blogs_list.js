@@ -34,7 +34,7 @@ Template.blogsList.onCreated(function() {
 
   instance.blogs = function() {
     return Blogs.find({}, {
-      limit: instance.loaded.get(), sort: { createdAt: 1 }
+      limit: instance.loaded.get(), sort: { createdAt: -1 }
     });
   };
 

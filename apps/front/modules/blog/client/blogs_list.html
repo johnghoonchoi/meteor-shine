@@ -44,6 +44,17 @@
       {{_ 'text_no_blogs'}}
     {{else}}
       <div class="row-fluid">
+        <div class="btn-toolbar" role="toolbar">
+          <div class="btn-group" role="group">
+            <a class="btn btn-default">총 게시글 수 : {{blogsCount}}</a>
+          </div>
+          <div class="btn-group" role="group">
+            <a class="btn btn-primary" href="{{pathFor 'blogNew'}}">{{_ 'command_new'}}</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-fluid">
         {{#each blogs}}
           {{> blogsListItem}}
         {{/each}}
