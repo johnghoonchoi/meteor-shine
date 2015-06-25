@@ -25,12 +25,20 @@
       </ul>
 
       <ul class="nav navbar-nav pull-right">
+	      {{#if currentUser}}
         <li>
           <a href="#" data-toggle="notifications">
             <i class="fa fa-bell"></i>
             {{#if notificationsCount}}<span class="badge">{{notificationsCount}}</span>{{/if}}
           </a>
         </li>
+        <!-- Post Write Button -->
+        <li role="presentation" class="{{activeRoute 'blogNew'}}">
+          <a href="{{pathFor 'blogNew'}}">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+        </li>
+	      {{/if}}
       </ul>
     </div>
   </div>

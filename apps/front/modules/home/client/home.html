@@ -6,10 +6,7 @@
         <div class="row-fluid">
           <div class="btn-toolbar" role="toolbar">
             <div class="btn-group" role="group">
-              <a class="btn btn-default">Total Blogs: {{getPublishedCount 'blogsCount'}}</a>
-            </div>
-            <div class="btn-group" role="group">
-              <a class="btn btn-primary" href="{{pathFor 'blogNew'}}">{{_ 'command_new'}}</a>
+              <a class="btn btn-default">총 게시글 수: {{getPublishedCount 'blogsCount'}}</a>
             </div>
           </div>
         </div>
@@ -38,7 +35,7 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4>
-        <a href="{{pathFor 'blogOne'}}">{{title}} - {{commentCount}}<small>{{userDisplayName user}} {{momentFromNow createdAt}}</small></a>
+        <a href="{{pathFor 'blogOne'}}">{{title}} <small>by {{userDisplayName user}} | {{commentCount}}개의 댓글 | {{momentFromNow createdAt}}</small></a>
       </h4>
     </div>
     <!--<div class="panel-body">-->

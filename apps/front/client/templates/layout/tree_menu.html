@@ -22,18 +22,13 @@
         <span class="glyphicon glyphicon-th-list"></span> {{_ 'title_my_blogs'}}
       </a>
     </li>
-
-    <!-- New Blog -->
-    <li role="presentation" class="{{activeRoute 'blogNew'}}">
-      <a href="{{pathFor 'blogNew'}}">
-        <span class="glyphicon glyphicon-pencil"></span> {{_ 'title_blog_new'}}
-      </a>
-    </li>
     {{/if}}
 
     <!-- Preferences -->
     <li role="presentation" class="{{activeRoute 'preference'}}">
-      <a href="{{pathFor 'preference'}}">
+      <!-- todo: Theme less refactoring by yongsunlee -->
+      <!--<a href="{{pathFor 'preference'}}">-->
+      <a href="#">
         <span class="glyphicon glyphicon-cog"> </span> {{_ 'title_preference'}}
       </a>
     </li>
