@@ -41,21 +41,21 @@ Template.blogOne.onRendered( function () {
 
 Template.blogOne.helpers({
   editable: function () {
-    var content = this.blog.content;
+    var content = this.content;
     return '<div class="editable" id="editor" contenteditable="false" name="content" data-default="false">'+ content +'</div>';
   },
   title: function () {
-    var title = this.blog.title;
+    var title = this.title;
     return '<h2 class="newTitle" id="newTitle" name="title" contenteditable="false" data-default="false">' + title + '</h2>';
   },
   ownPost: function () {
-    return this.blog.user._id === Meteor.userId();
+    return this.user._id === Meteor.userId();
   },
   editMode: function () {
     return Session.get('editMode') === true;
   },
   author: function() {
-    return Meteor.users.findOne(this.blog.user._id);
+    return Meteor.users.findOne(this.user._id);
   }
 });
 
@@ -68,7 +68,8 @@ Template.blogOne.events({
     var finalContent = stripTags(currentContent).parent().html();
 
     // get inputs
-    var blogId = this.blog._id;
+    var blogId = this._id;
+
     var object = {
       title: $(e.target).find('[name=title]').html(),
       content: finalContent
@@ -110,8 +111,8 @@ Template.blogOne.events({
   'click #cancelEdit': function(){
     Session.set('editMode', false);
 
-    var content = this.blog.content;
-    var title = this.blog.title;
+    var content = this.content;
+    var title = this.title;
 
     $('#editor').empty().append(content);
     $('#newTitle').empty().append(title);

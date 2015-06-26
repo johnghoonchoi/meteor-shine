@@ -57,7 +57,7 @@ var getPictureOriginUrl = function() {
     break;
     case 1  : return user.profile.picture.origin.url;
     break;
-    default : return DEFAULT_PICTURE_URL; // global constant defined in profile.js
+    default : return false; // global constant defined in profile.js
   }
 };
 
@@ -82,33 +82,35 @@ var drawCropper = function() {
   var isTemp = isPictureTempUrl();
   var user = Meteor.user();
 
-  if (isUrl) {
-    if (isTemp) {
-      avatarView.cropper('destroy').cropper();
-    } else {
-      if ( avatarView && avatarView[0] && avatarView[0].src) avatarView[0].src = url;
+  if (url) {
+    if (isUrl) {
+      if (isTemp) {
+        avatarView.cropper('destroy').cropper();
+      } else {
+        if ( avatarView && avatarView[0] && avatarView[0].src) avatarView[0].src = url;
 
-      var canvasData = {
-        left: user.profile.picture.coordinates.left,
-        top: user.profile.picture.coordinates.top,
-        width: user.profile.picture.coordinates.width,
-        height: user.profile.picture.coordinates.height
-      };
-      var rotateData = {
-        rotate: user.profile.picture.coordinates.rotate
-      };
-      var cropBoxData;
+        var canvasData = {
+          left: user.profile.picture.coordinates.left,
+          top: user.profile.picture.coordinates.top,
+          width: user.profile.picture.coordinates.width,
+          height: user.profile.picture.coordinates.height
+        };
+        var rotateData = {
+          rotate: user.profile.picture.coordinates.rotate
+        };
+        var cropBoxData;
 
-      avatarView.cropper('destroy').cropper({
-        built: function() {
-          avatarView.cropper('setCropBoxData', cropBoxData);
-          avatarView.cropper('setCanvasData', canvasData);
-          avatarView.cropper('setData', rotateData);
-        }
-      });
+        avatarView.cropper('destroy').cropper({
+          built: function() {
+            avatarView.cropper('setCropBoxData', cropBoxData);
+            avatarView.cropper('setCanvasData', canvasData);
+            avatarView.cropper('setData', rotateData);
+          }
+        });
+      }
+    } else if (isTemp) {
+      avatarView.cropper('replace', url);
     }
-  } else if (isTemp) {
-    avatarView.cropper('replace', url);
   }
 };
 
