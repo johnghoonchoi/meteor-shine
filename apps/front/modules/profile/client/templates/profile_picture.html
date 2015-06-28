@@ -11,8 +11,13 @@
           <!-- Cropped image view -->
           <div class="row">
             <div class="col-md-12">
-              <div class="cropper-outer">
-                 <img id="avatarPreview" src="{{pictureOriginUrl}}" alt="Preview upload images">
+              <div class="cropper-outer avatar-lm">
+	               {{#if picUrl}}
+                 <img id="avatarPreview" src="{{picUrl}}" alt="Preview upload images">
+	               {{else}}
+	                 {{{userInitial}}}
+                 <img id="avatarPreview" src="http://res.cloudinary.com/meteor-shine/image/upload/v1435344182/accounts/tdappdjllr8aobtehmli.jpg" alt="Preview upload images">
+								 {{/if}}
               </div>
             </div>
           </div>
