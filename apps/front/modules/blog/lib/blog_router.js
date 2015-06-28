@@ -16,10 +16,9 @@ BlogOneController = RouteController.extend({
   },
 
   data: function() {
-    return {
+    return this.blog();
 //    ready: this.subs.ready,
-      blog: this.blog()
-    };
+//    blog: this.blog()
   }
 });
 

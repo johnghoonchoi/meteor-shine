@@ -18,4 +18,4 @@ Template.registerHelper('userEmail', function () {
 
 Template.registerHelper('showDataContext', function() {
   console.log('DataContext: ', this);
-})
+});

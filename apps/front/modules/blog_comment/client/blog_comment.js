@@ -94,6 +94,10 @@ Template.blogCommentsList.events({
 
 
 Template.blogCommentsListItem.helpers({
+  commenterPicture: function() {
+    var self = this;
+    //return _authorProfile(self);
+  },
   commenter: function() {
     return Meteor.users.findOne(this.user._id);
   }

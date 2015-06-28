@@ -13,13 +13,12 @@
           <div class="panel-body">
             <h2 style="word-wrap:break-word;">{{{title}}}</h2>
 	          <a href="" class="avatar-sm">
-              {{{authorPicture}}}
-              <span class="user-name">{{this.user.username}}</span>
+              {{{writerPic this}}}
             </a>
-	          <smaill>
-		          {{ author.username }}
+	          <small>
+              <span class="user-name">{{blog.user.username}}</span>
 		          {{momentFromNow blog.createdAt}}
-	          </smaill>
+	          </small>
             <div class="text-content">
               {{#if editMode}}
                 {{> inlineEditorToolbar}}
@@ -51,11 +50,7 @@
     </div>
 
     </form>
-
-    {{#with blog}}
-      {{> blogCommentsList blogId=_id}}
-    {{/with}}
-
+	  {{> blogCommentsList blogId=_id}}
     {{> cloudinaryProgressBar}}
   </article>
 

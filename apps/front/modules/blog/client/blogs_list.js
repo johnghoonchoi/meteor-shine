@@ -15,7 +15,7 @@
 Template.blogsList.onCreated(function() {
   var instance = this;
 
-  instance.increment = 2;
+  instance.increment = 5;
   instance.limit = new ReactiveVar(instance.increment);
   instance.loaded = new ReactiveVar(0);
 
