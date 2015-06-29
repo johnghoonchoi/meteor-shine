@@ -14,6 +14,12 @@
 Template.home.events({
   'click .load-more': function () {
     Router.go(Router.current().nextPath());
+  },
+
+  'click #alert-test': function() {
+    Alerts.dialog('alert', 'Hi there...', function() {
+      console.log('done...');
+    });
   }
 });
 

@@ -1,7 +1,7 @@
 Package.describe({
   name: 'leesangwon:alerts',
   summary: 'A package for displaying alert message box for Meteor JS',
-  version: '0.5.0',
+  version: '0.5.1',
   git: 'https://github.com/miraten/meteor-alerts'
 });
 

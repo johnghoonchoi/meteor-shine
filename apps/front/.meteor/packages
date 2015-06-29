@@ -33,3 +33,4 @@ ground:db
 reactive-var
 
 reywood:publish-composite
+percolate:momentum

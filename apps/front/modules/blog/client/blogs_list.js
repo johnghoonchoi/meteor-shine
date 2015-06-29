@@ -1,16 +1,3 @@
-//var triggerHandle;
-
-// Template.blogsList.onRendered(function() {
-//   triggerHandle = InfiniteScrollTrigger.bind(function() {
-//     if (Router.current().nextPath())
-//       Router.go(Router.current().nextPath());
-//   });
-// });
-
-// Template.blogsList.onDestroyed(function() {
-//   if (triggerHandle)
-//     InfiniteScrollTrigger.unbind(triggerHandle);
-// });
 
 Template.blogsList.onCreated(function() {
   var instance = this;
@@ -18,7 +5,6 @@ Template.blogsList.onCreated(function() {
   instance.increment = 2;
   instance.limit = new ReactiveVar(instance.increment);
   instance.loaded = new ReactiveVar(0);
-
 
   instance.autorun(function() {
     var limit = instance.limit.get();
