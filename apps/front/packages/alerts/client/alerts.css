@@ -9,20 +9,16 @@
   pointer-events: none;
 }
 
-.meteor-alert .alert {
-          animation: fadeOut 2700ms ease-in 0s 1 forwards;
-  -webkit-animation: fadeOut 2700ms ease-in 0s 1 forwards;
-     -moz-animation: fadeOut 2700ms ease-in 0s 1 forwards;
-
-  width: 280px;
-  float: right;
-  clear: both;
+.meteor-alerts .alert {
   position: relative;
+  clear: both;
+  max-width: 50%;
+  min-width: 280px;
   margin-bottom: 5px;
   pointer-events: auto;
 }
 
-.meteor-alert .alert + .alert {
+.meteor-alerts .alert + .alert {
   margin-top: 10px;
 }
 
@@ -31,13 +27,15 @@
 }
 
 .meteor-modal-alerts .alert {
-          animation: fadeOut 2700ms ease-in 0s 1 forwards;
-  -webkit-animation: fadeOut 2700ms ease-in 0s 1 forwards;
-     -moz-animation: fadeOut 2700ms ease-in 0s 1 forwards;
-
   position: relative;
+  clear: both;
+  min-width: 280px;
   margin-bottom: 5px;
   pointer-events: auto;
+}
+
+.meteor-modal-alerts .alert + .alert {
+  margin-top: 10px;
 }
 
 .meteor-alerts .alert p, .meteor-modal-alerts .alert p {
@@ -50,3 +48,18 @@
   top: 10px;
   left: 10px;
 }
+
+.alert-align-left {
+  float: left;
+
+}
+
+.alert-align-right {
+  float: right;
+}
+
+.alert-align-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+

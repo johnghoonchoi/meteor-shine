@@ -75,13 +75,15 @@ BlogEditController = RouteController.extend({
   data: function() {
     return {
       blog: Blogs.findOne(this.params._id)
-    }
+    };
   }
 });
 
 
 
-Router.route('/blogs', function() { this.render('blogsList'); }, { name: 'blogsList' });
+Router.route('/blogs', function() {
+  this.render('blogsList');
+}, { name: 'blogsList'});
 
 Router.route('/blog/:_id', {
   name: 'blogOne',

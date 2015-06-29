@@ -6,7 +6,7 @@ Template.meteorAlerts.helpers({
 
 Template.meteorAlert.onRendered(function() {
   var alert = this.data;
-  if (alert.duration > 0) {
+  if (alert && alert.duration > 0) {
     Meteor.setTimeout(function () {
       Alerts.collection.remove(alert._id);
     }, alert.duration);
@@ -15,26 +15,26 @@ Template.meteorAlert.onRendered(function() {
 
 var style = {
   error: {
-    clas: 'alert-danger',
+    'class': 'alert-danger',
     icon: 'fa-minus-circle'
   },
   info: {
-    clas: 'alert-info',
+    'class': 'alert-info',
     icon: 'fa-exclamation-circle'
   },
   warning: {
-    clas: 'alert-warning',
+    'class': 'alert-warning',
     icon: 'fa-exclamation-triangle'
   },
   success: {
-    clas: 'alert-success',
+    'class': 'alert-success',
     icon: 'fa-thumbs-o-up'
   }
 };
 
 Template.meteorAlert.helpers({
   alertClass: function() {
-    return style[this.type].clas;
+    return style[this.type].class;
   },
   alertIcon: function() {
     return style[this.type].icon;
@@ -47,4 +47,19 @@ Template.meteorAlert.events({
   }
 });
 
+
+Template.meteorModalAlerts.helpers({
+  alerts: function() {
+    return Alerts.collection.find({ template: 'modal' });
+  }
+});
+
+Template.meteorModalAlerts.onRendered(function() {
+  var alert = this.data;
+  if (alert && alert.duration > 0) {
+    Meteor.setTimeout(function () {
+      Alerts.collection.remove(alert._id);
+    }, alert.duration);
+  }
+});
 
