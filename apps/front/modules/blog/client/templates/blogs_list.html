@@ -2,9 +2,9 @@
   <article class="page">
     <h3>{{_ 'title_blogs'}}</h3>
 
-    {{#if noBlogs}}
-      {{_ 'text_no_blogs'}}
-    {{else}}
+		{{#if noBlogs}}
+			{{_ 'text_no_blogs'}}
+		{{else}}
       <div class="row-fluid">
         <div class="btn-toolbar" role="toolbar">
           <div class="btn-group" role="group">
@@ -17,21 +17,21 @@
       </div>
 
       <div class="row-fluid">
-        {{#each blogs}}
-          {{> blogsListItem}}
-        {{/each}}
+				{{#each blogs}}
+					{{> blogsListItem}}
+				{{/each}}
       </div>
 
       <div class="row-fluid">
-        {{#if hasMore}}
+				{{#if hasMore}}
           <a class="btn btn-default btn-block load-more">Load More</a>
-        {{else}}
-          {{#unless ready}}
-            {{> listLoading}}
-          {{/unless}}
-        {{/if}}
+				{{else}}
+					{{#unless ready}}
+						{{> listLoading}}
+					{{/unless}}
+				{{/if}}
       </div>
-    {{/if}}
+		{{/if}}
   </article>
 
 </template>
@@ -40,9 +40,9 @@
   <article class="page">
     <h3>{{_ 'title_blogs'}}</h3>
 
-    {{#if noBlogs}}
-      {{_ 'text_no_blogs'}}
-    {{else}}
+		{{#if noBlogs}}
+			{{_ 'text_no_blogs'}}
+		{{else}}
       <div class="row-fluid">
         <div class="btn-toolbar" role="toolbar">
           <div class="btn-group" role="group">
@@ -55,21 +55,21 @@
       </div>
 
       <div class="row-fluid">
-        {{#each blogs}}
-          {{> blogsListItem}}
-        {{/each}}
+				{{#each blogs}}
+					{{> blogsListItem}}
+				{{/each}}
       </div>
 
-      {{#if Template.subscriptionsReady}}
+			{{#if Template.subscriptionsReady}}
         <div class="row-fluid">
-          {{#if hasMore}}
+					{{#if hasMore}}
             <a class="btn btn-default btn-block load-more">Load More</a>
-          {{/if}}
+					{{/if}}
         </div>
-      {{else}}
-        {{> listLoading}}
-      {{/if}}
-    {{/if}}
+			{{else}}
+				{{> listLoading}}
+			{{/if}}
+		{{/if}}
   </article>
 </template>
 
@@ -82,9 +82,9 @@
       </h4>
     </div>
     <!--<div class="panel-body">-->
-      <!--<div class="line-clamp-2">-->
-        <!--{{blog_content}}-->
-      <!--</div>-->
+    <!--<div class="line-clamp-2">-->
+    <!--{{blog_content}}-->
+    <!--</div>-->
     <!--</div>-->
   </div>
 </template>

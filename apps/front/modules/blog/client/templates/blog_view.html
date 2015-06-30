@@ -16,8 +16,8 @@
               {{{writerPic this}}}
             </a>
 	          <small>
-              <span class="user-name">{{blog.user.username}}</span>
-		          {{momentFromNow blog.createdAt}}
+              <span class="user-name">{{this.user.username}}</span>
+		          {{momentFromNow this.createdAt}}
 	          </small>
             <div class="text-content">
               {{#if editMode}}
@@ -27,6 +27,7 @@
         </div>
       </div>
 
+      <a href="#" class="like-btn"><span class="like-count"><i class="fa fa-heart-o"></i></span></a>
 
       {{#if ownPost}}
       <div class="panel-footer clearfix">

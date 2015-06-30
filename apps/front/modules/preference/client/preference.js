@@ -9,7 +9,9 @@ Template.preference.events({
     e.preventDefault();
 
     var themeName = $(e.target).val();
-    saveTheme(themeName);
+
+    // Todo 추후 테마적용 보완
+    //saveTheme(themeName);
   }
 });
 

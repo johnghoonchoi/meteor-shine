@@ -3,6 +3,7 @@ Template.blogOne.onCreated( function () {
    Session.set('editMode', false);
    Session.set('draftsLimit', 5);
    */
+
   console.log('blogOne onCreated');
 });
 
@@ -125,7 +126,19 @@ Template.blogOne.events({
     Session.set('editMode', true);
     $('#editor').attr('contenteditable', 'true');
     $('#newTitle').attr('contenteditable', 'true');
+  },
+
+  'click .like-btn': function(e) {
+    //alert('test');
+    e.preventDefault();
+    Meteor.call('likeUpdate', this._id, function(error, result) {
+      if (error) console.log('error.reason: ', error.reason);
+
+      console.log('addLikes result: ', result);
+    });
   }
+
+
 });
 
 
