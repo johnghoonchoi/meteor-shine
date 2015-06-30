@@ -1,0 +1,36 @@
+<template name="postsList">
+  <article class="page">
+    <header>Posts List : {{category.title}}</header>
+
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <div class="btn-toolbar">
+          <a class="btn btn-primary pull-right" href="{{pathFor 'postNew'}}">new Post</a>
+        </div>
+      </div>
+      <div class="panel-body">
+        {{#unless Template.subscriptionsReady}}
+          {{> listLoading}}
+        {{else}}
+          {{#if postsCount}}
+            <div>Posts count : {{postsCount}}</div>
+            <div>
+              {{#each posts}}
+                {{> postsListItem}}
+              {{/each}}
+            </div>
+          {{else}}
+            <div>no list</div>
+          {{/if}}
+        {{/unless}}
+      </div>
+    </div>
+  </article>
+</template>
+
+<template name="postsListItem">
+  <div>
+    <p>{{title}}</p>
+    <p>{{author.username}}</p>
+  </div>
+</template>

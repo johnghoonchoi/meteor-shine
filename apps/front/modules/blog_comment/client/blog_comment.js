@@ -59,6 +59,8 @@ Template.blogCommentsList.onCreated(function() {
 
 Template.blogCommentsList.onDestroyed(function() {
   this.limit = null;
+  this.loaded = null;
+  this.commentsCount = null;
   this.comments = null;
 });
 
