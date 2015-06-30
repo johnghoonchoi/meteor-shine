@@ -1,9 +1,10 @@
 /**
  *
  * @returns {string}
- *   : there's no user's profile
- *   : user`s profile image exist, but new image not yet uploaded (pending state)
- *   : new uploaded temporary image
+ * default : there's no user's profile
+ * onlyOrigin : only user`s profile image exist
+ * both : pending state
+ * onlyTemp : pending state
  * @public
  */
 myPicState = function(user) {

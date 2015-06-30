@@ -6,5 +6,6 @@ $(document).mouseup(function(e) {
 
 
 Meteor.startup(function() {
-  setTheme(loadTheme());
+  // Todo 추후 테마적용 보완
+  //setTheme(loadTheme());
 });
