@@ -1,0 +1,13 @@
+<template name="categoriesList">
+  <div class="categories">
+    {{#each categories}}
+      {{> categoriesListItem}}
+    {{/each}}
+  </div>
+</template>
+
+<template name="categoriesListItem">
+  <div>
+    <a href="{{pathFor 'postsList' category=_id}}">{{title}}</a>
+  </div>
+</template>

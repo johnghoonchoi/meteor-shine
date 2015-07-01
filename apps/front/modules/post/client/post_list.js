@@ -1,15 +1,16 @@
 Template.postsList.onCreated(function() {
   var instance = this;
-  var data = Template.currentData();
+  var data;
 
   instance.increment = 20;
   instance.limit = new ReactiveVar(instance.increment);
   instance.loaded = new ReactiveVar(0);
 
   instance.autorun(function() {
+    data = Template.currentData();
     var limit = instance.limit.get();
 
-    instance.subscribe('postCategoryView', data.category);
+    instance.subscribe('categoryView', data.category);
 
     instance.subscribe('postsList',
       { categoryId: data.category }, { limit: limit, sort: { publishedAt: -1 }},
@@ -17,7 +18,7 @@ Template.postsList.onCreated(function() {
   });
 
   instance.category = function() {
-    return PostCategories.findOne({ _id: data.category });
+    return Categories.findOne({ _id: data.category });
   };
 
   instance.postsCount = function() {

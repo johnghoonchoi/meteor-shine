@@ -34,7 +34,7 @@ PostValidator = {
     return validator;
   },
 
-  validateUpdate: function() {
+  validateUpdate: function(object) {
     var validator = new Validator(this.schema);
 
     validator.validate(object, ['title', 'content']);

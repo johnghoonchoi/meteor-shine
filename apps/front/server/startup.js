@@ -9,7 +9,7 @@ Meteor.startup(function() {
     });
   }
 
-  if (PostCategories.find().count() === 0) {
+  if (Categories.find().count() === 0) {
     var now = new Date();
     var categories = [
       {
@@ -39,7 +39,7 @@ Meteor.startup(function() {
     ];
 
     categories.forEach(function(category) {
-      PostCategories.insert(category);
+      Categories.insert(category);
     });
   }
 });

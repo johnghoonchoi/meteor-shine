@@ -7,11 +7,11 @@ Template.postNew.onCreated(function() {
   });
 
   instance.categoriesCount = function() {
-    Counts.get('postCategoriesListCount');
+    Counts.get('categoriesListCount');
   };
 
   instance.categories = function() {
-    return PostCategories.find({ state: 'ON' }, { sort: { seq: 1 }});
+    return Categories.find({ state: 'ON' }, { sort: { seq: 1 }});
   };
 });
 
@@ -44,12 +44,17 @@ Template.postNew.events({
       content: $(e.target).find('[name=content]').html(),
     };
 
+    if (! object.content) {
+      Alerts.notify('error', 'input content');
+      return;
+    }
+
     Meteor.call('postInsert', object, function(error, result) {
       if (error) {
         Alerts.notify('error', error.message);
       } else {
         Alerts.notify('success', 'post_insert_success');
-        Router.go('postView');
+        Router.go('postView', { _id: result });
       }
     });
   }

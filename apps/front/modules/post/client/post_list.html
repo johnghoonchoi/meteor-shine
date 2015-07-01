@@ -30,7 +30,7 @@
 
 <template name="postsListItem">
   <div>
-    <p>{{title}}</p>
+    <p><a href="{{pathFor 'postView'}}">{{title}}</a></p>
     <p>{{author.username}}</p>
   </div>
 </template>
