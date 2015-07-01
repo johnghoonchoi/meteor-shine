@@ -116,35 +116,40 @@ Meteor.methods({
     check(blogId, String);
 
     // 로그인된 유저가 없으면 리턴
-    if (! this.userId) return false;
+    if (! this.userId) return;
 
     var blog = Blogs.findOne({ _id: blogId });
-    if (!blog)
+    if (! blog)
       throw new Meteor.Error(422, 'Post not found');
 
     // 본인의 글에 Like 버튼 클릭하는 경우 리턴
     if (blog.user._id === this.userId) {
-      return false;
+      return;
     }
 
     if (_.include(blog.likers, this.userId)) {
       // Todo : 이 부분부터 시작해야함
-
-      var deleted = Blogs.update(
-        { likers: this.userId },
-        { $pull: { likers: this.userId }}
+      var updated = Blogs.update(
+        { 'likers': this.userId },
+        { '$pull': { 'likers': this.userId }, '$inc': { "count.likes": -1} }
       );
-      var dec = Blogs.update(blog._id,
-        { $inc: { "count.likes": -1}}
-      );
+      console.log('likes decreased: ', updated);
 
-      var updated = deleted+dec;
+
+      //if (deleted) {
+      //  var dec = Blogs.update(blog._id,
+      //    { $inc: { "count.likes": -1}}
+      //  );
+      //}
+      //var updated = dec;
 
     } else {
-        var updated = Blogs.update(blog._id, {
+      var updated = Blogs.update(blog._id, {
         $addToSet: { likers: this.userId },
         $inc: { "count.likes": 1 }
       });
+
+      console.log('likes increased: ', updated);
     }
 
     return updated;

@@ -57,6 +57,19 @@ Template.blogOne.helpers({
   },
   author: function() {
     return Meteor.users.findOne(this.user._id);
+  },
+  likesClass: function() {
+    var userId = Meteor.userId();
+    if (userId && userId !== this.user._id) {
+      if (! _.include(this.likers, userId)) {
+        return 'btn btn-default likable';
+      }
+      return 'btn btn-danger likable'
+    }
+    return 'disabled'
+  },
+  likesCount: function() {
+    return (this.count && this.count.likes) ? this.count.likes : 0;
   }
 });
 
@@ -128,15 +141,24 @@ Template.blogOne.events({
     $('#newTitle').attr('contenteditable', 'true');
   },
 
-  'click .like-btn': function(e) {
+  'click .likable': function(e) {
     //alert('test');
     e.preventDefault();
     Meteor.call('likeUpdate', this._id, function(error, result) {
       if (error) console.log('error.reason: ', error.reason);
-
-      console.log('addLikes result: ', result);
+      //console.log('result: ', result);
     });
+  },
+
+  'click .disabled': function(e) {
+    e.preventDefault();
+    var userId = Meteor.userId();
+    if (userId) {
+      return alert('본인 글에는 Like하실 수 없습니다.');
+    }
+    alert('로그인이 필요합니다.');
   }
+
 
 
 });
