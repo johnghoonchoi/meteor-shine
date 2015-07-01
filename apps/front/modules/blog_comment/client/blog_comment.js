@@ -41,10 +41,16 @@ Template.blogCommentsList.onCreated(function() {
     var limit = instance.limit.get();
 
     instance.subscribe('blogCommentsListCount',
-      { blogId: data.blogId });
+      {blogId: data.blogId});
     instance.subscribe('blogCommentsList',
-      { blogId: data.blogId }, { limit: limit, sort: { createdAt: -1 }},
-      function() { instance.loaded.set(limit); });
+      {blogId: data.blogId}, {limit: limit, sort: {createdAt: -1}});
+  });
+
+  instance.autorun(function() {
+    if (instance.subscriptionsReady()) {
+      console.log('comments subscriptions ready...');
+      instance.loaded.set(instance.limit.get());
+    }
   });
 
   instance.commentsCount = function() {
@@ -59,6 +65,8 @@ Template.blogCommentsList.onCreated(function() {
 
 Template.blogCommentsList.onDestroyed(function() {
   this.limit = null;
+  this.loaded = null;
+  this.commentsCount = null;
   this.comments = null;
 });
 

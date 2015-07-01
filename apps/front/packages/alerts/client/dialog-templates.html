@@ -6,9 +6,11 @@
           <p>{{message}}</p>
         </div>
         <div class="modal-footer">
-          <button type="button" id="btnClose" class="btn btn-default">Close</button>
           {{#if isConfirm}}
-            <button type="button" id="btnYes" class="btn btn-primary">Save changes</button>
+            <button type="button" id="btnNo" class="btn btn-default">No</button>
+            <button type="button" id="btnYes" class="btn btn-primary">Yes</button>
+          {{else}}
+            <button type="button" id="btnClose" class="btn btn-default">Close</button>
           {{/if}}
         </div>
       </div><!-- /.modal-content -->
