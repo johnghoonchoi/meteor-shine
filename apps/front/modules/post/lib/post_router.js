@@ -1,7 +1,12 @@
 
 Router.route('/posts/:category',
   function() {
-    this.render('postsList', { data: { category: this.params.category }});
+    var sortBy = (this.params && this.params.query) ?
+      this.params.query.sortBy : 'time';
+
+    this.render('postsList', {
+      data: { category: this.params.category, sortBy: sortBy }
+    });
   },
   { name: 'postsList' }
 );

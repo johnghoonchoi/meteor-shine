@@ -24,12 +24,18 @@ Template.postView.onCreated(function() {
 
     instance.subscribe('postView', data.postId);
 
+    instance.subscribe('postLikeView', data.postId);
+
     instance.subscribe('postCommentsList', { postId: data.postId },
       { limit: limit, sort: { createdAt: 1 }});
   });
 
   instance.post = function() {
     return Posts.findOne(data.postId);
+  };
+
+  instance.like = function() {
+    return PostLikes.findOne({ postId: data.postId });
   };
 
   instance.commentsCount = function() {
@@ -54,6 +60,10 @@ Template.postView.onDestroyed(function() {
 Template.postView.helpers({
   post: function() {
     return Template.instance().post();
+  },
+
+  like: function() {
+    return Template.instance().like();
   },
 
   commentsCount: function() {
@@ -125,6 +135,26 @@ Template.postView.events({
       } else {
         Alerts.notify('success', 'post_insert_success');
         instance.setEditMode(false);
+      }
+    });
+  },
+
+  'click #like': function(e, instance) {
+    e.preventDefault();
+
+    Meteor.call('postLikeInsert', this.postId, function(error) {
+      if (error) {
+        Alerts.notify('error', error.reason);
+      }
+    });
+  },
+
+  'click #unlike': function(e, instance) {
+    e.preventDefault();
+
+    Meteor.call('postLikeRemove', this.postId, function(error) {
+      if (error) {
+        Alerts.notify('error', error.reason);
       }
     });
   },

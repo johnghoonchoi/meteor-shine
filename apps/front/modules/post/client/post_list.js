@@ -5,15 +5,23 @@ Template.postsList.onCreated(function() {
   instance.increment = 20;
   instance.limit = new ReactiveVar(instance.increment);
   instance.loaded = new ReactiveVar(0);
+  instance.sortBy = function(value) {
+    if (value === 'like') {
+      return { 'count.likes': -1 };
+    } else {
+      return { publishedAt: -1 };
+    }
+  };
 
   instance.autorun(function() {
     data = Template.currentData();
     var limit = instance.limit.get();
+    var sort = instance.sortBy(data.sortBy);
 
     instance.subscribe('categoryView', data.category);
 
     instance.subscribe('postsList',
-      { categoryId: data.category }, { limit: limit, sort: { publishedAt: -1 }},
+      { categoryId: data.category }, { limit: limit, sort: sort },
       function() { instance.loaded.set(limit); });
   });
 
