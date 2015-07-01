@@ -14,5 +14,13 @@
     {{{titleEditable}}}
 
     {{{contentEditable}}}
+
+    <div class="sns">
+      {{#if like}}
+        <button type="button" id="unlike" class="btn btn-default">Unlike</button>
+      {{else}}
+        <button type="button" id="like" class="btn btn-default">Like</button>
+      {{/if}}
+    </div>
   </article>
 </template>

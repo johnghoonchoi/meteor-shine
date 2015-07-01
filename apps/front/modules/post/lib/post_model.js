@@ -9,7 +9,8 @@
  *      images            { _id, url, surl }
  *      videos            { _id, url, surl }
  *    tags                Array of String
- *    authors             Array of Object { _id, username, name }
+ *    count               { hits, likes, comments }
+ *    author              { _id, username, name }
  *    status              { READY, PUBLISHED, UNPUBLISHED }
  *    createdAt           Date
  *    updatedAt           Date
@@ -55,6 +56,11 @@ Meteor.methods({
         categoryId: category,
         title: object.title,
         content: object.content,
+        count: {
+          hits: 0,
+          likes: 0,
+          comments: 0
+        },
         author: author,
         status: 'READY',
         createdAt: now,
