@@ -91,9 +91,6 @@ Template.profilePicture.helpers({
     return _userInitial();
   },
 
-  isSetImage: function() {
-    return Session.get('isSetImage');
-  }
 });
 
 Template.profilePicture.events({
@@ -106,7 +103,7 @@ Template.profilePicture.events({
     var $avatarView = $('#avatarPreview');
 
     if (flag === 'default')
-      return $('#profileModal').modal('hide');
+      return $('#avatarModal').modal('hide');
 
     var profileObj = {};
     var cropData = $avatarView.cropper('getData');
@@ -124,7 +121,7 @@ Template.profilePicture.events({
       profileObj.url = user.profile.picture.temp.url;
     }
 
-    $('#profileModal').modal('hide');
+    $('#avatarModal').modal('hide');
 
     cropData.width = Math.round(cropData.width);
     cropData.height = Math.round(cropData.height);
@@ -173,7 +170,7 @@ Template.profilePicture.onRendered(function() {
     _drawCropper();
   });
 
-  $('#profileModal').on('hide.bs.modal', function() {
+  $('#avatarModal').on('hide.bs.modal', function() {
     _removeTempPic();
   });
 
@@ -199,7 +196,11 @@ Template.profilePictureToolbar.onRendered(function() {
       multiple: false
     }
   }, function(e, data) {
-    if (data) Session.set('isSetImage', true);
+
+    var cropInstance = new CropAvatar();
+    // 동적 프로퍼티 생성
+    cropInstance.url = data.result.url;
+    cropInstance.startCropper();
 
     var attributes = {
       url: data.result.url,
