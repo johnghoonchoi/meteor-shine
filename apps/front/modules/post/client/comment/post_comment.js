@@ -1,20 +1,20 @@
-Template.blogCommentNew.helpers({
+Template.postCommentNew.helpers({
   editable: function() {
     return '<div class="editable form-control" contenteditable="true" name="msg"></div>';
   }
 
 });
 
-Template.blogCommentNew.events({
-  'submit #formBlogCommentNew': function(e) {
+Template.postCommentNew.events({
+  'submit #formPostCommentNew': function(e, instance) {
     e.preventDefault();
 
     var object = {
-      blogId: this.blogId,
+      postId: Template.parentData(1).postId,
       msg: $(e.target).find('[name=msg]').html().trim()
     };
 
-    Meteor.call('blogCommentInsert', object, function(error) {
+    Meteor.call('postCommentInsert', object, function(error) {
       if (error) {
         Alerts.notify('error', error.reason);
       } else {
@@ -28,8 +28,7 @@ Template.blogCommentNew.events({
 });
 
 
-
-Template.blogCommentsList.onCreated(function() {
+Template.postCommentsList.onCreated(function() {
   var instance = this;
   var data = Template.currentData();
 
@@ -40,10 +39,8 @@ Template.blogCommentsList.onCreated(function() {
   instance.autorun(function() {
     var limit = instance.limit.get();
 
-    instance.subscribe('blogCommentsListCount',
-      {blogId: data.blogId});
-    instance.subscribe('blogCommentsList',
-      {blogId: data.blogId}, {limit: limit, sort: {createdAt: -1}});
+    instance.subscribe('postCommentsList', { postId: data.postId },
+      { limit: limit, sort: { createdAt: 1 }});
   });
 
   instance.autorun(function() {
@@ -54,33 +51,33 @@ Template.blogCommentsList.onCreated(function() {
   });
 
   instance.commentsCount = function() {
-    return Counts.get('blogCommentsCount');
+    return Counts.get('postCommentsCount');
   };
 
   instance.comments = function() {
-    return BlogComments.find({ blogId: data.blogId },
+    return PostComments.find({ postId: data.postId },
       { limit: instance.loaded.get(), sort: { createdAt: 1 }});
   };
 });
 
-Template.blogCommentsList.onDestroyed(function() {
+Template.postCommentsList.onDestroyed(function() {
   this.limit = null;
   this.loaded = null;
   this.commentsCount = null;
   this.comments = null;
 });
 
-Template.blogCommentsList.onRendered(function() {
+Template.postCommentsList.onRendered(function() {
   this.frame = $('.comments-list-frame');
   this.frame.animate({ scrollTop: this.frame[0].scrollHeight }, "slow");
 });
 
-Template.blogCommentsList.helpers({
-  blogCommentsCount: function() {
+Template.postCommentsList.helpers({
+  postCommentsCount: function() {
     return Template.instance().commentsCount();
   },
 
-  blogComments: function() {
+  postComments: function() {
     return Template.instance().comments();
   },
 
@@ -93,7 +90,7 @@ Template.blogCommentsList.helpers({
   }
 });
 
-Template.blogCommentsList.events({
+Template.postCommentsList.events({
   'click .load-more': function(e, instance) {
     e.preventDefault();
     instance.limit.set(instance.limit.get() + instance.increment);
@@ -101,7 +98,7 @@ Template.blogCommentsList.events({
 });
 
 
-Template.blogCommentsListItem.helpers({
+Template.postCommentsListItem.helpers({
   commenterPicture: function() {
     var self = this;
     //return _authorProfile(self);

@@ -11,7 +11,7 @@ NOTIFICATION_MSG_TYPE_NOTICE            = 'notice';
 
 ERROR_CODE_SECURITY                     = 403;
 ERROR_CODE_MATCH                        = 501;
-
+ERROR_CODE_DATABASE                     = 531;
 
 System = {
 

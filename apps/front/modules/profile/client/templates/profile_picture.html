@@ -12,11 +12,11 @@
           <div class="row">
             <div class="col-md-12">
               <div class="avatar-wrapper avatar-lm">
-	               {{#if picUrl}}
-                 <img id="avatarPreview" src="{{picUrl}}">
-	               {{else}}
-	                {{{userInitial}}}
-								 {{/if}}
+	               <!--{{#if picUrl}}-->
+                 <!--<img id="avatarPreview" src="{{picUrl}}">-->
+	               <!--{{else}}-->
+	                <!--{{{userInitial}}}-->
+								 <!--{{/if}}-->
               </div>
             </div>
           </div>
@@ -38,8 +38,14 @@
     <div class="col-md-12">
       <div class="avatar-btn-wrapper">
         <div class="btn-group">
+	        <form>
           {{> cloudinaryUploader}}
+          </form>
         </div>
+        <!--<div class="btn-group">-->
+          <!--<button id="rotateLeft" class="btn btn-default">왼쪽</button>-->
+          <!--<button id="rotateRight" class="btn btn-default">오른쪽</button>-->
+        <!--</div>-->
       </div>
     </div>
   </div><!-- / Buttons group end -->

@@ -31,6 +31,14 @@ Template.meteorAlertDialog.events({
 
     if (data.callback)
       data.callback(true);
+  },
+
+  'click #btnNo': function() {
+    var data = this;
+    removeDialog(data.view);
+
+    if (data.callback)
+      data.callback(false);
   }
 });
 

@@ -53,12 +53,16 @@ Validator = function(schema) {
     if (! _.isArray(attributes)) {
       attributes = [ attributes ];
     }
-    
+
     for (var i = 0; i < attributes.length; i++) {
       var attribute = attributes[i];
 
       var rule = self.schema(attribute);
       var value = object[attribute];
+
+      if (rule.required === false && ! value) {
+        return;
+      }
 
       if (typeof value !== rule.type)
         self.setError(attribute, "error_invalid_type");
