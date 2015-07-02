@@ -19,11 +19,12 @@ Template.profileView.helpers({
 });
 Template.profileView.events({
 
-  "click #editPicture, click .avatar-view img, click .avatar-initials": function(e) {
+  "click #editPicture, click .view-avatar img, click .avatar-initials": function(e) {
     e.preventDefault();
-    var cropInstance = new CropAvatar();
-    cropInstance.init();
-    cropInstance.click();
+    $('#avatarModal').modal('show');
+    //var cropInstance = new CropAvatar();
+    //cropInstance.init();
+    //cropInstance.click();
   },
 
   'click #editProfile': function() {
