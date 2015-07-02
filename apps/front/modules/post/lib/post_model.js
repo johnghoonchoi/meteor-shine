@@ -3,11 +3,21 @@
  *    _id
  *    categoryId          String
  *    title               String 1..100
+ *
  *    content
  *      version           "1.0"
  *      texts             Array of String
  *      images            { _id, url, surl }
  *      videos            { _id, url, surl }
+ *    draft
+ *      title             String 1..100
+ *      content
+ *        version         "1.0"
+ *        texts           Array of String
+ *        images          { _id, url, surl }
+ *        videos          { _id, url, surl }
+ *      savedAt           Date
+ *
  *    tags                Array of String
  *    count               { hits, likes, comments }
  *    author              { _id, username, name }
@@ -92,13 +102,13 @@ Meteor.methods({
 
     // check permission
     if (! this.userId) {
-      throw new Meteor.Error(403, "error_access_denied");
+      throw new Meteor.Error(ERROR_CODE_SECURITY, "error_access_denied");
     }
 
     var post = Posts.findOne({ _id: postId });
 
     if ( post.author._id !== this.userId ) {
-      throw new Meteor.Error(403, "error_access_denied");
+      throw new Meteor.Error(ERROR_CODE_SECURITY, "error_access_denied");
     }
 
     // set data
@@ -110,15 +120,44 @@ Meteor.methods({
     };
 
     // insert into the database
-    var updated = Posts.update({ _id: postId }, { $set: data });
+    var updated = Posts.update({ _id: postId },
+      { $set: data, $unset: { draft: "" }});
+
     return updated;
 
   },
 
+  postSaveDraft: function(postId, object) {
+    check(postId, String);
+    check(object, Match.Where(matchPostUpdate));
+
+    // check permission
+    if (! this.userId) {
+      throw new Meteor.Error(ERROR_CODE_SECURITY, "error_access_denied");
+    }
+
+    var post = Posts.findOne({ _id: postId });
+
+    if ( post.author._id !== this.userId ) {
+      throw new Meteor.Error(ERROR_CODE_SECURITY, "error_access_denied");
+    }
+
+    var data = {
+      draft: {
+        title: object.title,
+        content: object.content,
+        savedAt: new Date()
+      }
+    };
+
+    var updated = Posts.update({ _id: postId }, { $set: data });
+
+    return updated;
+  },
 
   postPublish: function(postId, object) {
     check(postId, String);
-    check(object, Match.Where(matchTopicPublish));
+    check(object, Match.Where(matchPostPublish));
 
     // check permission
     if (! this.userId) {

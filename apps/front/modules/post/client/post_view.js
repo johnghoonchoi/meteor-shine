@@ -8,14 +8,22 @@ Template.postView.onCreated(function() {
 
   instance.editMode = new ReactiveVar(false);
   instance.setEditMode = function(edit) {
-    instance.$('.post-title').attr('contenteditable', edit);
-    instance.$('.post-content').attr('contenteditable', edit);
+    instance.$('#title').attr('contenteditable', edit);
+    instance.$('#content').attr('contenteditable', edit);
     instance.editMode.set(edit);
 
     if (edit) {
-      instance.$('.post-content').focus();
+      instance.$('#content').focus();
+
+      var post = instance.post();
+      if (post && ! _.isEmpty(post.draft)) {
+        instance.$('#title').html(post.draft.title);
+        instance.$('#content').html(post.draft.content);
+      }
     }
   };
+
+  instance.autoSave = new Autosave();
 
   instance.autorun(function() {
     data = Template.currentData();
@@ -52,9 +60,14 @@ Template.postView.onDestroyed(function() {
   this.limit = null;
   this.loaded = null;
   this.editMode = null;
+  this.autoSave = null;
   this.post = null;
   this.commentsCount = null;
   this.comments = null;
+});
+
+Template.postView.onRendered(function() {
+
 });
 
 Template.postView.helpers({
@@ -80,14 +93,18 @@ Template.postView.helpers({
 
   titleEditable: function() {
     var post = Template.instance().post();
-    return '<h3 id="title" class="post-title" contenteditable="false">' +
-      ((post) ? post.title : '') + '</h3>';
+    var title = (post) ? post.title : '';
+
+    return '<h3 id="title" class="title-editable" contenteditable="false">' +
+      title + '</h3>';
   },
 
   contentEditable: function() {
     var post = Template.instance().post();
-    return '<div id="content" class="post-content" contenteditable="false">' +
-      ((post) ? post.content : '') + '</div>';
+    var content = (post) ? post.content : '';
+
+    return '<div id="content" class="content-editable" contenteditable="false">' +
+      content + '</div>';
   }
 });
 
@@ -113,6 +130,26 @@ Template.postView.events({
           }
         });
       }
+    });
+  },
+
+  'input #content': function(e, instance) {
+    e.preventDefault();
+
+    var self = this;
+
+    instance.autoSave.clear();
+    instance.autoSave.set(function() {
+      var object = {
+        title: instance.$('#title').html(),
+        content: instance.$('#content').html()
+      };
+
+      Meteor.call('postSaveDraft', self.postId, object, function(error) {
+        if (! error) {
+          Alerts.notify('success', 'draft_saved');
+        }
+      });
     });
   },
 

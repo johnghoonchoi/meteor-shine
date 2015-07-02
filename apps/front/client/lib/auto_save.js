@@ -6,22 +6,42 @@
  */
 
 Autosave = function() {
+  this.timer = null;
+
   // trigger autosave operation
   this.set = function(callbackSave, interval) {
     interval = interval || 5000;
 
-    return Meteor.setTimeout(function() {
+    this.timer = Meteor.setTimeout(function() {
       callbackSave();
     }, interval);
+
+    return this.timer;
   };
 
   // release autosave operation
-  this.clear = function(timer) {
-    if (timer) {
-      Meteor.clearInterval(timer);
+  this.clear = function() {
+    if (this.timer) {
+      Meteor.clearInterval(this.timer);
+      this.timer = null;
     }
   };
 
   return this;
 };
 
+draftSave = function(draftId) {
+  if (! draftId) {
+    // insert
+    Meteor.call('postDraftInsert')
+  } else {
+    // update
+  }
+};
+
+draftRemove = function(draftId) {
+  if (! draftId)
+    return;
+
+  // delete
+};

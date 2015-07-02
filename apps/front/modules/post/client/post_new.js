@@ -1,6 +1,9 @@
 Template.postNew.onCreated(function() {
   var instance = this;
 
+  instance.autoSave = new Autosave();
+  instance.draftId = null;
+
   instance.autorun(function() {
     instance.subscribe('postCategoriesList', { state: 'ON' },
       { sort: { seq: 1 }});
@@ -16,9 +19,12 @@ Template.postNew.onCreated(function() {
 });
 
 Template.postNew.onDestroyed(function() {
+  this.autoSave = null;
+  this.draftId = null;
   this.categoriesCount = null;
   this.categories = null;
 });
+
 
 Template.postNew.helpers({
   categoriesCount: function() {
@@ -29,19 +35,69 @@ Template.postNew.helpers({
     return Template.instance().categories();
   },
 
+  titleEditable: function() {
+    return '<h3 id="title" class="title-editable" contenteditable="true" ' +
+      'placeholder="Title..."></div>';
+  },
+
   contentEditable: function() {
-    return '<div class="editable form-control" contenteditable="true" name="content"></div>';
+    return '<div id="content" class="content-editable" contenteditable="true" ' +
+      'placeholder="Enter here..."></div>';
   }
 });
 
 Template.postNew.events({
-  'submit #formPostNew': function(e) {
+  'input #content': function(e, instance) {
+    e.preventDefault();
+
+    instance.autoSave.clear();
+    instance.autoSave.set(function() {
+      var object = {
+        title: instance.$('#title').val(),
+        content: instance.$('#content').html()
+      };
+
+      if (! instance.draftId) {
+        if (_.isEmpty(object.content)) {
+          return;
+        }
+
+        Meteor.call('postDraftInsert', object, function(error, id) {
+          if (error) {
+            Alerts.notify('error', error.reason);
+          } else {
+            instance.draftId = id;
+            Alerts.notify('success', 'draft_inserted');
+          }
+        });
+      } else {
+        if (! _.isEmpty(object.content)) {
+          Meteor.call('postDraftUpdate', instance.draftId, object, function(error) {
+            if (error) {
+              Alerts.notify('error', error.reason);
+            } else {
+              Alerts.notify('success', 'draft_saved');
+            }
+          });
+        } else {
+          Meteor.call('postDraftRemove', instance.draftId, function(error) {
+            if (! error) {
+              Alerts.notify('success', 'draft_removed');
+              instance.draftId = null;
+            }
+          });
+        }
+      }
+    });
+  },
+
+  'submit #formPostNew': function(e, instance) {
     e.preventDefault();
 
     var object = {
       category: $(e.target).find('[name=category]').val(),
-      title: $(e.target).find('[name=title]').val(),
-      content: $(e.target).find('[name=content]').html(),
+      title: instance.$('#title').html(),
+      content: instance.$('#content').html()
     };
 
     if (! object.content) {
@@ -53,6 +109,11 @@ Template.postNew.events({
       if (error) {
         Alerts.notify('error', error.message);
       } else {
+        if (instance.draftId) {
+          Meteor.call('postDraftRemove', instance.draftId, function() {
+            console.log('draft removed...');
+          });
+        }
         Alerts.notify('success', 'post_insert_success');
         Router.go('postView', { _id: result });
       }
