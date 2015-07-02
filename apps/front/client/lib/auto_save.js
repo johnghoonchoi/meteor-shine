@@ -29,19 +29,3 @@ Autosave = function() {
 
   return this;
 };
-
-draftSave = function(draftId) {
-  if (! draftId) {
-    // insert
-    Meteor.call('postDraftInsert')
-  } else {
-    // update
-  }
-};
-
-draftRemove = function(draftId) {
-  if (! draftId)
-    return;
-
-  // delete
-};

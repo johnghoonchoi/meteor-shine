@@ -1,10 +1,6 @@
 Template.postView.onCreated(function() {
   var instance = this;
-  var data;
-
-  instance.increment = 5;
-  instance.limit = new ReactiveVar(instance.increment);
-  instance.loaded = new ReactiveVar(0);
+  var data = Template.currentData();
 
   instance.editMode = new ReactiveVar(false);
   instance.setEditMode = function(edit) {
@@ -13,6 +9,7 @@ Template.postView.onCreated(function() {
     instance.editMode.set(edit);
 
     if (edit) {
+      instance.$('#content').wysiwyg();
       instance.$('#content').focus();
 
       var post = instance.post();
@@ -25,19 +22,6 @@ Template.postView.onCreated(function() {
 
   instance.autoSave = new Autosave();
 
-  instance.autorun(function() {
-    data = Template.currentData();
-
-    var limit = instance.limit.get();
-
-    instance.subscribe('postView', data.postId);
-
-    instance.subscribe('postLikeView', data.postId);
-
-    instance.subscribe('postCommentsList', { postId: data.postId },
-      { limit: limit, sort: { createdAt: 1 }});
-  });
-
   instance.post = function() {
     return Posts.findOne(data.postId);
   };
@@ -45,29 +29,15 @@ Template.postView.onCreated(function() {
   instance.like = function() {
     return PostLikes.findOne({ postId: data.postId });
   };
-
-  instance.commentsCount = function() {
-    return Counts.get('postCommentsListCount', { postId: data.postId });
-  };
-
-  instance.comments = function() {
-    return PostComments.find({ postId: data.postId },
-      { limit: instance.loaded.get(), sort: { createdAt: 1 }});
-  };
 });
 
 Template.postView.onDestroyed(function() {
-  this.limit = null;
-  this.loaded = null;
   this.editMode = null;
   this.autoSave = null;
   this.post = null;
-  this.commentsCount = null;
-  this.comments = null;
 });
 
 Template.postView.onRendered(function() {
-
 });
 
 Template.postView.helpers({
@@ -77,14 +47,6 @@ Template.postView.helpers({
 
   like: function() {
     return Template.instance().like();
-  },
-
-  commentsCount: function() {
-    return Template.instance().commentsCount();
-  },
-
-  comments: function() {
-    return Template.instance().comments();
   },
 
   isEditMode: function() {

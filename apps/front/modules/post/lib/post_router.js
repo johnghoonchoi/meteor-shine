@@ -11,17 +11,22 @@ Router.route('/posts/:category',
   { name: 'postsList' }
 );
 
-Router.route('/post/:_id',
-  function() { this.render('postView', { data: { postId: this.params._id }}); },
-  { name: 'postView' }
-);
+Router.route('/post/:_id', { name: 'postView',
+  waitOn: function() {
+    Meteor.subscribe('postView', this.params._id);
+    Meteor.subscribe('postLikeView', this.params._id);
+  },
+  data: function() {
+    return {
+      postId: this.params._id
+    };
+  }
+});
 
-Router.route('/postNew',
-  function() { this.render('postNew'); },
-  { name: 'postNew' }
-);
-
-Router.route('/post/:_id/edit',
-  function() { this.render('postEdit', { data: { postId: this.params._id }}); },
-  { name: 'postEdit' }
-);
+Router.route('/postNew', {
+  name: 'postNew',
+  waitOn: function() {
+    Meteor.subscribe('postCategoriesList', { state: 'ON' },
+      { sort: { seq: 1 }});
+  }
+});
