@@ -1,0 +1,43 @@
+<template name="headerDefault">
+  <!-- <div class="logo">{{_ 'brand'}}</div>
+
+  <div class="header-left">
+    <button type="button" class="btn btn-primary btn-header" data-toggle="aside-left"><i class="fa fa-2x fa-bars"></i></button>
+    button type="button" class="btn btn-default"><i class="fa fa-chevron-left"></i> {{_ 'command_back' }}</button
+  </div>
+
+  <div class="header-right">
+    button type="button" class="btn btn-info btn-header" data-toggle="aside-right"><i class="fa fa-2x fa-search"></i></button
+    <button type="button" id="btnNotification" class="btn btn-info btn-header" data-toggle="notifications"><i class="fa fa-2x fa-bell"></i>
+      {{#if notificationsCount}}<span class="badge">{{notificationsCount}}</span>{{/if}}
+    </button>
+  </div> -->
+
+  <div role="navigation" class="navbar navbar-default navbar-custom">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{pathFor 'home'}}">{{_ 'brand'}}</a>
+      <ul class="nav navbar-nav pull-left">
+        <li>
+          <a href="#" data-toggle="aside-left">
+            <i class="fa fa-bars"></i>
+          </a>
+        </li>
+      </ul>
+
+      <ul class="nav navbar-nav pull-right">
+	      {{#if currentUser}}
+        <li>
+          <a href="#" data-toggle="notifications">
+            <i class="fa fa-bell"></i>
+            {{#if notificationsCount}}<span class="badge">{{notificationsCount}}</span>{{/if}}
+          </a>
+        </li>
+	      {{/if}}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Pull Up 'margin-bottom:15px from nav' + 'padding 5px in main elements'  -->
+  <div style="margin-bottom: -21px;"></div>
+
+</template>

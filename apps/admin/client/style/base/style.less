@@ -1,0 +1,37 @@
+@bootstrap-path: "/packages/leesangwon:bootstrap-less/3.3.4";
+@bootstrap-path-normalized: "/packages/leesangwon_bootstrap-less/3.3.4";
+@layout-path: "/client/templates/layout";
+
+// Bootstrap 3.3.4
+@import "@{bootstrap-path}/less/bootstrap.import.less";
+
+// Custom style
+@import "variables.import.less";
+@import "mixins.import.less";
+@import "@{layout-path}/layout.import.less";
+@import "@{layout-path}/header.import.less";
+@import "@{layout-path}/tree-menu.import.less";
+@import "@{layout-path}/footer.import.less";
+@import "page.import.less";
+@import "form.import.less";
+@import "modules.import.less";
+@import "fontface.import.less";
+
+// Theme custom
+//@import "/client/style/base/theme_custom/default.import.less";
+//@import "/client/style/base/theme_custom/darkly.import.less";
+//@import "/client/style/base/theme_custom/paper.import.less";
+
+// Editor components
+@import "editor.import.less";
+
+// User list Modal
+@import "user-modal.import.less";
+
+// Home
+@import "/modules/home/client/home.import.less";
+
+// Profile
+@import "/modules/profile/client/styles/profile_picture.import.less";
+@import "/modules/profile/client/styles/profile_view.import.less";
+@import "/modules/profile/client/styles/profile_edit.import.less";

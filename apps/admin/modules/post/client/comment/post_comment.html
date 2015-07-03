@@ -1,0 +1,56 @@
+<template name="postCommentNew">
+  <form id="formPostCommentNew">
+    {{{editable}}}
+    <!-- textarea class="form-control" name="msg"></textarea -->
+    <div class="btn-toolbar">
+      <div class="btn-group pull-right">
+        <button type="submit" class="btn btn-sm btn-primary">{{_ 'command_register'}}</button>
+      </div>
+    </div>
+  </form>
+</template>
+
+<template name="postCommentsList">
+  <div class="comments panel panel-default">
+    <div class="panel-heading">
+      <h4>{{_ 'title_comments'}} <small>{{postCommentsCount}}</small></h4>
+    </div>
+
+    <div class="panel-body comments-list-frame">
+      {{#if loaded}}
+        {{#if hasMore}}
+          <div class="row-fluid">
+            <a class="btn btn-block btn-default load-more">Load More</a>
+          </div>
+        {{/if}}
+      {{else}}
+        {{> listLoading}}
+      {{/if}}
+
+      <ul class="media-list">
+        {{#each postComments}}
+          {{> postCommentsListItem}}
+        {{/each}}
+      </ul>
+    </div>
+
+    <div class="panel-footer">
+      {{> postCommentNew}}
+    </div>
+  </div>
+</template>
+
+<template name="postCommentsListItem">
+  <!-- <li>{{{msg}}} by {{user.username}}</li> -->
+  <li class="media">
+    <div class="media-left">
+      <a href="#" class="avatar-sm">
+        {{{writerPic this}}}
+      </a>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">{{commenter.username}} <small>{{momentFromNow createdAt}}</small></h4>
+      {{{msg}}}
+    </div>
+  </li>
+</template>

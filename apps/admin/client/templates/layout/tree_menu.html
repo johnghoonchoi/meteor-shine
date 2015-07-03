@@ -1,0 +1,19 @@
+<template name="treeMenu">
+  <ul class="nav nav-pills nav-stacked">
+
+    <!-- Accounts List -->
+    <li role="presentation" class="{{activeRoute 'accountsList'}}">
+      <a href="{{pathFor 'accountsList'}}">
+        <i class="fa fa-list"></i> {{_ 'title_accounts_list'}}
+      </a>
+    </li>
+
+    <!-- Category List -->
+    <li role="presentation" class="{{activeRoute 'categoriesList'}}">
+      <a href="{{pathFor 'categoriesList'}}">
+        <i class="fa fa-list"></i> {{_ 'title_categories_list'}}
+      </a>
+    </li>
+
+  </ul>
+</template>
