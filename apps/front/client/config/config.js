@@ -29,6 +29,5 @@ $.fn.cropper.setDefaults({
   dragCrop: false,
   crossOrigin: true,
   cropBoxResizable: false,
-  cropBoxMovable: false,
-  preview: '.avatar-preview'
+  cropBoxMovable: false
 });

@@ -123,4 +123,3 @@ Template.postNew.events({
     });
   }
 });
-

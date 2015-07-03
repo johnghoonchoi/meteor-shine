@@ -37,46 +37,65 @@ var _removeTempPic = function() {
   cropperDeps.changed();
 };
 
+var _stopCropper = function () {
+  console.log('_stopCropper: ');
+  $('#avatarModal').find('form').get(0).reset();
+  $('.avatar-wrapper').find('img').cropper('destroy');
+  $('.avatar-wrapper').find('img').remove();
+};
+
 var cropperDeps = new Tracker.Dependency;
 
 var _drawCropper = function() {
   cropperDeps.depend();
   var user = Meteor.user();
   var flag = myPicState(user);
+  var $avatarView = $('.avatar-wrapper');
 
-  var url = _editPic(user);
-  var $avatarView = $('#avatarPreview');
+  if (flag === 'default') {
+    $avatarView.empty().html(_userInitial());
+    console.log('default');
 
-  if (flag === 'both')
-    $avatarView.cropper('destroy').cropper();
-
-  if (flag === 'onlyTemp') {
-    $avatarView.cropper('replace', url);
+    return;
   }
 
-  if (flag === 'onlyOrigin') {
-    if ($avatarView && $avatarView[0] && $avatarView[0].src)
-      $avatarView[0].src = url;
+  var url = _editPic(user);
+  var $img = $('<img src="' + url + '" id="avatarPreview" >');
+  $('.avatar-wrapper').empty().html($img);
 
+  if (flag === 'onlyOrigin') {
     var canvasData = {
       left: user.profile.picture.coordinates.left,
       top: user.profile.picture.coordinates.top,
       width: user.profile.picture.coordinates.width,
       height: user.profile.picture.coordinates.height
     };
+
     var rotateData = {
       rotate: user.profile.picture.coordinates.rotate
     };
-    var cropBoxData;
+    //var cropBoxData;
 
-    $avatarView.cropper('destroy').cropper({
+    $img.cropper({
       built: function() {
-        $avatarView.cropper('setCropBoxData', cropBoxData);
-        $avatarView.cropper('setCanvasData', canvasData);
-        $avatarView.cropper('setData', rotateData);
+        //$img.cropper('setCropBoxData', cropBoxData);
+        $img.cropper('setCanvasData', canvasData);
+        $img.cropper('setData', rotateData);
       }
     });
+
+    return;
   }
+
+  if (flag === 'both')
+    $img.cropper();
+
+  if (flag === 'onlyTemp') {
+    $img.cropper();
+  }
+
+  console.log('autorun');
+
 };
 
 Template.profilePicture.helpers({
@@ -85,14 +104,6 @@ Template.profilePicture.helpers({
     var result = _editPic(user);
 
     return result;
-  },
-
-  userInitial: function() {
-    return _userInitial();
-  },
-
-  isSetImage: function() {
-    return Session.get('isSetImage');
   }
 });
 
@@ -106,11 +117,13 @@ Template.profilePicture.events({
     var $avatarView = $('#avatarPreview');
 
     if (flag === 'default')
-      return $('#profileModal').modal('hide');
+      return $('#avatarModal').modal('hide');
 
     var profileObj = {};
     var cropData = $avatarView.cropper('getData');
     var canvasData = $avatarView.cropper('getCanvasData');
+
+    $('#avatarModal').modal('hide');
 
     if (flag === 'onlyOrigin') {
       profileObj._id = user.profile.picture.origin._id;
@@ -123,8 +136,6 @@ Template.profilePicture.events({
       profileObj.repoId = user.profile.picture.temp.repoId;
       profileObj.url = user.profile.picture.temp.url;
     }
-
-    $('#profileModal').modal('hide');
 
     cropData.width = Math.round(cropData.width);
     cropData.height = Math.round(cropData.height);
@@ -140,6 +151,8 @@ Template.profilePicture.events({
     profileObj.cropData = cropData;
     profileObj.canvasData = canvasData;
 
+    //$cropAvatar.cropDone();
+
     Meteor.call('updateCroppedImage', profileObj, flag, function (error, result) {
       if (error) console.log('error reason: ', error.reason);
       console.log(result);
@@ -149,17 +162,18 @@ Template.profilePicture.events({
   }
 
   //"click #rotateLeft": function(){
-  //  var flag = profilePictureState();
-  //  if (flag !== 0) {
+  //  var user = Meteor.user();
+  //  var flag = myPicState(user);
+  //  if (flag !== 'default') {
   //    $('#avatarPreview').cropper('rotate', -90);
-  //
   //  }
   //},
   //"click #rotateRight": function(){
-  //  var flag = profilePictureState();
-  //  if (flag !== 0) {
+  //  var user = Meteor.user();
+  //  var flag = myPicState(user);
+  //  if (flag !== 'default') {
   //    $('#avatarPreview').cropper('rotate', 90);
-  //
+  //    console.log('right: ');
   //  }
   //}
 });
@@ -173,8 +187,9 @@ Template.profilePicture.onRendered(function() {
     _drawCropper();
   });
 
-  $('#profileModal').on('hide.bs.modal', function() {
+  $('#avatarModal').on('hide.bs.modal', function() {
     _removeTempPic();
+    _stopCropper();
   });
 
 });
@@ -199,7 +214,6 @@ Template.profilePictureToolbar.onRendered(function() {
       multiple: false
     }
   }, function(e, data) {
-    if (data) Session.set('isSetImage', true);
 
     var attributes = {
       url: data.result.url,
