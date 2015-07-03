@@ -1,0 +1,47 @@
+<template name="profileView">
+  <article class="page">
+    <header>
+      <h2><span>{{_ 'accounts:title_profile'}}</span></h2>
+    </header>
+
+    <div class="row-fluid">
+      <!-- User Profile Picture column -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <span>{{_ 'accounts:label_picture'}}</span>
+          <button id="editPicture" class="btn btn-default btn-xs pull-right">{{_ 'command_edit'}}</button>
+        </div>
+        <div class="panel-body text-center">
+          <div class="avatar-wrapper-custom avatar-md">
+	          {{{myPic}}}
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <span>{{_ 'accounts:label_password'}}</span>
+          <button id="editPassword" class="btn btn-default btn-xs pull-right">{{_ 'command_edit'}}</button>
+        </div>
+        {{#if editPassword}}
+          <div class="panel-body">
+            {{> profilePassword}}
+          </div>
+        {{/if}}
+      </div>
+
+      <!-- edit form column -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <span>{{_ 'accounts:label_profile'}}</span>
+          <button id="editProfile" class="btn btn-default btn-xs pull-right">{{_ 'command_edit'}}</button>
+        </div>
+        <div class="panel-body">
+          {{> UI.dynamic template=templateProfile}}
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+</template>

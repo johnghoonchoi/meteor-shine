@@ -1,0 +1,86 @@
+
+//
+//  Account info box in the left aside
+//--------------------------------------------------------------
+.account {
+  margin-bottom: 5px;
+  padding: 5px;
+  border-bottom: solid 1px #666;
+  background: transparent;
+
+  .clearfix();
+
+  //Account Name in Sidebar
+  p {
+    margin: 0;
+    //color: #ccc;
+    line-height: 32px;
+  }
+}
+
+article.notification-frame {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  footer {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    height: 30px;
+  }
+}
+
+#btnNotification .badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  color: #fff;
+  background-color: @brand-danger;
+}
+
+//
+// Spinner
+//--------------------------------------------------------------
+.spinner-wrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: @zindex-modal + 1;
+}
+
+.list-spinner-wrapper {
+  position: relative;
+  height: 42px;
+}
+
+.load-more {
+  cursor: pointer;
+}
+
+.loggingIn {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: @zindex-modal + 1;
+}
+
+//
+//
+//--------------------------------------------------------------
+[contenteditable][placeholder]:empty:before {
+  content: attr(placeholder);
+  color: #bababa;
+}
+
+.title-editable {
+  padding: 2px;
+}
+
+.content-editable {
+  min-height: 100px;
+  padding: 2px;
+}

@@ -1,0 +1,103 @@
+<template name="_signUpDialogContent">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">{{_ 'accounts:nav_sign_up'}}</h4>
+  </div>
+  <div class="modal-body no-padding">
+
+    {{> meteorModalAlerts}}
+
+    {{#if loggingIn}}
+      {{> _loginButtonsLoggingIn}}
+    {{/if}}
+
+    <form id="formSignUp" class="ss-form">
+      <fieldset>
+        <section>
+          <input type="email" class="form-control" name="email" placeholder="{{_ 'accounts:label_email'}}" autofocus>
+            <b class="tooltip tooltip-bottom-right">{{_ 'accounts:tooltipEmail'}}</b>
+          <div class="note note-error"></div>
+        </section>
+
+        <section>
+          <input type="text" id="username" class="form-control" name="username" placeholder="{{_ 'accounts:label_username'}}">
+          <b class="tooltip tooltip-bottom-right">{{_ 'accounts:tooltipUsername'}}</b>
+          <div class="note note-error"></div>
+        </section>
+
+        <section>
+          <input id="password" type="password" class="form-control" name="password" placeholder="{{_ 'accounts:label_password'}}">
+          <b class="tooltip tooltip-bottom-right">{{_ 'accounts:tooltipPassword'}}</b>
+          <div class="note note-error"></div>
+        </section>
+
+        <section class="checkbox">
+          <label>
+            <input type="checkbox" name="agreements" id="agreements" value="1">
+            {{{_ "accounts:text_agreement" 0=termsOfUseLink 1=privacyPolicyLink}}}
+          </label>
+        </section>
+      </fieldset>
+
+      <footer>
+        <button type="submit" class="btn btn-primary btn-block">{{_ 'accounts:command_sign_up'}}</button>
+      </footer>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" id="signIn" class="btn btn-link pull-right">{{_ 'accounts:command_sign_in'}}</button>
+  </div>
+
+</template>
+
+<template name="accountsDialogTermsOfUse">
+  <!-- Modal -->
+  <div class="modal fade" id="modalTermsOfUse" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+          </button>
+          <h4 class="modal-title" id="myModalLabel">{{_ 'accounts:label_terms_of_use'}}</h4>
+        </div>
+
+        <div class="modal-body custom-scroll terms-body">
+          {{> termsOfUse}}
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            {{_ 'accounts:command_close'}}
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</template>
+
+<template name="accountsDialogPrivacyPolicy">
+  <!-- Modal -->
+  <div class="modal fade" id="modalPrivacyPolicy" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+          </button>
+          <h4 class="modal-title" id="myModalLabel">{{_ 'accounts:label_privacy_policy'}}</h4>
+        </div>
+
+        <div class="modal-body custom-scroll terms-body">
+          {{> privacyPolicy}}
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            {{_ 'accounts:command_close'}}
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</template>
