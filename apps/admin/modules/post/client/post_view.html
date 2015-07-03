@@ -1,0 +1,32 @@
+<template name="postView">
+  <article class="page">
+    <div class="btn-toolbar">
+      {{#if isEditMode}}
+        <button type="submit" id="save" class="btn btn-primary pull-right">Save</button>
+      {{else}}
+        <div class="pull-right">
+          <button type="button" id="edit" class="btn btn-primary">Edit</button>
+          <button type="button" id="delete" class="btn btn-danger">Delete</button>
+        </div>
+      {{/if}}
+    </div>
+
+    {{{titleEditable}}}
+
+    {{#if isEditMode}}
+      {{> postEditorToolbar}}
+    {{/if}}
+    {{{contentEditable}}}
+
+    <div class="sns">
+      {{#if like}}
+        <button type="button" id="unlike" class="btn btn-default">Unlike</button>
+      {{else}}
+        <button type="button" id="like" class="btn btn-default">Like</button>
+      {{/if}}
+    </div>
+
+    {{> postCommentsList postId=_id}}
+  </article>
+  {{> cloudinaryProgressBar}}
+</template>

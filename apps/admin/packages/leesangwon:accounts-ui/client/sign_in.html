@@ -1,0 +1,74 @@
+<template name="_signInDialogContent">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">{{_ 'accounts:nav_sign_in'}}</h4>
+  </div>
+  <div class="modal-body no-padding">
+    {{> meteorModalAlerts}}
+
+    {{#if services}} {{! if at least one service is configured }}
+      {{#if configurationLoaded}}
+        {{#if loggingIn}}
+          {{> _loginButtonsLoggingIn}}
+        {{/if}}
+        {{> allSignInServices}}
+      {{/if}}
+    {{else}}
+      <div class="no-services">{{_ 'accounts:text_no_login_services'}}</div>
+    {{/if}}
+  </div>
+  <div class="modal-footer">
+    <button id="signUp" class="btn btn-link pull-right">{{_ 'accounts:command_sign_up'}}</button>
+  </div>
+</template>
+
+
+<template name="allSignInServices">
+  <div class="login-services">
+    {{#each services}}
+      {{#if isPasswordService}}
+        <div class="login-service password-service">
+          {{> passwordService}}
+        </div>
+      {{else}}
+        <div class="login-service">
+          {{> otherLoginService}}
+        </div>
+      {{/if}}
+    {{/each}}
+  </div>
+
+  {{#unless hasPasswordService}}
+    {{> _loginButtonsMessages}}
+  {{/unless}}
+</template>
+
+
+<template name="passwordService">
+
+  <form id="formSignIn" class="ss-form no-padding">
+    <section>
+      <input type="email" class="form-control" name="email" placeholder="{{_ 'accounts:text_input_username_or_email'}}" autofocus>
+    </section>
+
+    <section>
+      <input type="password" class="form-control" name="password" placeholder="{{_ 'accounts:text_input_password'}}">
+      <p id="forgotPassword" class="static-link pull-right">{{_ 'accounts:text_forgot_password'}}</p>
+    </section>
+
+    <!-- section>
+        <input type="checkbox" name="remember" value="1" checked="checked">
+        <i></i>{{_ 'accounts:text_stay_signed_in'}}
+    </section -->
+
+    <section>
+      <button type="submit" class="btn btn-primary btn-block" formnovalidate="formnovalidate">{{_ 'accounts:command_sign_in'}}</button>
+    </section>
+  </form>
+</template>
+
+<template name="_loginButtonsLoggingIn">
+  <div class="loggingIn">
+    {{> spinner}}
+  </div>
+</template>
