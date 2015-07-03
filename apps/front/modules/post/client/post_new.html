@@ -2,38 +2,36 @@
   <article class="page">
     <h3>New post</h3>
 
-    {{#unless Template.subscriptionsReady}}
-      {{> loading}}
-    {{else}}
-      <form id="formPostNew">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <div class="form-group">
-              <label>Category</label>
-              <select name="category">
-                {{#each categories}}
-                  <option value="{{_id}}">{{title}}</option>
-                {{/each}}
-              </select>
-            </div>
-
-            {{{titleEditable}}}
-
-            {{{contentEditable}}}
+    <form id="formPostNew">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="form-group">
+            <label>Category</label>
+            <select name="category">
+              {{#each categories}}
+                <option value="{{_id}}">{{title}}</option>
+              {{/each}}
+            </select>
           </div>
 
-          <div class="panel-footer clearfix">
-            <div class="btn-toolbar pull-right">
-              <div class="btn-group">
-                <button type="button" class="btn btn-default">{{_ 'command_cancel'}}</button>
-              </div>
-              <div class="btn-group">
-                <button type="submit" class="btn btn-primary">{{_ 'command_ok'}}</button>
-              </div>
+          {{{titleEditable}}}
+
+          {{> postEditorToolbar}}
+          {{{contentEditable}}}
+        </div>
+
+        <div class="panel-footer clearfix">
+          <div class="btn-toolbar pull-right">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default">{{_ 'command_cancel'}}</button>
+            </div>
+            <div class="btn-group">
+              <button type="submit" class="btn btn-primary">{{_ 'command_ok'}}</button>
             </div>
           </div>
         </div>
-      </form>
-    {{/unless}}
+      </div>
+    </form>
   </article>
+  {{> cloudinaryProgressBar}}
 </template>

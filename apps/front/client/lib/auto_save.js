@@ -22,7 +22,7 @@ Autosave = function() {
   // release autosave operation
   this.clear = function() {
     if (this.timer) {
-      Meteor.clearInterval(this.timer);
+      Meteor.clearTimeout(this.timer);
       this.timer = null;
     }
   };

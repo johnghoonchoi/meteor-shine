@@ -13,6 +13,9 @@
 
     {{{titleEditable}}}
 
+    {{#if isEditMode}}
+      {{> postEditorToolbar}}
+    {{/if}}
     {{{contentEditable}}}
 
     <div class="sns">
@@ -25,4 +28,5 @@
 
     {{> postCommentsList postId=_id}}
   </article>
+  {{> cloudinaryProgressBar}}
 </template>

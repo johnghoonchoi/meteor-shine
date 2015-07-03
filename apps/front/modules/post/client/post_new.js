@@ -3,12 +3,12 @@ Template.postNew.onCreated(function() {
 
   instance.autoSave = new Autosave();
   instance.draftId = null;
-/*
+
   instance.autorun(function() {
     instance.subscribe('postCategoriesList',
       { state: 'ON' }, { sort: { seq: 1 }});
   });
-*/
+
   instance.categoriesCount = function() {
     Counts.get('categoriesListCount');
   };
@@ -123,4 +123,3 @@ Template.postNew.events({
     });
   }
 });
-
