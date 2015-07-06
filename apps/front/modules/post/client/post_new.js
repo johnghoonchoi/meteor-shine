@@ -10,7 +10,7 @@ Template.postNew.onCreated(function() {
   });
 
   instance.categoriesCount = function() {
-    Counts.get('categoriesListCount');
+    return Counts.get('categoriesListCount');
   };
 
   instance.categories = function() {
@@ -27,6 +27,32 @@ Template.postNew.onDestroyed(function() {
 
 Template.postNew.onRendered(function() {
   this.$('#content').wysiwyg();
+
+  $('#content').on('focus', function() {
+    console.log('test: ');
+
+  });
+
+  $('#content').on('focus', function() {
+    console.log('focus on: ');
+
+    var $this = $(this);
+    $this.data('before', $this.html());
+    return $this;
+  }).on('blur keyup paste input', function() {
+    console.log('keyup..paste..: ');
+
+    var $this = $(this);
+    if ($this.data('before') !== $this.html()) {
+      $this.data('before', $this.html());
+      $this.trigger('change');
+    }
+    return $this;
+  });
+
+
+
+
 });
 
 Template.postNew.helpers({
@@ -46,11 +72,46 @@ Template.postNew.helpers({
   contentEditable: function() {
     return '<div id="content" class="content-editable" contenteditable="true" ' +
       'placeholder="Enter here..."></div>';
+  },
+
+  insertImage: function(url) {
+    var img, range, selection;
+    console.log(url + " insert");
+    img = document.createElement('img');
+    img.setAttribute('src', url);
+    img.setAttribute('style', 'width: 50px;');
+    if (window.getSelection) {
+      selection = window.getSelection();
+      if (selection.getRangeAt && selection.rangeCount) {
+        range = selection.getRangeAt(0);
+        range.deleteContents();
+        return range.insertNode(img);
+      }
+    }
   }
 });
 
 Template.postNew.events({
-  'input #content': function(e, instance) {
+  //$('body').on('focus', '[contenteditable]', function() {
+  //  var $this = $(this);
+  //  $this.data('before', $this.html());
+  //  return $this;
+  //}).on('blur keyup paste input', '[contenteditable]', function() {
+  //  var $this = $(this);
+  //  if ($this.data('before') !== $this.html()) {
+  //    $this.data('before', $this.html());
+  //    $this.trigger('change');
+  //  }
+  //  return $this;
+  //});
+
+  'click .fileinput-button': function() {
+
+  },
+
+  'input, focus #content': function(e, instance) {
+    console.log('input event');
+
     e.preventDefault();
 
     instance.autoSave.clear();

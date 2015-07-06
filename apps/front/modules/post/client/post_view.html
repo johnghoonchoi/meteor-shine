@@ -1,28 +1,28 @@
 <template name="postView">
   <article class="page">
-    <div class="btn-toolbar">
+    <div class="btn-toolbar block-wrapper">
       {{#if isEditMode}}
-        <button type="submit" id="save" class="btn btn-primary pull-right">Save</button>
+        <button type="submit" id="save" class="btn btn-primary pull-left" style="border-radius: 0">Save</button>
       {{else}}
-        <div class="pull-right">
-          <button type="button" id="edit" class="btn btn-primary">Edit</button>
-          <button type="button" id="delete" class="btn btn-danger">Delete</button>
+        <div class="pull-left">
+          <button type="button" id="edit" class="btn btn-default" style="border-radius: 0">Edit</button>
+          <button type="button" id="delete" class="btn btn-danger" style="border-radius: 0">Delete</button>
         </div>
       {{/if}}
     </div>
 
     {{{titleEditable}}}
-
-    {{#if isEditMode}}
-      {{> postEditorToolbar}}
-    {{/if}}
     {{{contentEditable}}}
 
-    <div class="sns">
+    <div class="sns block-wrapper">
+	    {{#if isEditMode}}
+		    {{> postEditorToolbar}}
+	    {{/if}}
+	    <br>
       {{#if like}}
-        <button type="button" id="unlike" class="btn btn-default">Unlike</button>
+        <button type="button" id="unlike" class="btn btn-default" style="border-radius: 0">Unlike</button>
       {{else}}
-        <button type="button" id="like" class="btn btn-default">Like</button>
+        <button type="button" id="like" class="btn btn-danger" style="border-radius: 0">Like</button>
       {{/if}}
     </div>
 

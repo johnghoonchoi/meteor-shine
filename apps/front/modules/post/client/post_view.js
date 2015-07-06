@@ -57,7 +57,7 @@ Template.postView.helpers({
     var post = Template.instance().post();
     var title = (post) ? post.title : '';
 
-    return '<h3 id="title" class="title-editable" contenteditable="false">' +
+    return '<h3 id="title" class="title-editable block-wrapper" contenteditable="false">' +
       title + '</h3>';
   },
 
@@ -65,7 +65,7 @@ Template.postView.helpers({
     var post = Template.instance().post();
     var content = (post) ? post.content : '';
 
-    return '<div id="content" class="content-editable" contenteditable="false">' +
+    return '<div id="content" class="content-editable block-wrapper" contenteditable="false">' +
       content + '</div>';
   }
 });
