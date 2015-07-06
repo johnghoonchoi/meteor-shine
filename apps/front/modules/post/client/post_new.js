@@ -27,27 +27,81 @@ Template.postNew.onDestroyed(function() {
 
 Template.postNew.onRendered(function() {
   this.$('#content').wysiwyg();
+  this.$('#content').focus();
+
 
   $('#content').on('focus', function() {
-    console.log('test: ');
-
-  });
-
-  $('#content').on('focus', function() {
-    console.log('focus on: ');
-
+    console.log('event fire..');
     var $this = $(this);
+
     $this.data('before', $this.html());
+
+    //console.log('$this: ', $this);
+
     return $this;
   }).on('blur keyup paste input', function() {
-    console.log('keyup..paste..: ');
+    console.log('compared to.. ');
 
     var $this = $(this);
+
+    var first = $this.data('before');
+    var second = $this.html();
+
+    //console.log('first: ', first);
+    //console.log('second: ', second);
+
+
     if ($this.data('before') !== $this.html()) {
       $this.data('before', $this.html());
       $this.trigger('change');
     }
+
+    //console.log('$this: ', $this);
+
     return $this;
+  });
+
+  $('#content').on("keyup", function(event) {
+    var textBox = document.getElementById("content");
+    var keyTimer = null, keyDelay = 3000;
+
+    if (keyTimer) {
+      window.clearTimeout(keyTimer);
+    }
+    keyTimer = window.setTimeout(function() {
+      //alert('test');
+      //updateLinks(textBox);
+      keyTimer = null;
+    }, keyDelay);
+
+  });
+
+  $('#content').on('keypress', function(event) {
+    if (event.keyCode === 13) {
+      var selection = rangy.getSelection();
+      var range = selection.getRangeAt(0);
+
+      console.log('selection: ');
+
+      console.log('range.endContainer.wholeText: ', range.endContainer.wholeText);
+
+      var targetUrl = range.endContainer.wholeText;
+
+      // http://, https://, ftp://
+      var urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
+      // www. sans http:// or https://
+      var pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+      var attributesString = 'target="_blank"';
+
+      var test = targetUrl
+        .replace(urlPattern, '<a ' + attributesString + ' href="$&">$&</a>')
+        .replace(pseudoUrlPattern, '$1<a ' + attributesString + ' href="http://$2">$2</a>')
+
+
+      console.log('replace ', test);
+
+    }
+
   });
 
 
@@ -92,23 +146,6 @@ Template.postNew.helpers({
 });
 
 Template.postNew.events({
-  //$('body').on('focus', '[contenteditable]', function() {
-  //  var $this = $(this);
-  //  $this.data('before', $this.html());
-  //  return $this;
-  //}).on('blur keyup paste input', '[contenteditable]', function() {
-  //  var $this = $(this);
-  //  if ($this.data('before') !== $this.html()) {
-  //    $this.data('before', $this.html());
-  //    $this.trigger('change');
-  //  }
-  //  return $this;
-  //});
-
-  'click .fileinput-button': function() {
-
-  },
-
   'input, focus #content': function(e, instance) {
     console.log('input event');
 

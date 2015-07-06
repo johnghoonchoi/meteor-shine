@@ -37,27 +37,11 @@ Template.postEditorToolbar.onRendered(function() {
           return;
         }
 
-        //var img, range, selection;
-        //console.log(object.url + ": insert");
-        //img = document.createElement('img');
-        //img.setAttribute('src', object.url);
-        //img.setAttribute('style', 'width: 50px;');
-        //if (window.getSelection) {
-        //  selection = window.getSelection();
-        //  if (selection.getRangeAt && selection.rangeCount) {
-        //    range = selection.getRangeAt(0);
-        //    range.deleteContents();
-        //    return range.insertNode(img);
-        //  }
-        //}
-
         var source = '<p class="image"><img src="' + object.url + '" data-id="' + imageId + '" /></p>';
         //$('#content p.active').after(source);
         $('#content').append(source);
-        console.log('test1: ');
-        $("#content").prop('contenteditable','true');
         $("#content").focus();
-        console.log('test2: ');
+
         console.log(imageId);
       });
     }
