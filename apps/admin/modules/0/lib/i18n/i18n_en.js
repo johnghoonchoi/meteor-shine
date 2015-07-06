@@ -3,6 +3,8 @@ I18n_data_en = {
 
 
   "title_home"                    : "Home",
+  "title_accounts_list"           : "Accounts",
+  "title_categories_list"         : "Categories",
   "title_blogs"                   : "Blogs",
   "title_my_blogs"                : "My Blogs",
   "title_blog_new"                : "New Blog",

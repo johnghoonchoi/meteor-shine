@@ -3,6 +3,8 @@ I18n_data_ko = {
 
 
   "title_home"                    : "홈",
+  "title_accounts_list"           : "계정",
+  "title_categories_list"         : "카테고리",
   "title_blogs"                   : "블로그 목록",
   "title_my_blogs"                : "내 게시글 보기",
   "title_blog_new"                : "새 블로그 작성",

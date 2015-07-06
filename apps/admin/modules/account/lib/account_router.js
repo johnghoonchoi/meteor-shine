@@ -10,3 +10,14 @@ Router.route('/accounts',
   { name: 'accountsList' }
 );
 
+Router.route('/account/:_id', {
+  name: 'accountEdit',
+  waitOn: function() {
+    Meteor.subscribe('accountView', this.params._id);
+  },
+  data: function() {
+    return {
+      accountId: this.params._id
+    };
+  }
+});

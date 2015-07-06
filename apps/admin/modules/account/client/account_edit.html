@@ -1,0 +1,32 @@
+<template name="accountEdit">
+  <article class="page">
+    <header>
+      <h3>{{_ 'title_account_edit'}}</h3>
+    </header>
+
+    <div class="body">
+      <form id="formAccountEdit">
+        <section class="form-group">
+          <label>id</label>
+          <p>{{account._id}}</p>
+        </section>
+
+        <section class="form-group">
+          <label>username</label>
+          <input type="text" class="form-control" name="username" value="{{account.username}}">
+        </section>
+
+        <section class="form-group">
+          <label>emails</label>
+          {{#each account.emails}}
+            <input type="email" class="form-control" name="email" value="{{address}}">
+          {{/each}}
+        </section>
+        <section class="form-group">
+          <label>createdAt</label>
+          <p>{{account.createdAt}}</p>
+        </section>
+      </form>
+    </div>
+  </article>
+</template>

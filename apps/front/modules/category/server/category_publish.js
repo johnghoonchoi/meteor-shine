@@ -1,3 +1,19 @@
+/**
+ *
+ */
+Meteor.publish('releasedCategoriesList', function() {
+
+  Counts.publish(this, 'releasedCategoriesListCount', Categories.find({ state: 'ON' }),
+    { noReady: true });
+
+  var categories = Categories.find({ state: 'ON' }, { sort: { seq: 1 }});
+
+  return categories;
+});
+
+/**
+ *
+ */
 Meteor.publish('categoriesList', function(query, options) {
   check(query, Match.ObjectIncluding({
     "state": Match.Optional(String)
@@ -20,6 +36,9 @@ Meteor.publish('categoriesList', function(query, options) {
 
 });
 
+/**
+ *
+ */
 Meteor.publish('categoryView', function(categoryId) {
   check(categoryId, String);
 

@@ -5,6 +5,14 @@
     </header>
 
     <div class="body">
+      <div class="btn-toolbar">
+        <div class="pull-left">
+          Category count: {{categoriesCount}}
+        </div>
+        <div class="pull-right">
+          <a class="btn btn-primary" href="{{pathFor 'categoryNew'}}">{{_ 'command_new'}}</a>
+        </div>
+      </div>
       <div class="categories">
         {{#each categories}}
           {{> categoriesListItem}}
@@ -16,6 +24,6 @@
 
 <template name="categoriesListItem">
   <div>
-    <a href="{{pathFor 'categoryView'}}">{{seq}}: {{title}}</a>
+    <a href="{{pathFor 'categoryEdit'}}">{{seq}}: {{title}}</a>
   </div>
 </template>

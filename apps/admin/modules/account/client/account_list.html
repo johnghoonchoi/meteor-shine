@@ -20,6 +20,6 @@
 
 <template name="accountsListItem">
   <div>
-    {{username}}, {{createdAt}}
+    <a href="{{pathFor 'accountEdit'}}">{{username}}</a>, {{createdAt}}
   </div>
 </template>

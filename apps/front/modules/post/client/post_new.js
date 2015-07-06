@@ -10,7 +10,7 @@ Template.postNew.onCreated(function() {
   });
 
   instance.categoriesCount = function() {
-    Counts.get('categoriesListCount');
+    return Counts.get('categoriesListCount');
   };
 
   instance.categories = function() {

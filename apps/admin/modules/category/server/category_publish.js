@@ -1,3 +1,7 @@
+
+/**
+ *
+ */
 Meteor.publish('categoriesList', function(query, options) {
   check(query, Match.ObjectIncluding({
     "state": Match.Optional(String)
@@ -20,6 +24,9 @@ Meteor.publish('categoriesList', function(query, options) {
 
 });
 
+/**
+ *
+ */
 Meteor.publish('categoryView', function(categoryId) {
   check(categoryId, String);
 
