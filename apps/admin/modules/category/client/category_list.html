@@ -24,6 +24,8 @@
 
 <template name="categoriesListItem">
   <div>
-    <a href="{{pathFor 'categoryEdit'}}">{{seq}}: {{title}}</a>
+    <a href="{{pathFor 'categoryEdit'}}">{{_id}} : {{title}}</a> :
+    {{> bootstrapSwitch state=isOn}}
   </div>
 </template>
+

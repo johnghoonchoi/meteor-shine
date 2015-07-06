@@ -72,9 +72,20 @@ Validator = function(schema) {
         return;
       }
 
-      if ((rule.minLength && value.length < rule.minLength) ||
-        (rule.maxLength && value.length > rule.maxLength))
-        self.setError(attribute, "error_out_of_range");
+      if (rule.type === 'string') {
+        if (rule.values && rule.values.length > 0) {
+          if (! _.contains(rule.values, value)) {
+            self.setError(attribute, "error_invalid_input");
+          }
+        }
+
+        if ((rule.minLength && value.length < rule.minLength) ||
+            (rule.maxLength && value.length > rule.maxLength)) {
+          self.setError(attribute, "error_out_of_range");
+        }
+
+      }
+
     }
 
   }
