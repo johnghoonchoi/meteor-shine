@@ -1,0 +1,29 @@
+<template name="categoriesList">
+  <article class="page">
+    <header>
+      <h3>{{_ 'title_categories_list'}}</h3>
+    </header>
+
+    <div class="body">
+      <div class="btn-toolbar">
+        <div class="pull-left">
+          Category count: {{categoriesCount}}
+        </div>
+        <div class="pull-right">
+          <a class="btn btn-primary" href="{{pathFor 'categoryNew'}}">{{_ 'command_new'}}</a>
+        </div>
+      </div>
+      <div class="categories">
+        {{#each categories}}
+          {{> categoriesListItem}}
+        {{/each}}
+      </div>
+    </div>
+  </article>
+</template>
+
+<template name="categoriesListItem">
+  <div>
+    <a href="{{pathFor 'categoryEdit'}}">{{seq}}: {{title}}</a>
+  </div>
+</template>

@@ -1,0 +1,31 @@
+<template name="layout">
+  <div id="wrapper">
+    {{> headerDefault}}
+    {{> navMain}}
+
+      {{> yield}}
+      {{> notificationsList}}
+
+  </div>
+  <!-- {{> yield}} -->
+
+    <!-- <aside class="aside-right">
+      {{> sidebar}}
+    </aside> -->
+
+<!--     <aside class="notifications">
+      {{> notificationsList}}
+    </aside> -->
+
+    <!-- <main id="content" class="fixed-right">
+      <div id = "main-overlay"></div>
+        {{> yield}}
+    </main> -->
+
+  <!--   <footer>
+      {{> footerDefault}}
+    </footer>
+  </div>
+ -->
+  {{> meteorAlerts}}
+</template>

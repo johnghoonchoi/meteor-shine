@@ -1,0 +1,54 @@
+<template name="categoryNew">
+  <article class="page">
+    <header>
+      <h3>{{_ 'title_category_new'}}</h3>
+    </header>
+
+    <div class="body">
+      <div class="btn-toolbar">
+        <button type="button" id="edit" class="btn btn-primary pull-right">{{_ 'command_register'}}</button>
+      </div>
+
+      <form id="formCategoryNew">
+        <section class="form-group">
+          <label>title</label>
+          <input type="text" class="form-control" name="title" value="{{category.title}}">
+        </section>
+
+        <section class="form-group">
+          <label>state</label>
+          <label class="radio-inline">
+            <input type="radio" name="state" value="ON"> ON
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="state" value="OFF"> OFF
+          </label>
+        </section>
+
+        <section class="form-group">
+          <label>Permission - read</label>
+          <label class="radio-inline">
+            <input type="radio" name="permission.read" value="PUBLIC"> PUBLIC
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="permission.read" value="USER"> USER
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="permission.read" value="PRIVATE"> PRIVATE
+          </label>
+        </section>
+
+        <section class="form-group">
+          <label>Permission - write</label>
+          <label class="radio-inline">
+            <input type="radio" name="permission.write" value="USER"> USER
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="permission.write" value="PRIVATE"> PRIVATE
+          </label>
+        </section>
+      </form>
+
+    </div>
+  </article>
+</template>
