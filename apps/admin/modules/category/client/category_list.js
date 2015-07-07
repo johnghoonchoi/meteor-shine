@@ -49,7 +49,11 @@ Template.categoriesList.onRendered(function() {
       }
 
       //update the dragged Item's rank
-      Categories.update({ _id: Blaze.getData(el)._id }, { $set: { seq: seq }});
+      Meteor.call('categoryMove', Blaze.getData(el)._id, seq, function(error) {
+        if (error) {
+          Alerts.notify('error', error.reason);
+        }
+      });
     }
   });
 
@@ -65,9 +69,50 @@ Template.categoriesList.helpers({
   }
 });
 
+/*
+Template.categoriesListItem.onRendered(function() {
+  var data = Template.currentData();
 
+  this.$('input[name=categoryState]').on('switchChange.bootstrapSwitch',
+    function(e, state) {
+      alert('state: ' + state);
+    }
+  );
+});
+*/
 Template.categoriesListItem.helpers({
   isOn: function() {
     return this.state === 'ON';
+  }
+});
+
+Template.categoriesListItem.events({
+  'change input[name=categoryState]': function(e, instance) {
+    e.preventDefault();
+
+    var item = instance.data;
+    var state = (item.state === 'ON') ? 'OFF' : 'ON';
+
+    Meteor.call('categoryState', item._id, state, function(error) {
+      if (error) {
+        Alerts.notify('error', error.reason);
+      } else {
+        Alerts.notify('success', 'text_state_change_done');
+      }
+    });
+  },
+
+  'click button': function(e, instance) {
+    e.preventDefault();
+
+    Alerts.dialog('confirm', 'Delete?', function(result) {
+      if (result) {
+        Meteor.call('categoryRemove', instance.data._id, function(error) {
+          if (error) {
+            Alerts.notify('error', error.reason);
+          }
+        });
+      }
+    });
   }
 });

@@ -21,13 +21,15 @@ Template.categoryEdit.helpers({
   },
 
   isPermissionRead: function(value) {
-    var permission = Template.instance().permission;
-    return (permission && permission.read === value) ? "checked": "";
+    var category = Template.instance().category();
+    return (category.permission && category.permission.read === value) ?
+      "checked" : "";
   },
 
   isPermissionWrite: function(value) {
-    var permission = Template.instance().permission;
-    return (permission && permission.write === value) ? "checked": "";
+    var category = Template.instance().category();
+    return (category.permission && category.permission.write === value) ?
+      "checked" : "";
   },
 
   categoryRoles: function(action) {
@@ -48,17 +50,24 @@ Template.categoryEdit.events({
       title: instance.$('[name=title]').val(),
       state: instance.$('[name=state]:checked').val(),
       permission: {
-        read: instance.$('[name=permisionRead]:checked').val(),
-        write: instance.$('[name=permisionWrite]:checked').val()
+        read: instance.$('[name=permissionRead]:checked').val(),
+        write: instance.$('[name=permissionWrite]:checked').val()
       }
     };
 
-    Meteor.call('categoryEdit', this.categoryId, object, function(error, result) {
+    var validation = CategoryValidator.validateUpdate(object);
+    if (validation.hasError()) {
+      Alerts.notify('error', 'validation_errors');
+      return showValidationErrors(e, validation.errors());
+    }
+
+    Meteor.call('categoryUpdate', this.categoryId, object, function(error, result) {
       if (error) {
         Alerts.notify('error', error.reason);
       } else {
-
+        Alerts.notify('success', 'text_category_update_done');
       }
     });
+
   }
 });

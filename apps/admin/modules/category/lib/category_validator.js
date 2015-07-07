@@ -1,6 +1,14 @@
 
 CategoryValidator = {
   schema: {
+    _id: {
+      name: '_id',
+      type: 'string',
+      required: true,
+      minLength: 3,
+      maxLength: 20
+    },
+
     title: {
       name: 'title',
       type: 'string',
@@ -17,7 +25,7 @@ CategoryValidator = {
 
     state: {
       name: 'state',
-      type: 'string',
+      type: 'number',
       required: true,
       values: [ 'ON', 'OFF' ]
     },
@@ -32,7 +40,7 @@ CategoryValidator = {
   validateInsert: function(object) {
     var validator = new Validator(this.schema);
 
-    validator.validate(object, ['title', 'state', 'permission']);
+    validator.validate(object, ['_id', 'title', 'permission']);
 
     return validator;
   },
@@ -44,7 +52,6 @@ CategoryValidator = {
 
     return validator;
   }
-
 };
 
 
@@ -55,10 +62,5 @@ matchCategoryInsert = function(object) {
 
 matchCategoryUpdate = function(object) {
   var validation = CategoryValidator.validateUpdate(object);
-  return _.isEmpty(validation.errors());
-};
-
-matchCategoryPublish = function() {
-  var validation = CategoryValidator.validatePublish(object);
   return _.isEmpty(validation.errors());
 };
