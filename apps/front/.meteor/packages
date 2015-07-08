@@ -36,3 +36,6 @@ reywood:publish-composite
 percolate:momentum
 alanning:roles
 timdown:rangy
+simple:highlight.js
+markdown
+gadicohen:prism

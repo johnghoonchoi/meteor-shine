@@ -16,6 +16,8 @@ Template.postNew.onCreated(function() {
   instance.categories = function() {
     return Categories.find({ state: 'ON' }, { sort: { seq: 1 }});
   };
+
+  this._postCodeView = Blaze.render(Template.postCode, document.body);
 });
 
 Template.postNew.onDestroyed(function() {
@@ -23,88 +25,84 @@ Template.postNew.onDestroyed(function() {
   this.draftId = null;
   this.categoriesCount = null;
   this.categories = null;
+  if (this._postCodeView) {
+    console.log('Destroyed post code view');
+
+    Blaze.remove(this._postCodeView);
+    this._postCodeView = null;
+  }
 });
 
 Template.postNew.onRendered(function() {
   this.$('#content').wysiwyg();
-  this.$('#content').focus();
 
+  //this.$('#content').focus();
 
-  $('#content').on('focus', function() {
-    console.log('event fire..');
-    var $this = $(this);
+  //$('#codeModal').on('hide.bs.modal', function() {
+  //  $('#content').prop('contenteditable', true);
+  //});
 
-    $this.data('before', $this.html());
+  //$('#content').on("paste", function() {
+  //  var selection = rangy.getSelection();
+  //  var range = selection.getRangeAt(0);
+  //  console.log('range.endContainer.wholeText: ', range.endContainer.wholeText);
+  //});
 
-    //console.log('$this: ', $this);
-
-    return $this;
-  }).on('blur keyup paste input', function() {
-    console.log('compared to.. ');
-
-    var $this = $(this);
-
-    var first = $this.data('before');
-    var second = $this.html();
-
-    //console.log('first: ', first);
-    //console.log('second: ', second);
-
-
-    if ($this.data('before') !== $this.html()) {
-      $this.data('before', $this.html());
-      $this.trigger('change');
-    }
-
-    //console.log('$this: ', $this);
-
-    return $this;
-  });
-
-  $('#content').on("keyup", function(event) {
-    var textBox = document.getElementById("content");
-    var keyTimer = null, keyDelay = 3000;
-
-    if (keyTimer) {
-      window.clearTimeout(keyTimer);
-    }
-    keyTimer = window.setTimeout(function() {
-      //alert('test');
-      //updateLinks(textBox);
-      keyTimer = null;
-    }, keyDelay);
-
-  });
-
-  $('#content').on('keypress', function(event) {
-    if (event.keyCode === 13) {
-      var selection = rangy.getSelection();
-      var range = selection.getRangeAt(0);
-
-      console.log('selection: ');
-
-      console.log('range.endContainer.wholeText: ', range.endContainer.wholeText);
-
-      var targetUrl = range.endContainer.wholeText;
-
-      // http://, https://, ftp://
-      var urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
-      // www. sans http:// or https://
-      var pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
-      var attributesString = 'target="_blank"';
-
-      var test = targetUrl
-        .replace(urlPattern, '<a ' + attributesString + ' href="$&">$&</a>')
-        .replace(pseudoUrlPattern, '$1<a ' + attributesString + ' href="http://$2">$2</a>')
-
-
-      console.log('replace ', test);
-
-    }
-
-  });
-
-
+  // Set clipboard event listeners on the document.
+  //['cut', 'copy', 'paste'].forEach(function(event) {
+  //  document.addEventListener(event, function(e) {
+  //    //console.log(event);
+  //    if (isIe) {
+  //      ieClipboardEvent(event);
+  //    } else {
+  //      var plainText = standardClipboardEvent(event, e);
+  //      focusHiddenArea();
+  //      e.preventDefault();
+  //      //alert(plainText);
+  //      //var span = $("<span>" + plainText + "</span>");
+  //      //selection.insertNode(span[0]);
+  //      // pass the first node in the jQuery object
+  //      //$(selection).append(plainText);
+  //      var source = '<pre data-enlighter-language="js">'+plainText+'</pre>';
+  //
+  //      var insertTextAtCursor = function(plainText) {
+  //        var sel, range, html;
+  //        if (window.getSelection) {
+  //          sel = window.getSelection();
+  //          if (sel.getRangeAt && sel.rangeCount) {
+  //            range = sel.getRangeAt(0);
+  //            range.deleteContents();
+  //            range.insertNode( document.createTextNode(plainText) );
+  //          }
+  //        } else if (document.selection && document.selection.createRange) {
+  //          document.selection.createRange().plainText = plainText;
+  //        }
+  //      };
+  //      //insertTextAtCursor(plainText);
+  //
+  //      var hightlight = Prism.highlight(plainText, Prism.languages.css);
+  //
+  //      console.log('hightlight: ', hightlight);
+  //
+  //
+  //      var changedThat = '<pre class="language-css"><code class="language-css">'
+  //        +hightlight+'</code></pre>';
+  //      //
+  //      $('#content').append(changedThat);
+  //
+  //      var nextCell = "<p>&nbsp;</p>";
+  //      $('#content').append(nextCell);
+  //      $('#content').children().last().remove();
+  //      $('#content').append(nextCell);
+  //
+  //
+  //
+  //      //console.log('changedThat: ', changedThat);
+  //      //insertTextAtCursor(plainText);
+  //    }
+  //
+  //  });
+  //});
 
 
 });
@@ -124,7 +122,7 @@ Template.postNew.helpers({
   },
 
   contentEditable: function() {
-    return '<div id="content" class="content-editable" contenteditable="true" ' +
+    return '<div id="content" class="content-editable" contenteditable="false" ' +
       'placeholder="Enter here..."></div>';
   },
 
@@ -142,15 +140,19 @@ Template.postNew.helpers({
         return range.insertNode(img);
       }
     }
+  },
+
+  plainText: function() {
+
   }
 });
 
 Template.postNew.events({
-  'input, focus #content': function(e, instance) {
-    console.log('input event');
-
+  'input focus #content': function(e, instance) {
     e.preventDefault();
-
+    e.stopPropagation();
+    //console.log('input event');
+    console.log('e: ', e);
     instance.autoSave.clear();
     instance.autoSave.set(function() {
       var object = {
@@ -219,5 +221,53 @@ Template.postNew.events({
         Router.go('postView', { _id: result });
       }
     });
+  },
+
+  'click [data-edit="code"]': function(e) {
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    //$('#content').prop('contenteditable', false);
+
+    console.log('code modal..');
+    $('#codeModal').modal('show');
+    setTimeout(function(){
+      console.log('key press: ');
+      $('.code-area').focus();
+    }, 500);
+
+
+
+    //var source = '<pre class=" language-javascript"><code class=" language-javascript">&nbsp;</code></pre>';
+    //$('#content').append(source);
+    //source = "<p>&nbsp;</p>";
+    //$('#content').append(source);
   }
+
+
+  //$('code').on('keypress', function(event) {
+  //  if (event.keyCode === 13) {
+  //    alert('test');
+      //console.log('range.endContainer.wholeText: ', range.endContainer.wholeText);
+      //
+      //var targetUrl = range.endContainer.wholeText;
+      //
+      //// http://, https://, ftp://
+      //var urlPattern = /\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*[a-z0-9-+&@#\/%=~_|]/gim;
+      //// www. sans http:// or https://
+      //var pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+      //var attributesString = 'target="_blank"';
+      //
+      //var test = targetUrl
+      //  .replace(urlPattern, '<a ' + attributesString + ' href="$&">$&</a>')
+      //  .replace(pseudoUrlPattern, '$1<a ' + attributesString + ' href="http://$2">$2</a>')
+      //
+      //
+      //console.log('replace ', test);
+
+    //}
+
+  //})
+
 });
