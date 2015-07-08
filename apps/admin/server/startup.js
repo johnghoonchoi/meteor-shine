@@ -3,6 +3,10 @@
  */
 Meteor.startup(function() {
 
+  process.env.HTTP_FORWARDED_COUNT = 1;
+
+  Connection.collection.remove({});
+
   var now = new Date();
 
   if (Meteor.users.find().count() === 0) {

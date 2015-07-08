@@ -1,11 +1,11 @@
 
-Router.route('/posts/:category',
+Router.route('/posts/:categoryId?',
   function() {
     var sortBy = (this.params && this.params.query) ?
       this.params.query.sortBy : 'time';
 
     this.render('postsList', {
-      data: { category: this.params.category, sortBy: sortBy }
+      data: { category: this.params.categoryId, sortBy: sortBy }
     });
   },
   { name: 'postsList' }

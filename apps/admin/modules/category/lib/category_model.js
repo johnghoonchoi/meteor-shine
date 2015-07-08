@@ -33,14 +33,14 @@ var checkPermissions = function(userId, permissions) {
 
 Meteor.methods({
   categoryInsert: function(object) {
+    if (this.isSimulation) {
+      return;
+    }
+
     check(object, Match.Where(matchCategoryInsert));
 
     if (! checkPermissions(this.userId)) {
       throw new Meteor.Error(ERROR_CODE_SECURITY, 'error_access_denied');
-    }
-
-    if (this.isSimulation) {
-      return;
     }
 
     var now = new Date();

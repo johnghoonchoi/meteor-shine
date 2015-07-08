@@ -1,0 +1,25 @@
+<template name="connectionsList">
+  <article class="page">
+    <header>
+      <h3>{{_ 'title_connections_list'}}</h3>
+    </header>
+
+    <div class="body">
+      <div class="btn-toolbar">
+        <p>Access: {{connectionsCount}}</p>
+      </div>
+
+      <div class="list">
+        {{#each connections}}
+          {{> connectionsListItem}}
+        {{/each}}
+      </div>
+    </div>
+  </article>
+</template>
+
+<template name="connectionsListItem">
+  <div>
+    {{_id}}, {{ip}}, {{user.username}}
+  </div>
+</template>

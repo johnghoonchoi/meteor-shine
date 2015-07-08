@@ -18,15 +18,21 @@ Template.postsList.onCreated(function() {
     var limit = instance.limit.get();
     var sort = instance.sortBy(data.sortBy);
 
-    instance.subscribe('categoryView', data.category);
+    if (data.categoryId) {
+      instance.subscribe('categoryView', data.categoryId);
 
-    instance.subscribe('postsList',
-      { categoryId: data.category }, { limit: limit, sort: sort },
-      function() { instance.loaded.set(limit); });
+      instance.subscribe('postsList',
+        { categoryId: data.categoryId }, { limit: limit, sort: sort },
+        function() { instance.loaded.set(limit); });
+    } else {
+      instance.subscribe('postsList', {}, { limit: limit, sort: sort },
+        function() { instance.loaded.set(limit); });
+    }
   });
 
   instance.category = function() {
-    return Categories.findOne({ _id: data.category });
+    return (data.categoryId) ?
+      Categories.findOne({ _id: data.categoryId }) : null;
   };
 
   instance.postsCount = function() {
@@ -34,8 +40,10 @@ Template.postsList.onCreated(function() {
   };
 
   instance.posts = function() {
-    return Posts.find({ categoryId: data.category },
-      { limit: instance.loaded.get(), sort: { publishedAt: 1 }});
+    var query = (data.categoryId) ? { categoryId: data.categoryId } : {};
+    return Posts.find(query, {
+      limit: instance.loaded.get(), sort: { publishedAt: 1 }
+    });
   };
 
 });
