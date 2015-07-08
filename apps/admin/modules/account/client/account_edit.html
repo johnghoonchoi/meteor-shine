@@ -22,6 +22,17 @@
             <input type="email" class="form-control" name="email" value="{{address}}">
           {{/each}}
         </section>
+
+        <section class="form-group">
+          <label>password</label>
+          <input type="password" class="form-control" name="password" value="">
+        </section>
+
+        <section class="form-group">
+          <label>roles</label>
+          <input type="roles" class="form-control" name="roles" value="{{rolesToString}}">
+        </section>
+
         <section class="form-group">
           <label>createdAt</label>
           <p>{{account.createdAt}}</p>

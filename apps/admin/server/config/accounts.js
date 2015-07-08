@@ -30,8 +30,8 @@ ServiceConfiguration.configurations.insert({
  * initialize user information
  */
 Accounts.onCreateUser(function(options, user) {
-  console.log('onCreateUser:options = ' + JSON.stringify(options));
-  console.log('onCreateUser:user = ' + JSON.stringify(user));
+
+  user.state = 'ENABLED';
 
   return user;
 });

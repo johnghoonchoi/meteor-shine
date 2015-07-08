@@ -14,5 +14,9 @@ Template.accountEdit.onDestroyed(function() {
 Template.accountEdit.helpers({
   account: function() {
     return Template.instance().account();
+  },
+
+  rolesToString: function() {
+    return Template.instance().account().roles.toString();
   }
 });

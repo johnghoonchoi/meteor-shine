@@ -10,7 +10,8 @@
           Category count: {{categoriesCount}}
         </div>
         <div class="pull-right">
-          <a class="btn btn-primary" href="{{pathFor 'categoryNew'}}">{{_ 'command_new'}}</a>
+          <a class="btn btn-primary"
+             href="{{pathFor 'categoryNew'}}">{{_ 'command_new'}}</a>
         </div>
       </div>
       <div class="categories">
@@ -24,6 +25,10 @@
 
 <template name="categoriesListItem">
   <div>
-    <a href="{{pathFor 'categoryEdit'}}">{{seq}}: {{title}}</a>
+    <a href="{{pathFor 'categoryEdit'}}">{{_id}} : {{title}}</a> :
+    {{> bootstrapToggle name='categoryState' state=isOn}}
+    <button type="button" class="btn btn-danger btn-xs">
+      <i class="fa fa-trash"></i></button>
   </div>
 </template>
+

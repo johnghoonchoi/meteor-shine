@@ -5,47 +5,42 @@
     </header>
 
     <div class="body">
-      <div class="btn-toolbar">
-        <button type="button" id="edit" class="btn btn-primary pull-right">{{_ 'command_register'}}</button>
-      </div>
-
       <form id="formCategoryNew">
         <section class="form-group">
-          <label>title</label>
-          <input type="text" class="form-control" name="title" value="{{category.title}}">
+          <label>id</label>
+          <input type="text" class="form-control" name="_id" value="">
         </section>
 
         <section class="form-group">
-          <label>state</label>
-          <label class="radio-inline">
-            <input type="radio" name="state" value="ON"> ON
-          </label>
-          <label class="radio-inline">
-            <input type="radio" name="state" value="OFF"> OFF
-          </label>
+          <label>title</label>
+          <input type="text" class="form-control" name="title" value="">
         </section>
 
         <section class="form-group">
           <label>Permission - read</label>
           <label class="radio-inline">
-            <input type="radio" name="permission.read" value="PUBLIC"> PUBLIC
+            <input type="radio" name="permissionRead" value="PUBLIC"> PUBLIC
           </label>
           <label class="radio-inline">
-            <input type="radio" name="permission.read" value="USER"> USER
+            <input type="radio" name="permissionRead" value="USER"> USER
           </label>
           <label class="radio-inline">
-            <input type="radio" name="permission.read" value="PRIVATE"> PRIVATE
+            <input type="radio" name="permissionRead" value="PRIVATE"> PRIVATE
           </label>
         </section>
 
         <section class="form-group">
           <label>Permission - write</label>
           <label class="radio-inline">
-            <input type="radio" name="permission.write" value="USER"> USER
+            <input type="radio" name="permissionWrite" value="USER"> USER
           </label>
           <label class="radio-inline">
-            <input type="radio" name="permission.write" value="PRIVATE"> PRIVATE
+            <input type="radio" name="permissionWrite" value="PRIVATE"> PRIVATE
           </label>
+        </section>
+
+        <section class="form-group">
+          <button type="submit" class="btn btn-primary pull-right">{{_ 'command_register'}}</button>
         </section>
       </form>
 

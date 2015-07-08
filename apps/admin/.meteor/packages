@@ -35,3 +35,6 @@ reactive-var
 reywood:publish-composite
 percolate:momentum
 alanning:roles
+matb33:collection-hooks
+leesangwon:logger
+leesangwon:connections

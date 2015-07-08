@@ -35,10 +35,5 @@ reactive-var
 reywood:publish-composite
 percolate:momentum
 alanning:roles
-
-timdown:rangy
-gadicohen:prism
-
 leesangwon:logger
 leesangwon:connections
-

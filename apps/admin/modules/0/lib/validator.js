@@ -28,8 +28,9 @@ Validator = function(schema) {
 
     var _findError = function(attribute) {
       for (var i = 0; i < _errors.length; i++) {
-        if (_errors[i].attribute === attribute)
+        if (_errors[i].attribute === attribute) {
           return _errors[i];
+        }
       }
       return null;
     };
@@ -45,6 +46,10 @@ Validator = function(schema) {
     } else {
       error.messages.push(message);
     }
+  };
+
+  this.hasError = function() {
+    return (_errors && _errors.length > 0);
   };
 
   this.validate = function(object, attributes) {
@@ -72,11 +77,19 @@ Validator = function(schema) {
         return;
       }
 
-      if ((rule.minLength && value.length < rule.minLength) ||
-        (rule.maxLength && value.length > rule.maxLength))
-        self.setError(attribute, "error_out_of_range");
-    }
+      if (rule.type === 'string') {
+        if (rule.values && rule.values.length > 0) {
+          if (! _.contains(rule.values, value)) {
+            self.setError(attribute, "error_invalid_input");
+          }
+        }
 
-  }
+        if ((rule.minLength && value.length < rule.minLength) ||
+            (rule.maxLength && value.length > rule.maxLength)) {
+          self.setError(attribute, "error_out_of_range");
+        }
+      }
+    }
+  };
 };
 

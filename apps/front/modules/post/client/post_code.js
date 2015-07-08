@@ -39,7 +39,7 @@ Template.postCode.events({
     $('.code-area').focus();
     console.log('text: ', $('.code-area').val());
 
-    if($('.code-area').val() !== ' ') {
+    if($('.code-area').val() !== '') {
       Template.instance().lang.set($target.attr('data-language'));
     }
 
@@ -50,7 +50,7 @@ Template.postCode.events({
     var $preview = $('.code-preview');
     $preview.attr('contenteditable', false);
     $preview.clone().appendTo('#content');
-    $('.code-area').val(" ");
+    $('.code-area').val("");
     $preview.remove();
 
     $('#codeModal').modal('hide');
@@ -59,7 +59,7 @@ Template.postCode.events({
   'click [data-original-title=RESET]': function() {
     var name = $('.btn-group').find('.active').attr('data-language');
     Template.instance().lang.set(name);
-    $('.code-area').val(" ");
+    $('.code-area').val("");
     $('.code-preview').remove();
     $('.code-area').focus();
   }
