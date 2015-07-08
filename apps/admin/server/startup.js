@@ -14,8 +14,14 @@ Meteor.startup(function() {
       {
         username: 'admin',
         email: 'leesn@bookp.al',
-        password: 'shineonmyhead',
+        password: '74123',
         roles: [ 'ROLE_ADMIN' ]
+      },
+
+      {
+        username: 'test',
+        email: 'dev@bookp.al',
+        password: '74123'
       }
     ];
 
@@ -26,7 +32,7 @@ Meteor.startup(function() {
         password: user.password
       });
 
-      if (user.roles.length > 0) {
+      if (user.roles && user.roles.length > 0) {
         Roles.addUsersToRoles(user._id, user.roles);
       }
     });
