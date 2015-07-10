@@ -12,7 +12,7 @@
             <a class="btn" data-language="javascript" title="" data-original-title="JavaScript">JavaScript</a>
             <a class="btn" data-language="markup" title="" data-original-title="HTML">HTML</a>
             <a class="btn" data-language="css" title="" data-original-title="CSS">CSS</a>
-            <a class="btn" title="" data-original-title="RESET">RESET</a>
+            <!--<a class="btn" title="" data-original-title="RESET">RESET</a>-->
           </div>
           <div class="row">
             <div class="col-md-12">
@@ -24,7 +24,7 @@
               <h4 style="font-size: 14px; margin-left:10px;">Preview</h4>
 	            <div class="code-preview-wrapper" contenteditable="false" >
 		            {{#with lang}}
-			            {{#prism language=lang class='line-numbers code-preview'}}
+			            {{#prism language=lang class='code-preview'}}
 				            {{codeInsert}}
 			            {{/prism}}
 		            {{/with}}

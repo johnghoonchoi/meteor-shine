@@ -12,6 +12,8 @@ boilerplate-generator@1.0.3
 callback-hook@1.0.3
 check@1.0.5
 coffeescript@1.0.6
+d4nyll:epic@1.2.0
+dandv:caret-position@2.1.1
 dburles:mongo-collection-instances@0.3.3
 ddp@1.1.0
 deps@1.0.7
@@ -76,6 +78,7 @@ msavin:mongol@1.0.98
 npm-bcrypt@0.7.8_2
 observe-sequence@1.0.6
 ordered-dict@1.0.3
+perak:codemirror@1.2.3
 percolate:momentum@0.7.2
 percolate:velocityjs@1.1.0
 raix:eventemitter@0.1.2

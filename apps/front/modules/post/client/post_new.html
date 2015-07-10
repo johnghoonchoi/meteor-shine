@@ -20,7 +20,23 @@
             <!--<p><br></p>-->
 
           <!--</div>-->
-          {{{contentEditable}}}
+	        <article id="articleWrap">
+		        <section class="content-wrapper">
+							<textarea id="textareaDesc" placeholder="이곳이 본문입니다.">
+
+
+							</textarea>
+			        <!--{{> epic}}-->
+		          <!--{{#markdown}}-->
+
+		          <!--{{/markdown}}-->
+			        <!--{{{contentEditable}}}-->
+			        <!--{{> CodeMirror id="some-id" options=editorOptions code=editorCode reactiveVar="varName"}}-->
+		        </section>
+		        <section class="content-preview">
+			        {{#markdown}}{{reactiveTextarea}}{{/markdown}}
+		        </section>
+	        </article>
         </div>
 
         <div class="panel-footer clearfix">

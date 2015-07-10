@@ -39,17 +39,20 @@ Template.postCode.events({
     $('.code-area').focus();
     console.log('text: ', $('.code-area').val());
 
-    if($('.code-area').val() !== '') {
-      Template.instance().lang.set($target.attr('data-language'));
-    }
+    Template.instance().lang.set($target.attr('data-language'));
 
   },
 
-  'click #saveBtn': function(event, instance) {
-    event.preventDefault();
+  'click #saveBtn': function(e, instance) {
+    e.preventDefault();
     var $preview = $('.code-preview');
     $preview.attr('contenteditable', false);
-    $preview.clone().appendTo('#content');
+
+    var sel = document.getSelection();
+    var container = sel.getRangeAt(0).commonAncestorContainer;
+
+    $preview.clone().before(container);
+
     $('.code-area').val("");
     $preview.remove();
 
@@ -59,8 +62,21 @@ Template.postCode.events({
   'click [data-original-title=RESET]': function() {
     var name = $('.btn-group').find('.active').attr('data-language');
     Template.instance().lang.set(name);
-    $('.code-area').val("");
-    $('.code-preview').remove();
+    //$('.code-area').val("");
+
+    var paragraph = document.createElement('p');
+    var textarea = document.createElement('textarea');
+    var text = document.createTextNode("Code here...");
+    textarea.className = 'code-area';
+
+    paragraph.appendChild(textarea);
+    textarea.appendChild(text);
+
+    var codeWrapper = document.getElementsByClassName('code-wrapper');
+
+
+    console.log('paragraph: ', paragraph);
+
     $('.code-area').focus();
   }
 });
