@@ -1,0 +1,15 @@
+<template name="signUp">
+  <article style="margin:0; border: solid 1px #000;">
+    <header style="padding:10px; background: #ccc;">
+      Sign Up
+    </header>
+
+    <div class="body">
+      {{#if loggingIn}}
+        {{> _loginButtonsLoggingIn}}
+      {{/if}}
+
+      {{> _loginButtonsLoggedOutAllServices}}
+    </div>
+  </article>
+</template>

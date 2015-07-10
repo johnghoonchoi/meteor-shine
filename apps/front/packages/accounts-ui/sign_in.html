@@ -1,0 +1,64 @@
+<template name="signIn">
+  <article style="margin:0; border: solid 1px #000;">
+    <header style="padding:10px; background: #ccc;">
+      Sign In
+    </header>
+
+    <div class="body">
+      {{#if loggingIn}}
+        {{> _loginButtonsLoggingIn}}
+      {{/if}}
+
+      {{#each services}}
+        {{#if isPasswordService}}
+          {{#if hasOtherServices}} {{! the password service will always come last }}
+            {{> _loginButtonsLoggedOutPasswordServiceSeparator}}
+          {{/if}}
+          {{> signInPasswordService}}
+        {{else}}
+          {{> _loginButtonsLoggedOutSingleLoginButton}}
+        {{/if}}
+      {{/each}}
+
+      {{#unless hasPasswordService}}
+        {{> _loginButtonsMessages}}
+      {{/unless}}
+    </div>
+  </article>
+</template>
+
+<template name="signInPasswordService">
+  <div class="login-form login-password-form">
+    {{#each fields}}
+      {{> _loginButtonsFormField}}
+    {{/each}}
+
+    {{> _loginButtonsMessages}}
+
+    <div class="btn btn-primary login-button login-button-form-submit" id="login-buttons-password">
+      {{#if inSignupFlow}}
+        Create account
+      {{else}}
+        Sign in
+      {{/if}}
+    </div>
+
+    {{#if inLoginFlow}}
+      {{#if showCreateAccountLink}}
+        <div class="additional-link-container">
+          <a id="signup-link" class="additional-link">Create account</a>
+        </div>
+      {{/if}}
+
+      {{#if showForgotPasswordLink}}
+        <div class="additional-link-container">
+          <a id="forgot-password-link" class="additional-link">Forgot password</a>
+        </div>
+      {{/if}}
+    {{/if}}
+
+    {{#if inSignupFlow}}
+      {{> _loginButtonsBackToLoginLink}}
+    {{/if}}
+  </div>
+</template>
