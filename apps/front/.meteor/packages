@@ -46,4 +46,6 @@ perak:codemirror
 d4nyll:epic
 dandv:caret-position
 simple:highlight.js
-markdown
+chuangbo:marked
+babel-compiler
+grigio:babel

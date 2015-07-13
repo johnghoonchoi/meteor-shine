@@ -12,30 +12,20 @@
               {{/each}}
             </select>
           </div>
-          {{{titleEditable}}}
-
-          {{> postEditorToolbar}}
           <!--<div id="content" class="content-editable" contenteditable="false"-->
           <!--placeholder="Enter here...">-->
-            <!--<p><br></p>-->
-
+          <!--<p><br></p>-->
           <!--</div>-->
+
+          {{{titleEditable}}}
+          {{> postEditorToolbar}}
 	        <article id="articleWrap">
 		        <section class="content-wrapper">
-							<textarea id="textareaDesc" placeholder="이곳이 본문입니다.">
-
-
-							</textarea>
-			        <!--{{> epic}}-->
-		          <!--{{#markdown}}-->
-
-		          <!--{{/markdown}}-->
-			        <!--{{{contentEditable}}}-->
-			        <!--{{> CodeMirror id="some-id" options=editorOptions code=editorCode reactiveVar="varName"}}-->
+							{{> postTextarea}}
 		        </section>
-		        <section class="content-preview">
-			        {{#markdown}}{{reactiveTextarea}}{{/markdown}}
-		        </section>
+            <section class="content-preview">
+	            {{{reactiveTextarea}}}
+            </section>
 	        </article>
         </div>
 

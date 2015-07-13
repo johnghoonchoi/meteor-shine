@@ -5,37 +5,16 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h3 class="modal-title" id="avatarModalLabel" style="font-size: 14px;">Code Editor</h3>
+          <h3 class="modal-title" id="" style="font-size: 14px;">Preview</h3>
         </div>
         <div class="modal-body">
-          <div class="btn-group">
-            <a class="btn" data-language="javascript" title="" data-original-title="JavaScript">JavaScript</a>
-            <a class="btn" data-language="markup" title="" data-original-title="HTML">HTML</a>
-            <a class="btn" data-language="css" title="" data-original-title="CSS">CSS</a>
-            <!--<a class="btn" title="" data-original-title="RESET">RESET</a>-->
-          </div>
           <div class="row">
             <div class="col-md-12">
-              <div class="code-wrapper">
-                <p>
-                  <textarea class="code-area" placeholder="Code here.."></textarea>
-                </p>
-              </div>
-              <h4 style="font-size: 14px; margin-left:10px;">Preview</h4>
-	            <div class="code-preview-wrapper" contenteditable="false" >
-		            {{#with lang}}
-			            {{#prism language=lang class='code-preview'}}
-				            {{codeInsert}}
-			            {{/prism}}
-		            {{/with}}
-	            </div>
+              <section class="content-preview">
+              </section>
             </div>
           </div>
         </div><!-- /.modal-body end-->
-        <div class="modal-footer">
-          <button id="cancelBtn" type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-          <button id="saveBtn" type="button" class="btn btn-primary">저장</button>
-        </div><!-- /.modal-footer -->
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->

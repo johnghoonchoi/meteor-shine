@@ -11,7 +11,7 @@ PostValidator = {
 
     content: {
       name: 'content',
-      type: 'string',
+      type: 'array',
       required: true,
       minLength: 1,
       maxLength: 65536

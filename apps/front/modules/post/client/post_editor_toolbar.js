@@ -37,11 +37,9 @@ Template.postEditorToolbar.onRendered(function() {
           return;
         }
 
-        var source = '<p class="image"><img src="' + object.url + '" data-id="' + imageId + '" /></p>';
+        var source = '<div class="image"><img src="' + object.url + '" data-id="' + imageId + '" /></div>';
         //$('#content p.active').after(source);
         $('#content').append(source);
-        $("#content").focus();
-
         console.log(imageId);
       });
     }

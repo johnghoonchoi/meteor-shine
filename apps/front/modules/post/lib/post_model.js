@@ -43,7 +43,7 @@ PostLogs = new Mongo.Collection('postLogs');
 
 Meteor.methods({
   postInsert: function(object) {
-    check(object, Match.Where(matchPostInsert));
+    //check(object, Match.Where(matchPostInsert));
 
     // check permission
     if (! this.userId) {
