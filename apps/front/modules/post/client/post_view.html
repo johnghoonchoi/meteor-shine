@@ -1,7 +1,7 @@
 <template name="postView">
   <article class="page">
     <div class="btn-toolbar block-wrapper">
-      {{#if isEditMode}}
+      {{#if canEdit}}
         <button type="submit" id="save" class="btn btn-primary pull-left" style="border-radius: 0">Save</button>
       {{else}}
         <div class="pull-left">
@@ -11,13 +11,14 @@
       {{/if}}
     </div>
 
-    {{{titleEditable}}}
-    {{{contentEditable}}}
+    <!--{{{contentEditable}}}-->
+    <article id="articleWrap">
+      <section id="contentWrapper">
+	      {{> Template.dynamic template=switchMode}}
+      </section>
+    </article>
 
     <div class="sns block-wrapper">
-	    {{#if isEditMode}}
-		    {{> postEditorToolbar}}
-	    {{/if}}
 	    <br>
       {{#if like}}
         <button type="button" id="unlike" class="btn btn-default" style="border-radius: 0">Unlike</button>

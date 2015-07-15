@@ -6,17 +6,19 @@ Template.postNew.onCreated(function() {
 			{ state: 'ON' }, { sort: { seq: 1 }});
 	});
 
-	this.categoriesCount = function() {
+	this.categoriesCount = () => {
 		return Counts.get('categoriesListCount');
 	};
 
-	this.reactiveTextarea = new ReactiveVar('');
-
-	this.categories = function() {
+	this.categories = () => {
 		return Categories.find({ state: 'ON' }, { sort: { seq: 1 }});
 	};
 
+	// for modal
 	this._postCodeView = Blaze.render(Template.postCode, document.body);
+
+  // Define	reactive variables
+	this.reactiveTextarea = new ReactiveVar('');
 
 });
 
@@ -35,7 +37,7 @@ Template.postNew.onDestroyed(function() {
 
 Template.postNew.onRendered(function() {
 	this.$('#content').wysiwyg();
-	this.$('.textarea-block').tabOverride(true).flexText().val('').focus();
+	this.$('.textarea-block').val('').tabOverride(true).flexText().focus();
 
 	marked.setOptions({
 		highlight (code) { return hljs.highlightAuto(code).value }
@@ -62,11 +64,42 @@ Template.postNew.helpers({
 });
 
 Template.postNew.events({
+	'click [data-edit=bold]' (e, instance) {
+		var $block = instance.$(e.target).closest('.content-block');
+		var $textBlock = $block.find('.textarea-block');
+		console.log('$textBlock: ', $textBlock.length);
+
+		var textNode = $textBlock[0];
+		$textBlock.focus();
+
+		var selectPosition = $textBlock.selection('getPos');
+		var selectionStart = selectPosition.start;
+		var selectionEnd = selectPosition.end;
+				
+		if (selectionStart === selectionEnd) {
+
+			$textBlock.selection('insert', {
+				text: '**텍스트**'
+			});
+			textNode.selectionStart = selectionStart + 2;
+			textNode.selectionEnd   = selectionStart + 5;
+
+		} else {
+			var selText = $textBlock.selection();
+			var modifiedSelText = "**" + selText + "**";
+
+			$textBlock.selection('replace', {
+				text: modifiedSelText,
+				caret: 'end'/* start, keep, end */
+			});
+		}
+	},
+
 	'click [data-edit=plus]' (e, instance) {
 		var $block, $nextBlock, $textBlock, index;
 
 		$block = instance.$(e.target).closest('.content-block');
-		$block.after(textareaComponent);
+		$block.after(PostMarkdownToolbarComb);
 		index = $block.index();
 		$nextBlock = $block.next();
 		$textBlock = $nextBlock.find('.textarea-block');
@@ -74,15 +107,15 @@ Template.postNew.events({
 		$textBlock.tabOverride(true).flexText().val('').focus();
 	},
 
-	'click [data-edit=image]' (e, instance) {
+	'click [data-edit=html]' (e, instance) {
 
 		var $block, $nextBlock, $textBlock, index;
 		$block = instance.$(e.target).closest('.content-block');
-		$block.after(imageComponent);
+		$block.after(EditableComp);
 		index = $block.index();
 		console.log('index: ', index);
 		$nextBlock = $block.next();
-		$nextBlock.after(textareaComponent);
+		$nextBlock.after(PostMarkdownToolbarComb);
 		$textBlock = $nextBlock.next().find('.textarea-block');
 		$textBlock.tabOverride(true).flexText().val('').focus();
 	},
@@ -137,28 +170,43 @@ Template.postNew.events({
 		var $self = $(e.target);
 		var $block = $self.closest('.content-block');
 		var $textBlock = $self.closest('.textarea-block');
-		var htmlCompiled;
 
-		//var testText = $arrayContent.eq(0).find('.textarea-block').val();
-		//var testText3 = $arrayContent.eq(1).html();
-		//var testText2 = $arrayContent.eq(2).find('.textarea-block').val();
-		//var htmlCompiled = marked(testText);
-		//console.log('testText: ', testText);
-		//if (testText3) htmlCompiled += testText3;
-		//if (testText2) htmlCompiled += marked(testText2);
+		// 미리보기
+		var textVal = $textBlock.val();
+		if ($textBlock && textVal) {
+			var compiledHtml = marked(textVal);
+			if (compiledHtml) {
+				instance.reactiveTextarea.set(compiledHtml);
+			}
+		}
 
-		if (htmlCompiled) {
-			instance.reactiveTextarea.set(htmlCompiled);
+		if (textVal === "") {
+			var compiledHtml = marked("");
+			instance.reactiveTextarea.set(compiledHtml);
 		}
 
 		var code = (e.keyCode ? e.keyCode : e.which);
-		var count = $('.content-wrapper').find('.content-block').length;
+		
+		console.log('what\s code: ', code);
+		
+		var count = $('#contentWrapper').find('.content-block').length;
 
-		if (code === 8 && count !== 1 && $textBlock.val() === '') {
+		console.log('non trim..: ', $textBlock.val());
+
+
+		var origin = $block.find('.textarea-block');
+		var cursorPositionStart = origin.prop("selectionStart");
+		var textLength = origin.val().split("\n").join("").length;
+		var $prevBlock = $block.prev();
+		var isTextarea = $prevBlock.children().hasClass('flex-text-wrap');
+	
+
+		// delete key
+		if (code === 8 && count !== 1 && cursorPositionStart === 0 && $textBlock.val().trim() === '' ){
 			e.preventDefault();
 
-			var $prevBlock = $block.prev();
-			var isTextarea = $prevBlock.children().hasClass('flex-text-wrap');
+			//var $prevBlock = $block.prev();
+			//var isTextarea = $prevBlock.children().hasClass('flex-text-wrap');
 			console.log('$textBlock: ', !! $textBlock);
 
 			if (isTextarea) {
@@ -176,13 +224,6 @@ Template.postNew.events({
 				$prevBlock.find('.textarea-block').focus();
 			}
 		}
-
-		var origin = $block.find('.textarea-block');
-		var cursorPositionStart = origin.prop("selectionStart");
-		var textLength = origin.val().split("\n").join("").length;
-
-		//console.log('cursorPositionS: ', cursorPositionStart);
-		//console.log('cursorPositionE: ', cursorPositionEnd);
 
 		// up arrow key
 		if (code === 38 && cursorPositionStart === 0) {
@@ -206,43 +247,50 @@ Template.postNew.events({
 			console.log('down arrow..');
 		}
 
+		// return(enter) key
 		if (code == 13 && e.shiftKey) {
 			e.preventDefault();
 			console.log('shift: ');
-			var $nextBlock, $textBlock, index;
+			var $nextBlock, $textBlock;
 
-			$block.after(textareaComponent);
-			index = $block.index();
+			$block.after(PostMarkdownToolbarComb);
 			$nextBlock = $block.next();
 			$textBlock = $nextBlock.find('.textarea-block');
-			$nextBlock.attr('data-sequence', ++index);
 			$textBlock.tabOverride(true).flexText().val('').focus();
 		}
 
-	},
+		if (e.metaKey && code === 66) {
+			console.log('bold..: ');
+			var $block = instance.$(e.target).closest('.content-block');
+			var $textBlock = $block.find('.textarea-block');
+			console.log('$textBlock: ', $textBlock.length);
 
-	'click [data-edit=preview]' (e, instance) {
+			var textNode = $textBlock[0];
+			$textBlock.focus();
 
-		$('.content-preview').empty();
+			var selectPosition = $textBlock.selection('getPos');
+			var selectionStart = selectPosition.start;
+			var selectionEnd = selectPosition.end;
 
-		var $arrayContent = $('.content-wrapper').children('.content-block');
-		var count = $arrayContent.length;
-		console.log('count: ', count);
+			if (selectionStart === selectionEnd) {
 
-		//var testText = $arrayContent.eq(0).find('.textarea-block').val();
-		//var testText2 = $arrayContent.eq(1).find('.textarea-block').val();
-		//
-		//console.log('testText: ', testText);
-		//console.log('testText2: ', testText2);
-		//
-		//var htmlCompiled= marked(testText);
-		//var htmlCompiled2= marked(testText2);
-		//
-		//$('.content-preview').append(htmlCompiled);
-		//$('.content-preview').append(htmlCompiled2);
-		//var html1 = HTML.Raw(marked(testText);
+				$textBlock.selection('insert', {
+					text: '**텍스트**'
+				});
+				textNode.selectionStart = selectionStart + 2;
+				textNode.selectionEnd   = selectionStart + 5;
 
-		$('#codeModal').modal('show');
+			} else {
+				var selText = $textBlock.selection();
+				var modifiedSelText = "**" + selText + "**";
+
+				$textBlock.selection('replace', {
+					text: modifiedSelText,
+					caret: 'end'/* start, keep, end */
+				});
+			}
+		}
+
 	},
 
 	'input focus #content' (e, instance) {
@@ -291,32 +339,28 @@ Template.postNew.events({
 		});
 	},
 
+	//
 	'submit #formPostNew' (e, instance) {
 		e.preventDefault();
 
-		var $arrayContents = instance.$('.content-wrapper').children('.content-block');
+		var $arrayContents = instance.$('#contentWrapper').children('.content-block');
 		var arrayLeng = $arrayContents.length;
-		var type, item, obj, newContent = [];
+		var type, item, obj = {}, newContent = [];
 
 		for (var i = 0; i < arrayLeng; i++) {
 			item = $arrayContents.eq(i);
 			type = item.attr('data-type');
 			console.log('type: ', type);
 			if (type === 'markdown') {
-			  obj = {
-				  'type': 'markdown',
-				  'content': item.find('.textarea-block').val()
-			  };
+			  obj['type'] = 'markdown';
+			  obj['content'] = item.find('.textarea-block').val();
 				newContent[i] = obj;
-			} else {
-				obj = {
-					'type': 'html',
-					'content': item.html()
-				};
+		  }else {
+				obj['type'] = 'html';
+				obj['content'] = item.html();
 				newContent[i] = obj;
 			}
 		}
-		//console.log('newContent: ', newContent);
 
 		var object = {
 			category: $(e.target).find('[name=category]').val(),

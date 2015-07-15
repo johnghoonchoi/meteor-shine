@@ -12,15 +12,9 @@
               {{/each}}
             </select>
           </div>
-          <!--<div id="content" class="content-editable" contenteditable="false"-->
-          <!--placeholder="Enter here...">-->
-          <!--<p><br></p>-->
-          <!--</div>-->
-
           {{{titleEditable}}}
-          {{> postEditorToolbar}}
 	        <article id="articleWrap">
-		        <section class="content-wrapper">
+		        <section id="contentWrapper">
 							{{> postTextarea}}
 		        </section>
             <section class="content-preview">

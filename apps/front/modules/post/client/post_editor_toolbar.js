@@ -37,9 +37,23 @@ Template.postEditorToolbar.onRendered(function() {
           return;
         }
 
-        var source = '<div class="image"><img src="' + object.url + '" data-id="' + imageId + '" /></div>';
+	      //var source = `<figure style="text-align:center">
+         // <img src="${object.url}" style="width:400px;"/>
+	      //</figure>`;
+	      //
+	      //console.log('source: ', source);
+	      //
+	      //var $textBlock = $('.textarea-block');
+	      //
+	      //console.log('$textBlockrce: ', $textBlock);
+	      //
+	      //$textBlock.selection('insert', {
+		     // text: source
+	      //});
+
         //$('#content p.active').after(source);
-        $('#content').append(source);
+        //$('#content').append(source);
+
         console.log(imageId);
       });
     }

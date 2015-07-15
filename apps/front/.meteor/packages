@@ -36,17 +36,13 @@ reywood:publish-composite
 percolate:momentum
 alanning:roles
 
-timdown:rangy
 gadicohen:prism
 
 leesangwon:logger
 leesangwon:connections
 
+# editor
 perak:codemirror
-d4nyll:epic
-dandv:caret-position
 simple:highlight.js
 chuangbo:marked
-babel-compiler
-grigio:babel
 react
