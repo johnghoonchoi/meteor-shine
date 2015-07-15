@@ -11,15 +11,23 @@ Package.onUse(function(api) {
 
   api.use([
     'tracker',
+    'reactive-var',
     'service-configuration',
     'accounts-base',
     'underscore',
     'templating',
-    'session'
+    'session',
+    'sacha:spin',
+    'less',
+    'leesangwon:bootstrap-less',
+    'leesangwon:alerts'
   ], 'client');
 
   // Export Accounts (etc) to packages using this one.
-  api.imply('accounts-base', ['client', 'server']);
+  api.imply([
+    'accounts-base',
+    'leesangwon:i18n'
+  ], ['client', 'server']);
 
   // Allow us to call Accounts.oauth.serviceNames, if there are any OAuth
   // services.
@@ -30,14 +38,20 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'accounts_ui.js',
-
     'accounts_ui_templates.html',
     'accounts_ui_templates.js',
-
     'sign_in.html',
     'sign_in.js',
     'sign_up.html',
     'sign_up.js',
+    'forgot_password.html',
+    'forgot_password.js',
+    'reset_password.html',
+    'reset_password.js',
+    'enroll_account.html',
+    'enroll_account.js',
+
+    'style/style.less',
 
     'login_buttons.html',
     'login_buttons_single.html',
@@ -50,6 +64,15 @@ Package.onUse(function(api) {
     'login_buttons_single.js',
     'login_buttons_dropdown.js',
     'login_buttons_dialogs.js'], 'client');
+
+  api.addFiles([
+    'i18n/i18n_en.js',
+    'i18n/i18n_ko.js'
+  ], ['client', 'server']);
+
+  api.addFiles([
+    'startup.js'
+  ], ['client', 'server']);
 
 });
 

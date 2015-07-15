@@ -1,64 +1,81 @@
 <template name="signIn">
-  <article style="margin:0; border: solid 1px #000;">
-    <header style="padding:10px; background: #ccc;">
-      Sign In
-    </header>
+  <article>
+    {{> accountsUIHeader title='accounts-ui:nav_sign_in'}}
 
     <div class="body">
       {{#if loggingIn}}
-        {{> _loginButtonsLoggingIn}}
+        {{> accountsUILoading}}
       {{/if}}
+
+      {{> meteorModalAlerts}}
 
       {{#each services}}
         {{#if isPasswordService}}
           {{#if hasOtherServices}} {{! the password service will always come last }}
-            {{> _loginButtonsLoggedOutPasswordServiceSeparator}}
+            {{> signInServiceSeparator}}
           {{/if}}
           {{> signInPasswordService}}
         {{else}}
-          {{> _loginButtonsLoggedOutSingleLoginButton}}
+          {{> signInOtherService}}
         {{/if}}
       {{/each}}
-
-      {{#unless hasPasswordService}}
-        {{> _loginButtonsMessages}}
-      {{/unless}}
     </div>
+
+    <footer>
+      {{#if showCreateAccountLink}}
+        <div class="additional-link-container">
+          <a id="signUpLink" class="additional-link">{{_ 'accounts-ui:command_sign_up'}}</a>
+        </div>
+      {{/if}}
+    </footer>
   </article>
 </template>
 
 <template name="signInPasswordService">
-  <div class="login-form login-password-form">
+  <form id="formSignIn" class="login-form login-password-form">
     {{#each fields}}
-      {{> _loginButtonsFormField}}
+      {{> accountsUIFormField}}
     {{/each}}
 
-    {{> _loginButtonsMessages}}
+    {{#if showForgotPasswordLink}}
+      <section class="form-group">
+        <a id="forgotPasswordLink"
+           class="pull-right">{{_ 'accounts-ui:text_forgot_password'}}</a>
+      </section>
+    {{/if}}
 
-    <div class="btn btn-primary login-button login-button-form-submit" id="login-buttons-password">
-      {{#if inSignupFlow}}
-        Create account
+    <section class="form-group">
+      <button type="submit" class="btn btn-primary btn-block pull-right">
+        {{_ 'accounts-ui:command_sign_in'}}
+      </button>
+    </section>
+  </form>
+</template>
+
+<template name="signInOtherService">
+  <div class="login-text-and-button">
+    <div class="login-button single-login-button {{#unless configured}}configure-button{{/unless}}"
+         id="login-buttons-{{name}}">
+      <div class="login-image" id="login-buttons-image-{{name}}"></div>
+      {{#if configured}}
+        <span class="text-besides-image sign-in-text-{{name}}">Sign in with {{capitalizedName}}</span>
       {{else}}
-        Sign in
+        <span class="text-besides-image configure-text-{{name}}">Configure {{capitalizedName}} Login</span>
       {{/if}}
     </div>
+  </div>
+</template>
 
-    {{#if inLoginFlow}}
-      {{#if showCreateAccountLink}}
-        <div class="additional-link-container">
-          <a id="signup-link" class="additional-link">Create account</a>
-        </div>
-      {{/if}}
+<template name="signInServiceSeparator">
+  <div class="or">
+    <span class="hline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <span class="or-text">or</span>
+    <span class="hline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+  </div>
+</template>
 
-      {{#if showForgotPasswordLink}}
-        <div class="additional-link-container">
-          <a id="forgot-password-link" class="additional-link">Forgot password</a>
-        </div>
-      {{/if}}
-    {{/if}}
-
-    {{#if inSignupFlow}}
-      {{> _loginButtonsBackToLoginLink}}
-    {{/if}}
+<template name="backToSignIn">
+  <div class="additional-link-container">
+    <a id="backToSignIn" class="additional-link">{{_ 'accounts-ui:nav_sign_in'}}</a>
   </div>
 </template>

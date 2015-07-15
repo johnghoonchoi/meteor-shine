@@ -1,3 +1,9 @@
+@bootstrap-path: "/packages/leesangwon:bootstrap-less/3.3.4";
+@bootstrap-path-normalized: "/packages/leesangwon_bootstrap-less/3.3.4";
+
+// Bootstrap 3.3.4
+@import "@{bootstrap-path}/less/bootstrap.import.less";
+
 .meteor-alerts {
   position: fixed;
   z-index: 10000;
@@ -23,13 +29,16 @@
 }
 
 .meteor-modal-alerts {
+  width: 100%;
   pointer-events: none;
+
+  .clearfix();
 }
 
 .meteor-modal-alerts .alert {
   position: relative;
   clear: both;
-  min-width: 280px;
+  width: 100%;
   margin-bottom: 5px;
   pointer-events: auto;
 }

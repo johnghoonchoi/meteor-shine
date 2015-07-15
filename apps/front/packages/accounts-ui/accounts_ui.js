@@ -93,3 +93,40 @@ passwordSignupFields = function () {
   return Accounts.ui._options.passwordSignupFields || "EMAIL_ONLY";
 };
 
+Accounts.ui.activeTemplate = new ReactiveVar('signIn');
+
+Accounts.ui.render = function(templateName, callback) {
+  Accounts.ui.activeTemplate.set(templateName);
+  if (! Accounts.ui.view) {
+    Accounts.ui.view = Blaze.render(Template.accountsUIModal, document.body);
+  }
+  $('#accountsUIModal').modal('show');
+
+  if (callback && typeof callback === 'function') {
+    callback();
+  }
+};
+
+
+Accounts.onResetPasswordLink(function (token, done) {
+  Accounts.ui.render('resetPassword', done);
+});
+
+Accounts.onEnrollmentLink(function (token, done) {
+  Accounts.ui.render('enrollAccount', done);
+});
+
+Accounts.onEmailVerificationLink(function (token, done) {
+  Accounts.verifyEmail(token, function (error) {
+    if (! error) {
+      Alerts.dialog('alert', error.reason, function() {
+        done();
+      });
+    } else {
+      Alerts.dialog('alert', 'accounts-ui:text_email_verified', function() {
+        done();
+      });
+    }
+  });
+});
+
