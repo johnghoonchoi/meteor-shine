@@ -1,4 +1,4 @@
-Breadcrumbs = {
+Navigations = {
   path: new ReactiveVar(),
 
   check: function(pos) {

@@ -1,0 +1,4 @@
+
+requireLoginOnBeforeAction = function() {
+
+};

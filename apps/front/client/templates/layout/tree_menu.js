@@ -4,7 +4,7 @@
 
 Template.treeMenu.helpers({
   active: function(path) {
-    return (Breadcrumbs.check(path)) ? "active" : "";
+    return (Navigations.check(path)) ? "active" : "";
   }
 });
 

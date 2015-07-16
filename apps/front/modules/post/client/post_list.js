@@ -24,7 +24,7 @@ Template.postsList.onCreated(function() {
       { categoryId: data.category }, { limit: limit, sort: sort },
       function() { instance.loaded.set(limit); });
 
-    Breadcrumbs.path.set('post/category:' + data.category);
+    Navigations.path.set('post/category:' + data.category);
   });
 
   instance.category = function() {
