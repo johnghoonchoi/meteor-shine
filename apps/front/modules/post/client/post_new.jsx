@@ -4,6 +4,8 @@ Template.postNew.onCreated(function() {
 	this.autorun(() => {
 		this.subscribe('postCategoriesList',
 			{ state: 'ON' }, { sort: { seq: 1 }});
+		// Define	reactive variables
+		this.reactiveTextarea = new ReactiveVar;
 	});
 
 	this.categoriesCount = () => {
@@ -17,8 +19,7 @@ Template.postNew.onCreated(function() {
 	// for modal
 	this._postCodeView = Blaze.render(Template.postCode, document.body);
 
-  // Define	reactive variables
-	this.reactiveTextarea = new ReactiveVar('');
+
 
 });
 
@@ -166,24 +167,27 @@ Template.postNew.events({
 
 	},
 
-	'keydown [data-type], focus [data-type]' (e, instance) {
+	'keydown .textarea-block' (e, instance) {
 		var $self = $(e.target);
 		var $block = $self.closest('.content-block');
 		var $textBlock = $self.closest('.textarea-block');
-
+		var textVal, compiledHtml;
 		// 미리보기
-		var textVal = $textBlock.val();
-		if ($textBlock && textVal) {
-			var compiledHtml = marked(textVal);
-			if (compiledHtml) {
+		setTimeout(() => {
+			textVal = $textBlock.val();
+			console.log('textVal: ', textVal);
+			if ($textBlock) {
+				compiledHtml = marked(textVal);
+				console.log('compiledHtml: ', compiledHtml);
 				instance.reactiveTextarea.set(compiledHtml);
 			}
-		}
 
-		if (textVal === "") {
-			var compiledHtml = marked("");
-			instance.reactiveTextarea.set(compiledHtml);
-		}
+			//if ($textBlock && ! textVal) {
+			//	compiledHtml = marked("");
+			//	instance.reactiveTextarea.set(compiledHtml);
+			//}
+		}, 1);
+
 
 		var code = (e.keyCode ? e.keyCode : e.which);
 		
