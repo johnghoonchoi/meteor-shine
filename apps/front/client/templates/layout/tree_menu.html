@@ -1,35 +1,31 @@
 <template name="treeMenu">
-  <ul class="nav nav-pills nav-stacked">
-
+  <ul id="navMain" class="nav nav-pills nav-stacked">
     <!-- Home -->
-    <li role="presentation" class="{{activeRoute 'home'}}">
+    <li role="presentation" class="{{active 'home'}}">
       <a href="{{pathFor 'home'}}">
-        <span class="glyphicon glyphicon-home"> </span> {{_ 'title_home'}}
-      </a>
-    </li>
-
-    <!-- Blogs -->
-    <li role="presentation" class="{{activeRoute 'blogsList'}}">
-      <a href="{{pathFor 'blogsList'}}">
-        <span class="glyphicon glyphicon-list"></span> {{_ 'title_blogs'}}
+        <i class="fa fa-home"> </i> {{_ 'title_home'}}
       </a>
     </li>
 
     {{#if currentUser}}
-    <!-- My Blogs -->
-    <li role="presentation" class="{{activeRoute 'myBlogsList'}}">
-      <a href="{{pathFor 'myBlogsList'}}">
-        <span class="glyphicon glyphicon-th-list"></span> {{_ 'title_my_blogs'}}
-      </a>
-    </li>
+      <!-- My Blogs
+      <li role="presentation" data-path="myBlogsList">
+        <a href="{{pathFor 'myBlogsList'}}">
+          <i class="fa fa-th-list"></i> {{_ 'title_my_blogs'}}
+        </a>
+      </li>
+       -->
     {{/if}}
 
+    {{! read from module 'category' }}
+    {{> categoriesList}}
+
     <!-- Preferences -->
-    <li role="presentation" class="{{activeRoute 'preference'}}">
+    <li role="presentation" class="{{active 'preference'}}">
       <!-- todo: Theme less refactoring by yongsunlee -->
       <!--<a href="{{pathFor 'preference'}}">-->
       <a href="#">
-        <span class="glyphicon glyphicon-cog"> </span> {{_ 'title_preference'}}
+        <i class="fa fa-gear"> </i> {{_ 'title_preference'}}
       </a>
     </li>
   </ul>

@@ -14,22 +14,13 @@
 Template.home.onCreated(function() {
   var instance = this;
 
-  //var data = Template.currentData();
-  //console.log('data: ', data);
-
   instance.increment = 5;
   instance.limit = new ReactiveVar(instance.increment);
   instance.loaded = new ReactiveVar(0);
 
-  //console.log('instance: ', instance);
-  //console.log('instance.increment: ', instance.increment);
-  //console.log('instance.limit: ', instance.limit);
-  //console.log('instance.loaded: ', instance.loaded);
-
   // Control Subscriptions
   instance.autorun(function() {
     var limit = instance.limit.get();
-    //console.log('limit: ', limit);
 
     instance.subscribe('blogsList',
       {}, { limit: limit, sort: { createdAt: -1 }},
@@ -47,6 +38,10 @@ Template.home.onCreated(function() {
     });
   };
 
+});
+
+Template.home.onRendered(function() {
+  Breadcrumbs.path.set('home');
 });
 
 Template.home.helpers({
