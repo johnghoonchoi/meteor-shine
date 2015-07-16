@@ -24,3 +24,9 @@ Template.categoriesList.helpers({
     return Template.instance().categories();
   }
 });
+
+Template.categoriesListItem.helpers({
+  active: function() {
+    return (Breadcrumbs.check('post/category:' + this._id)) ? "active" : "";
+  }
+});

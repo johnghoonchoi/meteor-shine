@@ -24,8 +24,8 @@ I18n = {
   // current language set
   _currentLanguage: DEFAULT_LANGUAGE,
 
-  // config I18n object
-  config: function(options) {
+  // I18n object
+  init: function(options) {
     options = options || {};
 
     options = _.defaults(options, {

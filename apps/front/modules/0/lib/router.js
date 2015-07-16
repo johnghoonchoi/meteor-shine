@@ -44,7 +44,6 @@ Router.onBeforeAction(accessControl, { only: [
   'blogEdit'
 ]});
 
-
 Router.route('/', function() {
   this.redirect('/home');
 });
