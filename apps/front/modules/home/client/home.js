@@ -25,6 +25,7 @@ Template.home.onCreated(function() {
     instance.subscribe('blogsList',
       {}, { limit: limit, sort: { createdAt: -1 }},
       function() { instance.loaded.set(limit); });
+
   });
 
   // Control Cursors
@@ -38,11 +39,9 @@ Template.home.onCreated(function() {
     });
   };
 
+  Navigations.path.set('home');
 });
 
-Template.home.onRendered(function() {
-  Breadcrumbs.path.set('home');
-});
 
 Template.home.helpers({
   noBlogs: function() {
