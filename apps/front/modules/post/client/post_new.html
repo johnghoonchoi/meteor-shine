@@ -4,22 +4,19 @@
     <form id="formPostNew">
       <div class="panel panel-default">
         <div class="panel-body">
+          {{{titleEditable}}}
           <div class="form-group">
             <label>Category</label>
             <select name="category">
-              {{#each categories}}
+			        {{#each categories}}
                 <option value="{{_id}}">{{title}}</option>
-              {{/each}}
+			        {{/each}}
             </select>
           </div>
-          {{{titleEditable}}}
 	        <article id="articleWrap">
 		        <section id="contentWrapper">
 							{{> postTextarea}}
 		        </section>
-            <section class="content-preview">
-	            {{{reactiveTextarea}}}
-            </section>
 	        </article>
         </div>
 

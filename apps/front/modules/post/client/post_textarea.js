@@ -1,7 +1,8 @@
 Template.postTextarea.helpers({
   attributes: function () {
     return {
-      class: "textarea-block",
+      'data-provide': 'markdown',
+      'data-iconlibrary': 'fa',
       placeholder: ''
     }
   }

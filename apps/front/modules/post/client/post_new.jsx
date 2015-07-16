@@ -37,8 +37,11 @@ Template.postNew.onDestroyed(function() {
 });
 
 Template.postNew.onRendered(function() {
-	this.$('#content').wysiwyg();
-	this.$('.textarea-block').val('').tabOverride(true).flexText().focus();
+	//this.$('#content').wysiwyg();
+	//this.$('.textarea-block').val('').tabOverride(true).flexText().focus();
+	this.$("[data-provide=markdown]").markdown({autofocus:false,savable:false});
+	this.$("[data-provide=markdown]").tabOverride().flexText();
+	this.$(".md-header").children().append
 
 	marked.setOptions({
 		highlight (code) { return hljs.highlightAuto(code).value }
@@ -65,6 +68,18 @@ Template.postNew.helpers({
 });
 
 Template.postNew.events({
+	'click [data-handler=bootstrap-markdown-cmdPreview]' (e) {
+		var $pre = $('.flex-text-wrap>pre');
+		$pre.toggleClass('hidden');
+	},
+
+	'click .md-control-fullscreen' () {
+		var wrapper = $('#wrapper');
+
+		if (! wrapper.hasClass('aside-right-set'))
+			wrapper.addClass('aside-left-set');
+	},
+
 	'click [data-edit=bold]' (e, instance) {
 		var $block = instance.$(e.target).closest('.content-block');
 		var $textBlock = $block.find('.textarea-block');
@@ -167,133 +182,130 @@ Template.postNew.events({
 
 	},
 
-	'keydown .textarea-block' (e, instance) {
+	'keydown [data-provide=markdown]' (e, instance) {
 		var $self = $(e.target);
 		var $block = $self.closest('.content-block');
 		var $textBlock = $self.closest('.textarea-block');
 		var textVal, compiledHtml;
-		// 미리보기
-		setTimeout(() => {
-			textVal = $textBlock.val();
-			console.log('textVal: ', textVal);
-			if ($textBlock) {
-				compiledHtml = marked(textVal);
-				console.log('compiledHtml: ', compiledHtml);
-				instance.reactiveTextarea.set(compiledHtml);
-			}
 
-			//if ($textBlock && ! textVal) {
-			//	compiledHtml = marked("");
-			//	instance.reactiveTextarea.set(compiledHtml);
-			//}
-		}, 1);
+
+		// 미리보기
+		//setTimeout(() => {
+		//	textVal = $textBlock.val();
+		//	console.log('textVal: ', textVal);
+		//	if ($textBlock) {
+		//		compiledHtml = marked(textVal);
+		//		console.log('compiledHtml: ', compiledHtml);
+		//		instance.reactiveTextarea.set(compiledHtml);
+		//	}
+		//}, 1);
 
 
 		var code = (e.keyCode ? e.keyCode : e.which);
 		
 		console.log('what\s code: ', code);
-		
-		var count = $('#contentWrapper').find('.content-block').length;
-
-		console.log('non trim..: ', $textBlock.val());
-
-
-		var origin = $block.find('.textarea-block');
-		var cursorPositionStart = origin.prop("selectionStart");
-		var textLength = origin.val().split("\n").join("").length;
-		var $prevBlock = $block.prev();
-		var isTextarea = $prevBlock.children().hasClass('flex-text-wrap');
-	
-
-		// delete key
-		if (code === 8 && count !== 1 && cursorPositionStart === 0 && $textBlock.val().trim() === '' ){
-			e.preventDefault();
-
-			//var $prevBlock = $block.prev();
-			//var isTextarea = $prevBlock.children().hasClass('flex-text-wrap');
-			console.log('$textBlock: ', !! $textBlock);
-
-			if (isTextarea) {
-				$block.remove();
-				$prevBlock.find('.textarea-block').focus();
-				console.log('delete..');
-				return
-			}
-
-			$prevBlock = $prevBlock.prev();
-			$textBlock = $prevBlock.find('.textarea-block');
-			isTextarea = $prevBlock.children().hasClass('flex-text-wrap');
-			if (isTextarea) {
-				$block.remove();
-				$prevBlock.find('.textarea-block').focus();
-			}
-		}
-
-		// up arrow key
-		if (code === 38 && cursorPositionStart === 0) {
-			var $prevBlock = $block.prev();
-			var isTextarea = $prevBlock.children().hasClass('flex-text-wrap');
-
-			if (isTextarea) {
-				$prevBlock.find('.textarea-block').focusEnd();
-			}
-			console.log('up arrow..');
-		}
-
-		// down arrow key
-		if (code === 40 && cursorPositionStart === textLength) {
-			var $nextBlock = $block.next();
-			var isTextarea = $nextBlock.children().hasClass('flex-text-wrap');
-
-			if (isTextarea) {
-				$nextBlock.find('.textarea-block').focusStart();
-			}
-			console.log('down arrow..');
-		}
-
-		// return(enter) key
-		if (code == 13 && e.shiftKey) {
-			e.preventDefault();
-			console.log('shift: ');
-			var $nextBlock, $textBlock;
-
-			$block.after(PostMarkdownToolbarComb);
-			$nextBlock = $block.next();
-			$textBlock = $nextBlock.find('.textarea-block');
-			$textBlock.tabOverride(true).flexText().val('').focus();
-		}
-
-		if (e.metaKey && code === 66) {
-			console.log('bold..: ');
-			var $block = instance.$(e.target).closest('.content-block');
-			var $textBlock = $block.find('.textarea-block');
-			console.log('$textBlock: ', $textBlock.length);
-
-			var textNode = $textBlock[0];
-			$textBlock.focus();
-
-			var selectPosition = $textBlock.selection('getPos');
-			var selectionStart = selectPosition.start;
-			var selectionEnd = selectPosition.end;
-
-			if (selectionStart === selectionEnd) {
-
-				$textBlock.selection('insert', {
-					text: '**텍스트**'
-				});
-				textNode.selectionStart = selectionStart + 2;
-				textNode.selectionEnd   = selectionStart + 5;
-
-			} else {
-				var selText = $textBlock.selection();
-				var modifiedSelText = "**" + selText + "**";
-
-				$textBlock.selection('replace', {
-					text: modifiedSelText,
-					caret: 'end'/* start, keep, end */
-				});
-			}
-		}
+		//
+		//var count = $('#contentWrapper').find('.content-block').length;
+		//
+		//console.log('non trim..: ', $textBlock.val());
+		//
+		//
+		//var origin = $block.find('.textarea-block');
+		//var cursorPositionStart = origin.prop("selectionStart");
+		//var textLength = origin.val().split("\n").join("").length;
+		//var $prevBlock = $block.prev();
+		//var isTextarea = $prevBlock.children().hasClass('flex-text-wrap');
+		//
+		//
+		//// delete key
+		//if (code === 8 && count !== 1 && cursorPositionStart === 0 && $textBlock.val().trim() === '' ){
+		//	e.preventDefault();
+		//
+		//	//var $prevBlock = $block.prev();
+		//	//var isTextarea = $prevBlock.children().hasClass('flex-text-wrap');
+		//	console.log('$textBlock: ', !! $textBlock);
+		//
+		//	if (isTextarea) {
+		//		$block.remove();
+		//		$prevBlock.find('.textarea-block').focus();
+		//		console.log('delete..');
+		//		return
+		//	}
+		//
+		//	$prevBlock = $prevBlock.prev();
+		//	$textBlock = $prevBlock.find('.textarea-block');
+		//	isTextarea = $prevBlock.children().hasClass('flex-text-wrap');
+		//	if (isTextarea) {
+		//		$block.remove();
+		//		$prevBlock.find('.textarea-block').focus();
+		//	}
+		//}
+		//
+		//// up arrow key
+		//if (code === 38 && cursorPositionStart === 0) {
+		//	var $prevBlock = $block.prev();
+		//	var isTextarea = $prevBlock.children().hasClass('flex-text-wrap');
+		//
+		//	if (isTextarea) {
+		//		$prevBlock.find('.textarea-block').focusEnd();
+		//	}
+		//	console.log('up arrow..');
+		//}
+		//
+		//// down arrow key
+		//if (code === 40 && cursorPositionStart === textLength) {
+		//	var $nextBlock = $block.next();
+		//	var isTextarea = $nextBlock.children().hasClass('flex-text-wrap');
+		//
+		//	if (isTextarea) {
+		//		$nextBlock.find('.textarea-block').focusStart();
+		//	}
+		//	console.log('down arrow..');
+		//}
+		//
+		//// return(enter) key
+		//if (code == 13 && e.shiftKey) {
+		//	e.preventDefault();
+		//	console.log('shift: ');
+		//	var $nextBlock, $textBlock;
+		//
+		//	$block.after(PostMarkdownToolbarComb);
+		//	$nextBlock = $block.next();
+		//	$textBlock = $nextBlock.find('.textarea-block');
+		//	$textBlock.tabOverride(true).flexText().val('').focus();
+		//}
+		//
+		//if (e.metaKey && code === 66) {
+		//	console.log('bold..: ');
+		//	var $block = instance.$(e.target).closest('.content-block');
+		//	var $textBlock = $block.find('.textarea-block');
+		//	console.log('$textBlock: ', $textBlock.length);
+		//
+		//	var textNode = $textBlock[0];
+		//	$textBlock.focus();
+		//
+		//	var selectPosition = $textBlock.selection('getPos');
+		//	var selectionStart = selectPosition.start;
+		//	var selectionEnd = selectPosition.end;
+		//
+		//	if (selectionStart === selectionEnd) {
+		//
+		//		$textBlock.selection('insert', {
+		//			text: '**텍스트**'
+		//		});
+		//		textNode.selectionStart = selectionStart + 2;
+		//		textNode.selectionEnd   = selectionStart + 5;
+		//
+		//	} else {
+		//		var selText = $textBlock.selection();
+		//		var modifiedSelText = "**" + selText + "**";
+		//
+		//		$textBlock.selection('replace', {
+		//			text: modifiedSelText,
+		//			caret: 'end'/* start, keep, end */
+		//		});
+		//	}
+		//}
 
 	},
 
@@ -357,7 +369,7 @@ Template.postNew.events({
 			console.log('type: ', type);
 			if (type === 'markdown') {
 			  obj['type'] = 'markdown';
-			  obj['content'] = item.find('.textarea-block').val();
+			  obj['content'] = item.find('[data-provide=markdown]').val();
 				newContent[i] = obj;
 		  }else {
 				obj['type'] = 'html';
