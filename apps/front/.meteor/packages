@@ -46,3 +46,5 @@ perak:codemirror
 simple:highlight.js
 chuangbo:marked
 react
+dburles:collection-helpers
+matb33:collection-hooks
