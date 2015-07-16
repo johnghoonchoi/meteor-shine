@@ -11,8 +11,6 @@ Accounts.ui._options = {
   forceApprovalPrompt: {}
 };
 
-Accounts.ui.customOptions = {};
-
 // XXX refactor duplicated code in this function
 
 /**
@@ -26,13 +24,7 @@ Accounts.ui.customOptions = {};
  */
 Accounts.ui.config = function(options) {
   // validate options keys
-  var VALID_KEYS = [
-    'passwordSignupFields',
-    'requestPermissions',
-    'requestOfflineToken',
-    'forceApprovalPrompt',
-    'custom'
-  ];
+  var VALID_KEYS = ['passwordSignupFields', 'requestPermissions', 'requestOfflineToken', 'forceApprovalPrompt'];
   _.each(_.keys(options), function (key) {
     if (!_.contains(VALID_KEYS, key))
       throw new Error("Accounts.ui.config: Invalid key: " + key);
@@ -95,12 +87,46 @@ Accounts.ui.config = function(options) {
       }
     });
   }
-
-  Accounts.ui.customOptions = options.custom;
 };
 
 passwordSignupFields = function () {
   return Accounts.ui._options.passwordSignupFields || "EMAIL_ONLY";
 };
 
+Accounts.ui.activeTemplate = new ReactiveVar('signIn');
+
+Accounts.ui.render = function(templateName, callback) {
+  Accounts.ui.activeTemplate.set(templateName);
+  if (! Accounts.ui.view) {
+    Accounts.ui.view = Blaze.render(Template.accountsUIModal, document.body);
+  }
+  $('#accountsUIModal').modal('show');
+
+  if (callback && typeof callback === 'function') {
+    callback();
+  }
+};
+
+
+Accounts.onResetPasswordLink(function (token, done) {
+  Accounts.ui.render('resetPassword', done);
+});
+
+Accounts.onEnrollmentLink(function (token, done) {
+  Accounts.ui.render('enrollAccount', done);
+});
+
+Accounts.onEmailVerificationLink(function (token, done) {
+  Accounts.verifyEmail(token, function (error) {
+    if (! error) {
+      Alerts.dialog('alert', error.reason, function() {
+        done();
+      });
+    } else {
+      Alerts.dialog('alert', 'accounts-ui:text_email_verified', function() {
+        done();
+      });
+    }
+  });
+});
 

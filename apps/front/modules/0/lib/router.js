@@ -15,7 +15,8 @@ var accessControl = function() {
     if (Meteor.loggingIn())
       this.render(this.loadingTemplate);
     else
-      this.render('accessDenied');
+      //this.render('accessDenied');
+      Accounts.ui.render('signIn');
   } else {
     this.next();
   }
@@ -41,9 +42,9 @@ Router.onBeforeAction(accessControl, { only: [
   'myBlogsList',
   'myBlogOne',
   'blogNew',
-  'blogEdit'
+  'blogEdit',
+  'postNew'
 ]});
-
 
 Router.route('/', function() {
   this.redirect('/home');

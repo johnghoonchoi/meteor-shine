@@ -1,78 +1,11 @@
-
+// for convenience
 var loginButtonsSession = Accounts._loginButtonsSession;
 
-var loginResultCallback = function (serviceName, err) {
-  if (! err) {
-    Accounts.ui.dialogClose();
-  } else if (err instanceof Accounts.LoginCancelledError) {
-    // do nothing
-  } else if (err instanceof ServiceConfiguration.ConfigError) {
-    loginButtonsSession.configureService(serviceName);
-  } else {
-    loginButtonsSession.errorMessage(err.reason || "Unknown error");
-  }
-};
+// since we don't want to pass around the callback that we get from our event
+// handlers, we just make it a variable for the whole file
+var doneCallback;
 
 
-// In the login redirect flow, we'll have the result of the login
-// attempt at page load time when we're redirected back to the
-// application.  Register a callback to update the UI (i.e. to close
-// the dialog on a successful login or display the error on a failed
-// login).
-//
-Accounts.onPageLoadLogin(function (attemptInfo) {
-  // Ignore if we have a left over login attempt for a service that is no longer registered.
-  if (_.contains(_.pluck(getLoginServices(), "name"), attemptInfo.type))
-    loginResultCallback(attemptInfo.type, attemptInfo.error);
-});
-
-
-Template.otherLoginService.events({
-  'click .login-button': function () {
-    var serviceName = this.name;
-    loginButtonsSession.resetMessages();
-
-    // XXX Service providers should be able to specify their
-    // `Meteor.loginWithX` method name.
-    var loginWithService = Meteor["loginWith" +
-    (serviceName === 'meteor-developer' ?
-      'MeteorDeveloperAccount' :
-      capitalize(serviceName))];
-
-    var options = {}; // use default scope unless specified
-    if (Accounts.ui._options.requestPermissions[serviceName])
-      options.requestPermissions = Accounts.ui._options.requestPermissions[serviceName];
-    if (Accounts.ui._options.requestOfflineToken[serviceName])
-      options.requestOfflineToken = Accounts.ui._options.requestOfflineToken[serviceName];
-    if (Accounts.ui._options.forceApprovalPrompt[serviceName])
-      options.forceApprovalPrompt = Accounts.ui._options.forceApprovalPrompt[serviceName];
-
-    loginWithService(options, function (err) {
-      loginResultCallback(serviceName, err);
-    });
-  }
-});
-
-Template.otherLoginService.helpers({
-  configured: function () {
-    return !!ServiceConfiguration.configurations.findOne({service: this.name});
-  },
-  capitalizedName: function () {
-    if (this.name === 'github')
-    // XXX we should allow service packages to set their capitalized name
-      return 'GitHub';
-    else if (this.name === 'meteor-developer')
-      return 'Meteor';
-    else
-      return capitalize(this.name);
-  }
-});
-
-// XXX from http://epeli.github.com/underscore.string/lib/underscore.string.js
-var capitalize = function(str){
-  str = str == null ? '' : String(str);
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
 
 
 //
@@ -85,7 +18,7 @@ Template._configureLoginServiceDialog.events({
   },
   'click #configure-login-service-dialog-save-configuration': function () {
     if (loginButtonsSession.get('configureLoginServiceDialogVisible') &&
-      ! loginButtonsSession.get('configureLoginServiceDialogSaveDisabled')) {
+        ! loginButtonsSession.get('configureLoginServiceDialogSaveDisabled')) {
       // Prepare the configuration document for this login service
       var serviceName = loginButtonsSession.get('configureLoginServiceDialogServiceName');
       var configuration = {
@@ -101,17 +34,17 @@ Template._configureLoginServiceDialog.events({
 
       configuration.loginStyle =
         $('#configure-login-service-dialog input[name="loginStyle"]:checked')
-          .val();
+        .val();
 
       // Configure this login service
       Accounts.connection.call(
         "configureLoginService", configuration, function (error, result) {
           if (error)
             Meteor._debug("Error configuring login service " + serviceName,
-              error);
+                          error);
           else
             loginButtonsSession.set('configureLoginServiceDialogVisible',
-              false);
+                                    false);
         });
     }
   },
@@ -132,7 +65,7 @@ Template._configureLoginServiceDialog.events({
 var updateSaveDisabled = function () {
   var anyFieldEmpty = _.any(configurationFields(), function(field) {
     return document.getElementById(
-        'configure-login-service-dialog-' + field.property).value === '';
+      'configure-login-service-dialog-' + field.property).value === '';
   });
 
   loginButtonsSession.set('configureLoginServiceDialogSaveDisabled', anyFieldEmpty);
@@ -145,9 +78,9 @@ var configureLoginServiceDialogTemplateForService = function () {
   // XXX Service providers should be able to specify their configuration
   // template name.
   return Template['configureLoginServiceDialogFor' +
-  (serviceName === 'meteor-developer' ?
-    'MeteorDeveloper' :
-    capitalize(serviceName))];
+                  (serviceName === 'meteor-developer' ?
+                   'MeteorDeveloper' :
+                   capitalize(serviceName))];
 };
 
 var configurationFields = function () {
@@ -170,7 +103,6 @@ Template._configureLoginServiceDialog.helpers({
     return loginButtonsSession.get('configureLoginServiceDialogSaveDisabled');
   }
 });
-
 
 // XXX from http://epeli.github.com/underscore.string/lib/underscore.string.js
 var capitalize = function(str){

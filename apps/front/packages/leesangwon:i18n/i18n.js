@@ -3,7 +3,7 @@
  *
  */
 
-var ROOT_NAMESPACE = "_";
+var ROOT_NAMESPACE = "_root";
 var DEFAULT_LANGUAGE = "en";
 var LANGUAGE_HELPER_NAME = "_";
 var NAMESPACE_SEPARATOR = ":";
@@ -24,7 +24,7 @@ I18n = {
   // current language set
   _currentLanguage: DEFAULT_LANGUAGE,
 
-  // initialize I18n object
+  // I18n object
   init: function(options) {
     options = options || {};
 
@@ -42,12 +42,19 @@ I18n = {
   /**
    * load a language data
    * @param lang
+   * @param dataName
    * @param namespace
    */
   loadLanguage: function(lang, dataName, namespace) {
-    var data = (Meteor.isServer) ? global[dataName] : window[dataName];
-    if (! data)
-      throw new Meteor.Error(500, "data not found.");
+    var data;
+
+    if (typeof dataName === 'string') {
+      data = (Meteor.isServer) ? global[dataName] : window[dataName];
+      if (! data)
+        throw new Meteor.Error(500, "data not found.");
+    } else if (typeof dataName === 'object') {
+      data = dataName;
+    }
 
     namespace = namespace || ROOT_NAMESPACE;
 

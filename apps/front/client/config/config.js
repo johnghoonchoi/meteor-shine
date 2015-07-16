@@ -38,3 +38,6 @@ $.fn.cropper.setDefaults({
 $.fn.tabOverride.tabSize(2).autoIndent(true);
 
 
+Accounts.ui.config({
+  passwordSignupFields: 'USERNAME_AND_EMAIL'
+});
