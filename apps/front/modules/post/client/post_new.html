@@ -7,11 +7,7 @@
         <div class="panel-body">
           <div class="form-group">
             <label>Category</label>
-            <select name="category">
-              {{#each categories}}
-                <option value="{{_id}}">{{title}}</option>
-              {{/each}}
-            </select>
+            <p>{{category.title}}</p>
           </div>
 
           {{{titleEditable}}}

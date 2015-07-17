@@ -1,5 +1,6 @@
 Template.postNew.onCreated(function() {
   var instance = this;
+  var data = Template.currentData();
 
   instance.autoSave = new Autosave();
   instance.draftId = null;
@@ -9,20 +10,15 @@ Template.postNew.onCreated(function() {
       { state: 'ON' }, { sort: { seq: 1 }});
   });
 
-  instance.categoriesCount = function() {
-    return Counts.get('categoriesListCount');
-  };
-
-  instance.categories = function() {
-    return Categories.find({ state: 'ON' }, { sort: { seq: 1 }});
+  instance.category = function() {
+    return Categories.findOne({ _id: data.categoryId, state: 'ON' });
   };
 });
 
 Template.postNew.onDestroyed(function() {
   this.autoSave = null;
   this.draftId = null;
-  this.categoriesCount = null;
-  this.categories = null;
+  this.category = null;
 });
 
 Template.postNew.onRendered(function() {
@@ -30,12 +26,8 @@ Template.postNew.onRendered(function() {
 });
 
 Template.postNew.helpers({
-  categoriesCount: function() {
-    return Template.instance().categoriesCount();
-  },
-
-  categories: function() {
-    return Template.instance().categories();
+  category: function() {
+    return Template.instance().category();
   },
 
   titleEditable: function() {
@@ -44,8 +36,8 @@ Template.postNew.helpers({
   },
 
   contentEditable: function() {
-    return '<div id="content" class="content-editable" contenteditable="true" ' +
-      'placeholder="Enter here..."></div>';
+    return '<div id="content" class="content-editable" ' +
+      'contenteditable="true" placeholder="Enter here..."></div>';
   }
 });
 
@@ -97,8 +89,10 @@ Template.postNew.events({
   'submit #formPostNew': function(e, instance) {
     e.preventDefault();
 
+    instance.autoSave.clear();
+
     var object = {
-      category: $(e.target).find('[name=category]').val(),
+      categoryId: instance.category()._id,
       title: instance.$('#title').html(),
       content: instance.$('#content').html()
     };

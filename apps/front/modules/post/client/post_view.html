@@ -1,20 +1,29 @@
 <template name="postView">
   <article class="page">
     <div class="btn-toolbar">
-      {{#if isEditMode}}
-        <button type="submit" id="save" class="btn btn-primary pull-right">Save</button>
-      {{else}}
-        <div class="pull-right">
-          <button type="button" id="edit" class="btn btn-primary">Edit</button>
-          <button type="button" id="delete" class="btn btn-danger">Delete</button>
-        </div>
+      <button type="button" id="back" class="btn btn-default">List</button>
+      {{#if isEditable}}
+        {{#if isEditMode}}
+          <button type="submit" id="save" class="btn btn-primary pull-right">Save</button>
+        {{else}}
+          <div class="pull-right">
+            <button type="button" id="edit" class="btn btn-primary">Edit</button>
+            <button type="button" id="delete" class="btn btn-danger">Delete</button>
+          </div>
+        {{/if}}
       {{/if}}
     </div>
 
     {{{titleEditable}}}
 
-    {{#if isEditMode}}
-      {{> postEditorToolbar}}
+    <div>
+      {{post.author.username}}
+    </div>
+
+    {{#if isEditable}}
+      {{#if isEditMode}}
+        {{> postEditorToolbar}}
+      {{/if}}
     {{/if}}
     {{{contentEditable}}}
 

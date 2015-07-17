@@ -22,8 +22,17 @@ Template.postView.onCreated(function() {
 
   instance.autoSave = new Autosave();
 
+  instance.autorun(function() {
+    Meteor.subscribe('releasedPostView', data.postId);
+  });
+
   instance.post = function() {
     return Posts.findOne(data.postId);
+  };
+
+  instance.category = function() {
+    var post = instance.post();
+    return (post) ? Categories.findOne(post.categoryId) : null;
   };
 
   instance.like = function() {
@@ -35,9 +44,8 @@ Template.postView.onDestroyed(function() {
   this.editMode = null;
   this.autoSave = null;
   this.post = null;
-});
-
-Template.postView.onRendered(function() {
+  this.category = null;
+  this.like = null;
 });
 
 Template.postView.helpers({
@@ -47,6 +55,10 @@ Template.postView.helpers({
 
   like: function() {
     return Template.instance().like();
+  },
+
+  isEditable: function() {
+    return postAccess('update', Meteor.user(), this.postId);
   },
 
   isEditMode: function() {
@@ -72,6 +84,10 @@ Template.postView.helpers({
 
 
 Template.postView.events({
+  'click #back': function() {
+    history.back(-1);
+  },
+
   'click #edit': function(e, instance) {
     instance.setEditMode(true);
   },
