@@ -16,23 +16,19 @@
     <article id="articleWrap">
       <section id="contentWrapper">
         <h3 {{titleAttrs false}}>{{titleText}}</h3>
-        <div data-provide></div>
+        <div>
+		      by {{post.author.username}}
+        </div>
+        <div data-provide>{{insertContent}}</div>
       </section>
     </article>
 
     <div class="sns block-wrapper">
-      {{{titleEditable}}}
-
-      <div>
-        {{post.author.username}}
-      </div>
-
       {{#if isEditable}}
         {{#if isEditMode}}
-          {{> postEditorToolbar}}
+	        Edit모드
         {{/if}}
       {{/if}}
-      {{{contentEditable}}}
 
       <div class="sns">
         {{#if like}}
