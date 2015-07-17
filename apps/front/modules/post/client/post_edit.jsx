@@ -7,13 +7,7 @@ Template.postViewTemp.onRendered(function() {
 });
 
 Template.postViewTemp.helpers({
-	titleText () {
-		return Template.instance().data.titleText();
-	},
 
-	titleAttrs (editable) {
-		return Template.instance().data.titleAttrs(editable);
-	}
 });
 
 

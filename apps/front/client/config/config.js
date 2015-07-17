@@ -37,6 +37,9 @@ $.fn.cropper.setDefaults({
 // repo: https://github.com/wjbryant/jquery.taboverride
 $.fn.tabOverride.tabSize(2).autoIndent(true);
 
+marked.setOptions({
+  highlight: function(code) { return hljs.highlightAuto(code).value }
+});
 
 Accounts.ui.config({
   passwordSignupFields: 'USERNAME_AND_EMAIL'

@@ -37,7 +37,7 @@ Template.postMarkdownToolbar.onRendered(function() {
 					return;
 				}
 
-				var $textareaBlock = $('.textarea-block');
+				var $textareaBlock = $('[data-provide=markdown]');
 				var textareaNode = $textareaBlock[0];
 				var selectPosition = $textareaBlock.selection('getPos');
 				var selectionStart = selectPosition.start;

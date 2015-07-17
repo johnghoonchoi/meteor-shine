@@ -1010,7 +1010,7 @@
         name: 'groupLink',
         data: [{
           name: 'cmdUrl',
-          title: 'URL/Link',
+          title: 'URL 링크',
           hotkey: 'Ctrl+L',
           icon: { glyph: 'glyphicon glyphicon-link', fa: 'fa fa-link', 'fa-3': 'icon-link' },
           callback: function(e){
@@ -1039,7 +1039,7 @@
           }
         },{
           name: 'cmdImage',
-          title: 'Image',
+          title: '이미지 링크',
           hotkey: 'Ctrl+G',
           icon: { glyph: 'glyphicon glyphicon-picture', fa: 'fa fa-picture-o', 'fa-3': 'icon-picture' },
           callback: function(e){
@@ -1069,13 +1069,24 @@
               e.setSelection(cursor,cursor+chunk.length);
             }
           }
-        }]
+        },
+          // Add custom button..
+          {
+            name: 'cmdUpload',
+            title: '이미지 업로드',
+            hotkey: 'Ctrl+F',
+            icon: { glyph: 'glyphicon glyphicon-upload', fa: 'fa fa-upload', 'fa-3': 'icon-upload' },
+            callback: function(e){
+              //$('input.cloudinary_fileupload').trigger('click');
+              //console.log('input trigger..');
+            }
+          }]
       },{
         name: 'groupMisc',
         data: [{
           name: 'cmdList',
           hotkey: 'Ctrl+U',
-          title: 'Unordered List',
+          title: '순서없는 리스트',
           icon: { glyph: 'glyphicon glyphicon-list', fa: 'fa fa-list', 'fa-3': 'icon-list-ul' },
           callback: function(e){
             // Prepend/Give - surround the selection
@@ -1084,7 +1095,7 @@
             // transform selection and set the cursor into chunked text
             if (selected.length === 0) {
               // Give extra word
-              chunk = e.__localize('list text here');
+              chunk = e.__localize('리스트');
 
               e.replaceSelection('- '+chunk);
               // Set the cursor
@@ -1121,7 +1132,7 @@
           {
             name: 'cmdListO',
             hotkey: 'Ctrl+O',
-            title: 'Ordered List',
+            title: '순서있는 리스트',
             icon: { glyph: 'glyphicon glyphicon-th-list', fa: 'fa fa-list-ol', 'fa-3': 'icon-list-ol' },
             callback: function(e) {
 
@@ -1131,7 +1142,7 @@
               // transform selection and set the cursor into chunked text
               if (selected.length === 0) {
                 // Give extra word
-                chunk = e.__localize('list text here');
+                chunk = e.__localize('리스트');
                 e.replaceSelection('1. '+chunk);
                 // Set the cursor
                 cursor = selected.start+3;
@@ -1167,7 +1178,7 @@
           {
             name: 'cmdCode',
             hotkey: 'Ctrl+K',
-            title: 'Code',
+            title: '코드',
             icon: { glyph: 'glyphicon glyphicon-asterisk', fa: 'fa fa-code', 'fa-3': 'icon-code' },
             callback: function(e) {
               // Give/remove ** surround the selection
@@ -1175,7 +1186,42 @@
 
               if (selected.length === 0) {
                 // Give extra word
-                chunk = e.__localize('code text here');
+                chunk = e.__localize('코드');
+              } else {
+                chunk = selected.text;
+              }
+
+              // transform selection and set the cursor into chunked text
+              if (content.substr(selected.start-1,1) === '`'
+                && content.substr(selected.end,1) === '`') {
+
+                e.setSelection(selected.start-1, selected.end+1);
+                e.replaceSelection(chunk);
+                cursor = selected.start-1;
+
+              } else {
+
+                e.replaceSelection('`'+chunk+'`');
+                cursor = selected.start+1;
+
+              }
+
+              // Set the cursor
+              e.setSelection(cursor,cursor+chunk.length);
+            }
+          },
+          {
+            name: 'cmdCodeBlock',
+            hotkey: 'Ctrl+T',
+            title: '코드 블록',
+            icon: { glyph: 'glyphicon glyphicon-console', fa: 'fa fa-terminal', 'fa-3': 'icon-terminal' },
+            callback: function(e) {
+              // Give/remove ** surround the selection
+              var chunk, cursor, selected = e.getSelection(), content = e.getContent();
+
+              if (selected.length === 0) {
+                // Give extra word
+                chunk = e.__localize('코드 블록..');
               } else {
                 chunk = selected.text;
               }
@@ -1183,20 +1229,15 @@
               // transform selection and set the cursor into chunked text
               if (content.substr(selected.start-4,4) === '```\n'
                 && content.substr(selected.end,4) === '\n```') {
+
                 e.setSelection(selected.start-4, selected.end+4);
                 e.replaceSelection(chunk);
                 cursor = selected.start-4;
-              } else if (content.substr(selected.start-1,1) === '`'
-                && content.substr(selected.end,1) === '`') {
-                e.setSelection(selected.start-1,selected.end+1);
-                e.replaceSelection(chunk);
-                cursor = selected.start-1;
-              } else if (content.indexOf('\n') > -1) {
+
+              } else {
+
                 e.replaceSelection('```\n'+chunk+'\n```');
                 cursor = selected.start+4;
-              } else {
-                e.replaceSelection('`'+chunk+'`');
-                cursor = selected.start+1;
               }
 
               // Set the cursor
@@ -1206,7 +1247,7 @@
           {
             name: 'cmdQuote',
             hotkey: 'Ctrl+Q',
-            title: 'Quote',
+            title: '인용문',
             icon: { glyph: 'glyphicon glyphicon-comment', fa: 'fa fa-quote-left', 'fa-3': 'icon-quote-left' },
             callback: function(e) {
               // Prepend/Give - surround the selection
@@ -1215,7 +1256,7 @@
               // transform selection and set the cursor into chunked text
               if (selected.length === 0) {
                 // Give extra word
-                chunk = e.__localize('quote here');
+                chunk = e.__localize('인용문');
 
                 e.replaceSelection('> '+chunk);
 

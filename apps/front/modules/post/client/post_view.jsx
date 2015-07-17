@@ -6,44 +6,23 @@ Template.postView.onCreated(function() {
 
   //this.editMode = new ReactiveVar(false);
 
-	this.data.changeMode = new ReactiveVar("postViewTemp");
-	this.data.reactiveTextarea = new ReactiveVar("");
-
-	this.data.setPreview = () => {
-		var $contentWrap = $('#contentWrapper');
-		var $textBlock = $contentWrap.find('.textarea-block');
-		var compiledHtml = marked($textBlock.val());
-
-		if ($textBlock && compiledHtml) {
-			this.data.reactiveTextarea.set(compiledHtml);
-		}
-	};
+	this.data.canEdit = new ReactiveVar(false);
 
 	this.data.insertContent = (mode) => {
-		
 		console.log('mode: ', mode);
-		
-		var $contentWrap = $('#contentWrapper');
-		var post = this.data.post();
-		var leng = post.content.length;
-		var item, markdown, html;
 
-		for (var i = 0; i < leng; i++) {
-			item = post ? post.content[i] : '';
-			if (item.type && item.type === 'markdown') {
-				if (mode === 'postEditTemp') {
-					$textBlock = $contentWrap.find('.textarea-block').eq(i);
-					$textBlock.val(item.content).tabOverride(true).flexText();
-					return
-				}
-				$contentWrap.append(marked(item.content));
-			} else {
-				if (mode === 'postEditTemp') {
-					$contentWrap.append(EditableComp);
-					return
-				}
-				$contentWrap.append(item.content);
-			}
+		var post = this.data.post();
+
+		var $contentWrap = $('[data-provide]');
+
+		var content = post ? post.content : '';
+
+		if (content.type === 'markdown') {
+			$contentWrap.append(marked(content.data));
+		} else if (content.type === 'wyswig') {
+			$contentWrap.append(content.data);
+		} else {
+
 		}
 	};
 
@@ -103,10 +82,18 @@ Template.postView.onRendered(function() {
 	//this.viewModeContent();
 	//var test = Template.instance().changeMode.get() || 'postViewTemp';
 	console.log('postView: ', this.data);
+	this.data.insertContent(this.data.changeMode.get());
 
 });
 
 Template.postView.helpers({
+	titleText () {
+		return Template.instance().data.titleText();
+	},
+
+	titleAttrs (editable) {
+		return Template.instance().data.titleAttrs(editable);
+	},
 
 	switchMode: function() {
 		return Template.instance().data.changeMode.get() || 'postViewTemp';

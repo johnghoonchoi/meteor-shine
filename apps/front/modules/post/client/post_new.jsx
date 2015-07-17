@@ -41,11 +41,11 @@ Template.postNew.onRendered(function() {
 	//this.$('.textarea-block').val('').tabOverride(true).flexText().focus();
 	this.$("[data-provide=markdown]").markdown({autofocus:false,savable:false});
 	this.$("[data-provide=markdown]").tabOverride().flexText();
-	this.$(".md-header").children().append
+	//this.$(".md-header").children().append
 
-	marked.setOptions({
-		highlight (code) { return hljs.highlightAuto(code).value }
-	});
+	//var $contents = this.$('[data-provide]');
+	//var dataType = $contents.attr('data-provide');
+	//console.log('dataType: ', dataType);
 
 });
 
@@ -68,6 +68,11 @@ Template.postNew.helpers({
 });
 
 Template.postNew.events({
+	'click [data-handler=bootstrap-markdown-cmdUpload]' () {
+		$('input.cloudinary_fileupload').trigger('click');
+		console.log('trigger: ');
+	},
+
 	'click [data-handler=bootstrap-markdown-cmdPreview]' (e) {
 		var $pre = $('.flex-text-wrap>pre');
 		$pre.toggleClass('hidden');
@@ -203,7 +208,7 @@ Template.postNew.events({
 
 		var code = (e.keyCode ? e.keyCode : e.which);
 		
-		console.log('what\s code: ', code);
+		console.log('what\'s code: ', code);
 		//
 		//var count = $('#contentWrapper').find('.content-block').length;
 		//
@@ -359,29 +364,24 @@ Template.postNew.events({
 	'submit #formPostNew' (e, instance) {
 		e.preventDefault();
 
-		var $arrayContents = instance.$('#contentWrapper').children('.content-block');
-		var arrayLeng = $arrayContents.length;
-		var type, item, obj = {}, newContent = [];
+		var $contents = instance.$('[data-provide]');
+		var dataType = $contents.attr('data-provide');
 
-		for (var i = 0; i < arrayLeng; i++) {
-			item = $arrayContents.eq(i);
-			type = item.attr('data-type');
-			console.log('type: ', type);
-			if (type === 'markdown') {
-			  obj['type'] = 'markdown';
-			  obj['content'] = item.find('[data-provide=markdown]').val();
-				newContent[i] = obj;
-		  }else {
-				obj['type'] = 'html';
-				obj['content'] = item.html();
-				newContent[i] = obj;
-			}
+		var obj = {};
+		if (dataType === 'markdown') {
+			obj['type'] = dataType;
+			obj['version'] = '0.0.1';
+			obj['data'] = $contents.val();
+		} else if (dataType === 'wyswig') {
+
+		} else {
+
 		}
 
 		var object = {
 			category: $(e.target).find('[name=category]').val(),
 			title: instance.$('#title').html(),
-			content: newContent
+			content: obj
 		};
 
 		if (! object.content) {

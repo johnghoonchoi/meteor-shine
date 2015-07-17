@@ -1,20 +1,19 @@
 <template name="postView">
   <article class="page">
     <div class="btn-toolbar block-wrapper">
+      <!--{{#if canEdit}}-->
+        <!--<button type="submit" id="save" class="btn btn-primary pull-left" style="border-radius: 0">Save</button>-->
       {{#if canEdit}}
-        <button type="submit" id="save" class="btn btn-primary pull-left" style="border-radius: 0">Save</button>
-      {{else}}
         <div class="pull-left">
           <button type="button" id="edit" class="btn btn-default" style="border-radius: 0">Edit</button>
           <button type="button" id="delete" class="btn btn-danger" style="border-radius: 0">Delete</button>
         </div>
       {{/if}}
     </div>
-
-    <!--{{{contentEditable}}}-->
     <article id="articleWrap">
       <section id="contentWrapper">
-	      {{> Template.dynamic template=switchMode}}
+        <h3 {{titleAttrs false}}>{{titleText}}</h3>
+        <div data-provide></div>
       </section>
     </article>
 
