@@ -1,7 +1,8 @@
-I18n_data_en_accounts = {
+I18nAccountsUI_en = {
   "nav_sign_in"                        : "Sign in",
   "nav_sign_up"                        : "Sign up",
   "nav_forgot_password"                : "Forgot password",
+  "nav_reset_password"                 : "Reset password",
   "title_welcome"                      : "Welcome",
   "title_profile"                      : "Profile",
   "title_change_picture"               : "Profile Picture Change",
@@ -19,11 +20,13 @@ I18n_data_en_accounts = {
   "command_home"                       : "Home",
 
   "label_email"                        : "Email Address",
+  "label_email_optional"               : "Email Address (optional)",
   "label_password"                     : "Password",
   "label_current_password"             : "Current Password",
   "label_new_password"                 : "New Password",
-  "label_password_confirm"             : "Password Confirm",
+  "label_password_again"               : "Password again",
   "label_username"                     : "Username",
+  "label_username_or_email"            : "Username or Email address",
   "label_picture"                      : "Profile Picture",
   "label_profile"                      : "Personal Information",
   "label_terms_of_use"                 : "Terms of Use",
@@ -52,5 +55,6 @@ I18n_data_en_accounts = {
   "error_email_not_found"              : "Email not found",
   "error_agreements_required"          : "Agreements required",
   "error_need_username_or_email"       : "Need to set a username or email",
-  "error_no_password_set"              : "User has no password set"
+  "error_no_password_set"              : "User has no password set",
+  "error_fail_password_confirm"        : "Input passwords are not equal each other"
 };

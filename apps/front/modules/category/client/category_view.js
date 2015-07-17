@@ -1,4 +1,4 @@
-Template.postsList.onCreated(function() {
+Template.categoryView.onCreated(function() {
   var instance = this;
   var data;
 
@@ -18,54 +18,37 @@ Template.postsList.onCreated(function() {
     var limit = instance.limit.get();
     var sort = instance.sortBy(data.sortBy);
 
-    instance.subscribe('categoryView', data.categoryId);
+    instance.subscribe('releasedCategoryView',
+      data.categoryId, { limit: limit, sort: sort },
+      function() { instance.loaded.set(limit); }
+    );
 
-    instance.subscribe('postsList',
-      { categoryId: data.categoryId }, { limit: limit, sort: sort },
-      function() { instance.loaded.set(limit); });
+    instance.subscribe('releasedPostsListCount',
+      { categoryId: data.categoryId });
 
-    Navigations.path.set('post/category:' + data.categoryId);
+    Navigations.path.set('category:' + data.categoryId);
   });
 
   instance.category = function() {
-    return Categories.findOne({ _id: data.categoryId });
+    return Categories.findOne({ _id: data.categoryId, state: 'ON' });
   };
 
   instance.postsCount = function() {
-    return Counts.get('postListsCount');
+    return Counts.get('releasedPostsListCount');
   };
 
   instance.posts = function() {
+    var limit = instance.limit.get();
+    var sort = instance.sortBy(data.sortBy);
+
     return Posts.find({ categoryId: data.categoryId },
-      { limit: instance.loaded.get(), sort: { publishedAt: 1 }});
+      { limit: limit, sort: sort });
   };
 
-  instance.permission = function(action) {
-    var category = instance.category();
-    if (! category || ! category.permission)
-      return false;
-
-
-    if (category.permission[action] === 'PUBLIC') {
-      return true;
-    }
-
-    if (category.permission[action] === 'USER') {
-      return Meteor.userId();
-    } else if (category.permission[action] === 'PRIVATE') {
-      if (Roles.userIsInRole(Meteor.userId(), ['PRIVATE'])) {
-        return true;
-      }
-
-      return false;
-    }
-
-    return true;
-  };
 });
 
 
-Template.postsList.onDestroyed(function() {
+Template.categoryView.onDestroyed(function() {
   this.limit = null;
   this.loaded = null;
   this.category = null;
@@ -74,13 +57,13 @@ Template.postsList.onDestroyed(function() {
 });
 
 
-Template.postsList.helpers({
+Template.categoryView.helpers({
   category: function() {
     return Template.instance().category();
   },
 
   postsCount: function() {
-    return Counts.get('postsListCount');
+    return Template.instance().postsCount();
   },
 
   posts: function() {
@@ -98,7 +81,7 @@ Template.postsList.helpers({
   }
 });
 
-Template.postsList.events({
+Template.categoryView.events({
   'click .load-more': function(e, instance) {
     e.preventDefault();
     instance.limit.set(instance.limit.get() + instance.increment);

@@ -27,6 +27,6 @@ Template.categoriesList.helpers({
 
 Template.categoriesListItem.helpers({
   active: function() {
-    return (Navigations.check('post/category:' + this._id)) ? "active" : "";
+    return (Navigations.check('category:' + this._id)) ? "active" : "";
   }
 });

@@ -32,3 +32,7 @@ $.fn.cropper.setDefaults({
   cropBoxMovable: false,
   preview: '.avatar-preview'
 });
+
+Accounts.ui.config({
+  passwordSignupFields: 'USERNAME_AND_EMAIL'
+});
