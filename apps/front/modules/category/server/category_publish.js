@@ -3,12 +3,41 @@
  */
 Meteor.publish('releasedCategoriesList', function() {
 
-  Counts.publish(this, 'releasedCategoriesListCount', Categories.find({ state: 'ON' }),
-    { noReady: true });
+  Counts.publish(this, 'releasedCategoriesListCount',
+    Categories.find({ state: 'ON' }), { noReady: true });
 
   var categories = Categories.find({ state: 'ON' }, { sort: { seq: 1 }});
 
   return categories;
+});
+
+/**
+ * return the specified category and the related posts list.
+ * the state of the category should be 'ON'.
+ */
+Meteor.publishComposite('releasedCategoryView', function(categoryId, options) {
+  check(categoryId, String);
+  check(options, Match.ObjectIncluding({
+    "limit": Number,
+    "sort": Match.ObjectIncluding({
+      "createdAt": Match.Optional(Number),
+      "publishedAt": Match.Optional(Number)
+    })
+  }));
+
+  return {
+    find: function() {
+      return Categories.find({ _id: categoryId, state: 'ON' });
+    },
+    children: [
+      {
+        find: function() {
+          var query = { categoryId: categoryId, state: 'PUBLISHED' };
+          return Posts.find(query, options);
+        }
+      }
+    ]
+  };
 });
 
 /**

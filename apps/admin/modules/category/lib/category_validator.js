@@ -25,7 +25,7 @@ CategoryValidator = {
 
     state: {
       name: 'state',
-      type: 'number',
+      type: 'string',
       required: true,
       values: [ 'ON', 'OFF' ]
     },

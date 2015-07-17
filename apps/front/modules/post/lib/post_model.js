@@ -21,7 +21,7 @@
  *    tags                Array of String
  *    count               { hits, likes, comments }
  *    author              { _id, username, name }
- *    status              { READY, PUBLISHED, UNPUBLISHED }
+ *    state               { READY, PUBLISHED, UNPUBLISHED }
  *    createdAt           Date
  *    updatedAt           Date
  *    publishedAt         Date
@@ -40,19 +40,58 @@ Posts = new Mongo.Collection('posts');
  */
 PostLogs = new Mongo.Collection('postLogs');
 
+postAccess = function(action, user, ticket) {
+  var categoryPermission = function(user, categoryId) {
+    var category = Categories.findOne(categoryId);
+
+    if (! category) {
+      throw new Meteor.Error(ERROR_CODE_SECURITY, 'error_invalid_input');
+    }
+    if (! categoryPermitted(category, user, 'write')) {
+      throw new Meteor.Error(ERROR_CODE_SECURITY, 'error_access_denied');
+    }
+  };
+
+  var postPermission = function(user, postId) {
+    var post = Posts.findOne({ _id: postId });
+    if (! post) {
+      throw new Meteor.Error(ERROR_CODE_SECURITY, 'error_invalid_input');
+    }
+    var category = Categories.findOne(post.categoryId);
+
+    if (! category) {
+      throw new Meteor.Error(ERROR_CODE_SECURITY, 'error_invalid_input');
+    }
+    if (! categoryPermitted(category, user, 'write')) {
+      throw new Meteor.Error(ERROR_CODE_SECURITY, 'error_access_denied');
+    }
+    if (post.author._id !== user._id) {
+      throw new Meteor.Error(ERROR_CODE_SECURITY, "error_access_denied");
+    }
+  };
+
+  switch (action) {
+    case 'insert':
+      categoryPermission(user, ticket);
+      break;
+
+    case 'update':
+    case 'remove':
+      postPermission(user, ticket);
+      break;
+  }
+};
 
 Meteor.methods({
   postInsert: function(object) {
     check(object, Match.Where(matchPostInsert));
 
+    var user = Meteor.user();
+
     // check permission
-    if (! this.userId) {
-      throw new Meteor.Error(403, "error_access_denied");
-    }
+    postAccess('insert', user, object.categoryId);
 
     // build insert object
-    var category = object.category;
-    var user = Meteor.user();
     var author = {
       _id: user._id,
       username: user.username,
@@ -63,7 +102,7 @@ Meteor.methods({
     // insert and return
     try {
       var post = {
-        categoryId: category,
+        categoryId: object.categoryId,
         title: object.title,
         content: object.content,
         count: {
@@ -72,7 +111,7 @@ Meteor.methods({
           comments: 0
         },
         author: author,
-        status: 'READY',
+        state: 'READY',
         createdAt: now,
         updatedAt: now
       };
@@ -101,15 +140,7 @@ Meteor.methods({
     check(object, Match.Where(matchPostUpdate));
 
     // check permission
-    if (! this.userId) {
-      throw new Meteor.Error(ERROR_CODE_SECURITY, "error_access_denied");
-    }
-
-    var post = Posts.findOne({ _id: postId });
-
-    if ( post.author._id !== this.userId ) {
-      throw new Meteor.Error(ERROR_CODE_SECURITY, "error_access_denied");
-    }
+    postAccess('update', Meteor.user(), postId);
 
     // set data
     var now = new Date();
@@ -120,11 +151,7 @@ Meteor.methods({
     };
 
     // insert into the database
-    var updated = Posts.update({ _id: postId },
-      { $set: data, $unset: { draft: "" }});
-
-    return updated;
-
+    return Posts.update({ _id: postId }, { $set: data, $unset: { draft: "" }});
   },
 
   postSaveDraft: function(postId, object) {
@@ -132,15 +159,7 @@ Meteor.methods({
     check(object, Match.Where(matchPostUpdate));
 
     // check permission
-    if (! this.userId) {
-      throw new Meteor.Error(ERROR_CODE_SECURITY, "error_access_denied");
-    }
-
-    var post = Posts.findOne({ _id: postId });
-
-    if ( post.author._id !== this.userId ) {
-      throw new Meteor.Error(ERROR_CODE_SECURITY, "error_access_denied");
-    }
+    postAccess('update', Meteor.user(), object.categoryId);
 
     var data = {
       draft: {
@@ -150,9 +169,7 @@ Meteor.methods({
       }
     };
 
-    var updated = Posts.update({ _id: postId }, { $set: data });
-
-    return updated;
+    return Posts.update({ _id: postId }, { $set: data });
   },
 
   postPublish: function(postId, object) {
@@ -160,12 +177,9 @@ Meteor.methods({
     check(object, Match.Where(matchPostPublish));
 
     // check permission
-    if (! this.userId) {
-      throw new Meteor.Error(403, "error_access_denied");
-    }
+    postAccess('update', Meteor.user(), postId);
 
     var post = Posts.findOne({ _id: postId });
-
     if ( post.author._id !== this.userId ) {
       throw new Meteor.Error(403, "error_access_denied");
     }
@@ -173,31 +187,26 @@ Meteor.methods({
     // set data
     var now = new Date();
     var data = {
-      status: object.status,
+      state: object.state,
       updatedAt: now
     };
 
     // update the database
-    var updated = Posts.update({ _id: postId }, { $set: data });
-    return updated;
+    return Posts.update({ _id: postId }, { $set: data });
   },
 
   postRemove: function(postId) {
     check(postId, String);
 
     // check permission
-    if (! this.userId) {
-      throw new Meteor.Error(403, "error_access_denied");
-    }
+    postAccess('remove', Meteor.user(), object.categoryId);
 
     var post = Posts.findOne({ _id: postId });
-
     if ( post.author._id !== this.userId ) {
       throw new Meteor.Error(403, "error_access_denied");
     }
 
     // remove the blog
-    var removed = Posts.remove({ _id: postId });
-    return removed;
+    return Posts.remove({ _id: postId });
   }
 });

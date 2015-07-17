@@ -1,7 +1,8 @@
-I18n_data_ko_accounts = {
+I18nAccountsUI_ko = {
   "nav_sign_in"                        : "로그인",
   "nav_sign_up"                        : "회원 가입",
   "nav_forgot_password"                : "비밀번호 찾기",
+  "nav_reset_password"                 : "비밀번호 초기화",
   "title_welcome"                      : "환영합니다.",
   "title_profile"                      : "프로파일",
   "title_change_picture"               : "프로파일 사진변경",
@@ -19,11 +20,13 @@ I18n_data_ko_accounts = {
   "command_home"                       : "홈으로 가기",
 
   "label_email"                        : "이메일 주소",
+  "label_email_optional"               : "이메일 주소 (선택)",
   "label_password"                     : "비밀번호",
   "label_current_password"             : "현재 비밀번호",
   "label_new_password"                 : "새 비밀번호",
-  "label_password_confirm"             : "비밀번호 재확인",
+  "label_password_again"               : "비밀번호 한 번 더 입력",
   "label_username"                     : "사용자 이름",
+  "label_username_or_email"            : "아이디 또는 이메일주소",
   "label_picture"                      : "프로파일 사진",
   "label_profile"                      : "개인정보",
   "label_terms_of_use"                 : "이용약관",
@@ -35,7 +38,7 @@ I18n_data_ko_accounts = {
   "text_no_login_services"             : "설정된 로그인 서비스가 없습니다.",
   "text_input_username_or_email"       : "아이디 또는 이메일주소를 입력하십시오.",
   "text_input_password"                : "비밀번호를 입력하십시오.",
-  "text_forgot_password"               : "비밀번호 찾기",
+  "text_forgot_password"               : "비밀번호를 잊으셨습니까?",
   "text_reset_password"                : "비밀번호 초기화를 위한 링크가 입력하신 Email 주소로 전송되었습니다.",
   "text_stay_signed_in"                : "로그인 상태 유지",
   "text_agreement"                     : "{0}과 {1}에 동의합니다.",
@@ -52,7 +55,8 @@ I18n_data_ko_accounts = {
   "error_email_not_found"              : "이메일주소가 존재하지 않습니다.",
   "error_agreements_required"          : "동의가 필요합니다.",
   "error_need_username_or_email"       : "아이디 또는 이메일주소를 입력하여야 합니다.",
-  "error_no_password_set"              : "비밀번호를 입력하십시오."
+  "error_no_password_set"              : "비밀번호를 입력하십시오.",
+  "error_fail_password_confirm"        : "비밀번호 입력값이 서로 일치하지 않습니다."
 
 };
 
