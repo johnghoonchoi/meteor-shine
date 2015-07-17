@@ -131,35 +131,50 @@ Template.postNew.events({
 
     var $contents = instance.$('[data-provide]');
     var dataType = $contents.attr('data-provide');
-
     var content;
+    var titleLength = $('#title').text().trim().length;
+    var contentLength;
+
     if (dataType === 'markdown') {
       content = {
         type: dataType,
         version: '0.0.1',
         data: $contents.val()
       };
+      contentLength = content.data.trim().length;
     } else if (dataType === 'wyswig') {
       content = {
         type: dataType,
         version: '0.0.1',
         data: $contents.html()
       };
+      contentLength = $contents.text().trim().length;
     } else {
       Alerts.notify('error', 'error_invalid_input');
       return;
     }
 
-    var object = {
-      categoryId: instance.category()._id,
-      title: instance.$('#title').html(),
-      content: content
-    };
-
-    if (! object.content) {
-      Alerts.notify('error', 'input content');
+    if(! titleLength) {
+      Alerts.notify('error', '제목을 입력해주세요.');
+      return;
+    } else if (titleLength < 3) {
+      Alerts.notify('error', '3자 이상 입력하세요.');
       return;
     }
+
+    if (! contentLength) {
+      Alerts.notify('error', '내용을 입력해주세요.');
+      return;
+    } else if (contentLength < 3) {
+      Alerts.notify('error', '3자 이상 입력하세요.');
+      return;
+    }
+
+    var object = {
+      categoryId: instance.category()._id,
+      title: instance.$('#title').text().trim(),
+      content: content
+    };
 
     Meteor.call('postInsert', object, function(error, result) {
       if (error) {
