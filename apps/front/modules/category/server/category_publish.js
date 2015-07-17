@@ -40,6 +40,7 @@ Meteor.publishComposite('releasedCategoryView', function(categoryId, options) {
   };
 });
 
+
 /**
  *
  */

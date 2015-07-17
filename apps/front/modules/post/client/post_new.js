@@ -22,7 +22,10 @@ Template.postNew.onDestroyed(function() {
 });
 
 Template.postNew.onRendered(function() {
-  this.$('#content').wysiwyg();
+  //this.$('#content').wysiwyg();
+
+  this.$("[data-provide=markdown]").markdown({autofocus:false,savable:false});
+  this.$("[data-provide=markdown]").tabOverride().flexText();
 });
 
 Template.postNew.helpers({
@@ -91,10 +94,31 @@ Template.postNew.events({
 
     instance.autoSave.clear();
 
+    var $contents = instance.$('[data-provide]');
+    var dataType = $contents.attr('data-provide');
+
+    var content;
+    if (dataType === 'markdown') {
+      content = {
+        type: dataType,
+        version: '0.0.1',
+        data: $contents.val()
+      };
+    } else if (dataType === 'wyswig') {
+      content = {
+        type: dataType,
+        version: '0.0.1',
+        data: $contents.html()
+      };
+    } else {
+      Alerts.notify('error', 'error_invalid_input');
+      return;
+    }
+
     var object = {
       categoryId: instance.category()._id,
       title: instance.$('#title').html(),
-      content: instance.$('#content').html()
+      content: content
     };
 
     if (! object.content) {

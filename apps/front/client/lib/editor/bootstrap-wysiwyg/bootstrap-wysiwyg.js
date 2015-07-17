@@ -28,6 +28,9 @@
     }
   };
 
+
+
+
   $.fn.cleanHtml = function () {
     var html = $(this).html();
     return html && html.replace(/(<br>|\s|<div><br><\/div>|&nbsp;)*$/, '');
@@ -38,6 +41,7 @@
       selectedRange,
       options,
       toolbarBtnSelector,
+
       updateToolbar = function () {
         if (options.activeToolbarClass) {
           $(options.toolbarSelector).find(toolbarBtnSelector).each(function () {
@@ -50,6 +54,7 @@
           });
         }
       },
+
       execCommand = function (commandWithArgs, valueArg) {
         var commandArr = commandWithArgs.split(' '),
           command = commandArr.shift(),
@@ -57,6 +62,7 @@
         document.execCommand(command, 0, args);
         updateToolbar();
       },
+
       bindHotkeys = function (hotKeys) {
         $.each(hotKeys, function (hotkey, command) {
           editor.keydown(hotkey, function (e) {
@@ -73,15 +79,18 @@
           });
         });
       },
+
       getCurrentRange = function () {
         var sel = window.getSelection();
         if (sel.getRangeAt && sel.rangeCount) {
           return sel.getRangeAt(0);
         }
       },
+
       saveSelection = function () {
         selectedRange = getCurrentRange();
       },
+
       restoreSelection = function () {
         var selection = window.getSelection();
         if (selectedRange) {
@@ -95,6 +104,7 @@
           selection.addRange(selectedRange);
         }
       },
+
       insertImages = function (images) {
         editor.focus();
         $.each(images, function(idx, imageInfo) {
@@ -104,6 +114,7 @@
           });
         });
       },
+
       markSelection = function (input, color) {
         restoreSelection();
         if (document.queryCommandSupported('hiliteColor')) {
@@ -112,6 +123,7 @@
         saveSelection();
         input.data(options.selectionMarker, color);
       },
+
       bindToolbar = function (toolbar, options) {
         toolbar.find(toolbarBtnSelector).click(function () {
           restoreSelection();
@@ -151,6 +163,7 @@
           this.value = '';
         });
       },
+
       initFileDrops = function () {
         editor.on('dragenter dragover', false)
           .on('drop', function (e) {
@@ -164,17 +177,28 @@
       };
 
     options = $.extend({}, $.fn.wysiwyg.defaults, userOptions);
+
+
     toolbarBtnSelector = 'a[data-' + options.commandRole + '],button[data-' + options.commandRole + '],input[type=button][data-' + options.commandRole + ']';
+
+
     bindHotkeys(options.hotKeys);
+
+
     if (options.dragAndDropImages) {
       initFileDrops();
     }
+
     bindToolbar($(options.toolbarSelector), options);
+
+
     editor.attr('contenteditable', true)
       .on('mouseup keyup mouseout', function () {
         saveSelection();
         updateToolbar();
       });
+
+
     $(window).bind('touchend', function (e) {
       var isInside = (editor.is(e.target) || editor.has(e.target).length > 0),
         currentRange = getCurrentRange(),
@@ -185,8 +209,9 @@
       }
     });
 
+
     // default tag change from '<div></div>' to '<p></p>'
-    document.execCommand('defaultParagraphSeparator', false, 'p');
+    document.execCommand('defaultParagraphSeparator', false, 'div');
 
     return this;
   };

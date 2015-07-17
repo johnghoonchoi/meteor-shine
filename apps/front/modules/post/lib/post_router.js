@@ -17,7 +17,7 @@ Router.route('/post/:_id', {
 Router.route('/post/:categoryId/new', {
   name: 'postNew',
   waitOn: function() {
-    Meteor.subscribe('releasedCategoryView', this.params.categoryId,
+    Meteor.subscribe('categoryView', this.params.categoryId,
       { sort: { seq: 1 }});
   },
 

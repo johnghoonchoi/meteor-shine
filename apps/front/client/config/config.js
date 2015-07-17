@@ -17,7 +17,7 @@ Meteor.Spinner.options = {
   left: '50%' // Left position relative to parent in px
 };
 
-// Default settings for Cropper
+// Default settings for Cropperjs
 $.fn.cropper.setDefaults({
   aspectRatio: 1/1,
   autoCropArea: 1,
@@ -30,6 +30,15 @@ $.fn.cropper.setDefaults({
   crossOrigin: true,
   cropBoxResizable: false,
   cropBoxMovable: false
+});
+
+// Default settings for taboverridejs
+// repo: https://github.com/wjbryant/taboverride
+// repo: https://github.com/wjbryant/jquery.taboverride
+$.fn.tabOverride.tabSize(2).autoIndent(true);
+
+marked.setOptions({
+  highlight: function(code) { return hljs.highlightAuto(code).value }
 });
 
 Accounts.ui.config({

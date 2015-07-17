@@ -35,16 +35,5 @@ reactive-var
 reywood:publish-composite
 percolate:momentum
 alanning:roles
-
-gadicohen:prism
-
 leesangwon:logger
 leesangwon:connections
-
-# editor
-perak:codemirror
-simple:highlight.js
-chuangbo:marked
-react
-dburles:collection-helpers
-matb33:collection-hooks

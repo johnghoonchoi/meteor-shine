@@ -1,6 +1,6 @@
 <template name="postView">
   <article class="page">
-    <div class="btn-toolbar">
+    <div class="btn-toolbar block-wrapper">
       <button type="button" id="back" class="btn btn-default">List</button>
       {{#if isEditable}}
         {{#if isEditMode}}
@@ -13,26 +13,34 @@
         {{/if}}
       {{/if}}
     </div>
+    <article id="articleWrap">
+      <section id="contentWrapper">
+        <h3 {{titleAttrs false}}>{{titleText}}</h3>
+        <div data-provide></div>
+      </section>
+    </article>
 
-    {{{titleEditable}}}
+    <div class="sns block-wrapper">
+      {{{titleEditable}}}
 
-    <div>
-      {{post.author.username}}
-    </div>
+      <div>
+        {{post.author.username}}
+      </div>
 
-    {{#if isEditable}}
-      {{#if isEditMode}}
-        {{> postEditorToolbar}}
+      {{#if isEditable}}
+        {{#if isEditMode}}
+          {{> postEditorToolbar}}
+        {{/if}}
       {{/if}}
-    {{/if}}
-    {{{contentEditable}}}
+      {{{contentEditable}}}
 
-    <div class="sns">
-      {{#if like}}
-        <button type="button" id="unlike" class="btn btn-default">Unlike</button>
-      {{else}}
-        <button type="button" id="like" class="btn btn-default">Like</button>
-      {{/if}}
+      <div class="sns">
+        {{#if like}}
+          <button type="button" id="unlike" class="btn btn-default" style="border-radius: 0">Unlike</button>
+        {{else}}
+          <button type="button" id="like" class="btn btn-danger" style="border-radius: 0">Like</button>
+        {{/if}}
+      </div>
     </div>
 
     {{> postCommentsList postId=_id}}

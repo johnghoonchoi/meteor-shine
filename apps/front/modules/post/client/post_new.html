@@ -1,19 +1,19 @@
 <template name="postNew">
   <article class="page">
     <h3>New post</h3>
-
     <form id="formPostNew">
       <div class="panel panel-default">
         <div class="panel-body">
+          {{{titleEditable}}}
           <div class="form-group">
             <label>Category</label>
             <p>{{category.title}}</p>
           </div>
-
-          {{{titleEditable}}}
-
-          {{> postEditorToolbar}}
-          {{{contentEditable}}}
+	        <article id="articleWrap">
+		        <section id="contentWrapper">
+							{{> postTextarea}}
+		        </section>
+	        </article>
         </div>
 
         <div class="panel-footer clearfix">
@@ -30,4 +30,6 @@
     </form>
   </article>
   {{> cloudinaryProgressBar}}
+  <!--<div id="ie-clipboard-contenteditable" class="hidden" contenteditable="true"></div>-->
+  <!--<input id="hidden-input" class="hidden" type="text" value="" />-->
 </template>

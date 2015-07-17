@@ -111,7 +111,7 @@ Meteor.methods({
           comments: 0
         },
         author: author,
-        state: 'READY',
+        state: 'PUBLISHED', //'READY',
         createdAt: now,
         updatedAt: now
       };
@@ -137,7 +137,7 @@ Meteor.methods({
 
   postUpdate: function(postId, object) {
     check(postId, String);
-    check(object, Match.Where(matchPostUpdate));
+    //check(object, Match.Where(matchPostUpdate));
 
     // check permission
     postAccess('update', Meteor.user(), postId);
