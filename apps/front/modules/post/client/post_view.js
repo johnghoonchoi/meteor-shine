@@ -49,6 +49,14 @@ Template.postView.onDestroyed(function() {
 });
 
 Template.postView.helpers({
+  titleText: function() {
+    return Template.instance().data.titleText();
+  },
+
+  titleAttrs: function(editable) {
+    return Template.instance().data.titleAttrs(editable);
+  },
+
   post: function() {
     return Template.instance().post();
   },
