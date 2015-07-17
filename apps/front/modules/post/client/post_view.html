@@ -16,24 +16,22 @@
     <article id="articleWrap">
       <section id="contentWrapper">
         <h3 {{titleAttrs false}}>{{titleText}}</h3>
+        <div>
+		      by {{post.author.username}}
+        </div>
         <div data-provide></div>
       </section>
     </article>
 
     <div class="sns block-wrapper">
-      {{{titleEditable}}}
-
-      <div>
-        {{post.author.username}}
-      </div>
-
       {{#if isEditable}}
         {{#if isEditMode}}
           {{> postEditorToolbar}}
         {{/if}}
       {{/if}}
-      {{{contentEditable}}}
 
+
+      <!--{{{contentEditable}}}-->
       <div class="sns">
         {{#if like}}
           <button type="button" id="unlike" class="btn btn-default" style="border-radius: 0">Unlike</button>

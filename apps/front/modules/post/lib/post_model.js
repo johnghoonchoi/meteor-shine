@@ -50,6 +50,7 @@ postAccess = function(action, user, ticket) {
     if (! categoryPermitted(category, user, 'write')) {
       throw new Meteor.Error(ERROR_CODE_SECURITY, 'error_access_denied');
     }
+    return true;
   };
 
   var postPermission = function(user, postId) {
@@ -68,16 +69,18 @@ postAccess = function(action, user, ticket) {
     if (post.author._id !== user._id) {
       throw new Meteor.Error(ERROR_CODE_SECURITY, "error_access_denied");
     }
+    return true;
   };
 
   switch (action) {
     case 'insert':
-      categoryPermission(user, ticket);
+      return categoryPermission(user, ticket);
       break;
-
     case 'update':
+      return postPermission(user, ticket);
+      break;
     case 'remove':
-      postPermission(user, ticket);
+      return postPermission(user, ticket);
       break;
   }
 };

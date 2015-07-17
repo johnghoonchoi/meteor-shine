@@ -3,9 +3,10 @@ Template.postView.onCreated(function() {
   var data = Template.currentData();
 
   instance.editMode = new ReactiveVar(false);
+
   instance.setEditMode = function(edit) {
     instance.$('#title').attr('contenteditable', edit);
-    instance.$('#content').attr('contenteditable', edit);
+    instance.$('#content').attr('data-provide', edit);
     instance.editMode.set(edit);
 
     if (edit) {
@@ -48,7 +49,28 @@ Template.postView.onDestroyed(function() {
   this.like = null;
 });
 
+Template.postView.onRendered(function() {
+  //console.log('user: ', Meteor.user());
+  //console.log('post: ', this.data.postId);
+
+});
+
 Template.postView.helpers({
+  titleText: function() {
+    var post = Template.instance().post();
+    var title = (post) ? post.title : '';
+    return title;
+  },
+
+  titleAttrs: function(editable) {
+    var attrs = {
+      id: "title",
+      class: "title-editable block-wrapper",
+      contenteditable: editable
+    };
+
+    return attrs;
+  },
   post: function() {
     return Template.instance().post();
   },
@@ -58,28 +80,30 @@ Template.postView.helpers({
   },
 
   isEditable: function() {
-    return postAccess('update', Meteor.user(), this.postId);
+    var user = Meteor.user();
+    var postId = Template.instance().data.postId;
+    return postAccess('update', user, postId);
   },
 
   isEditMode: function() {
     return Template.instance().editMode.get();
-  },
-
-  titleEditable: function() {
-    var post = Template.instance().post();
-    var title = (post) ? post.title : '';
-
-    return '<h3 id="title" class="title-editable" contenteditable="false">' +
-      title + '</h3>';
-  },
-
-  contentEditable: function() {
-    var post = Template.instance().post();
-    var content = (post) ? post.content : '';
-
-    return '<div id="content" class="content-editable" contenteditable="false">' +
-      content + '</div>';
   }
+
+  //titleEditable: function() {
+  //  var post = Template.instance().post();
+  //  var title = (post) ? post.title : '';
+  //
+  //  return '<h3 id="title" class="title-editable" contenteditable="false">' +
+  //    title + '</h3>';
+  //},
+
+  //contentEditable: function() {
+  //  var post = Template.instance().post();
+  //  var content = (post) ? post.content : '';
+  //
+  //  return '<div id="content" class="content-editable" contenteditable="false">' +
+  //    content + '</div>';
+  //}
 });
 
 
