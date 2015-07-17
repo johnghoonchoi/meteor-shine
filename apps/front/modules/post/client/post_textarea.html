@@ -1,6 +1,10 @@
 <template name="postTextarea">
 	<div class="content-block" data-type="markdown">
-		{{> postMarkdownToolbar}}
+    <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor" style="display:none">
+      <div class="btn-group">
+				{{> cloudinaryUploader}}
+      </div>
+    </div>
 	  <textarea {{attributes}}></textarea>
   </div>
 </template>
