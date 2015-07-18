@@ -1,0 +1,20 @@
+<template name="connectionsList">
+  <div class="accessMonitor">
+    <p>Access: {{connectionsCount}}</p>
+    <div class="list">
+      {{#each connections}}
+        {{> connectionsListItem}}
+      {{/each}}
+    </div>
+  </div>
+</template>
+
+<template name="connectionsListItem">
+  <div>
+    {{#if user}}
+      {{user.username}}
+    {{else}}
+      {{ip}}
+    {{/if}}
+  </div>
+</template>
