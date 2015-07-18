@@ -1,4 +1,4 @@
-Template.postNew.onCreated(function() {
+Template.postWrite.onCreated(function() {
   var instance = this;
   var data = Template.currentData();
 
@@ -15,35 +15,35 @@ Template.postNew.onCreated(function() {
   };
 });
 
-Template.postNew.onDestroyed(function() {
+Template.postWrite.onDestroyed(function() {
   this.autoSave = null;
   this.draftId = null;
   this.category = null;
 });
 
-Template.postNew.onRendered(function() {
-  //this.$('#content').wysiwyg();
-  this.$("[data-provide=markdown]").markdown({autofocus:true,savable:false});
+Template.postWrite.onRendered(function() {
+  this.$("[data-provide=markdown]").markdown();
   this.$("[data-provide=markdown]").tabOverride().flexText();
+
+  //this.$('[data-provide=wyswig]').wysiwyg();
 });
 
-Template.postNew.helpers({
+Template.postWrite.helpers({
   category: function() {
     return Template.instance().category();
   },
 
-  titleEditable: function() {
-    return '<h3 id="title" class="title-editable" contenteditable="true" ' +
-      'placeholder="Title..."></div>';
-  },
-
-  contentEditable: function() {
-    return '<div id="content" class="content-editable" ' +
-      'contenteditable="true" placeholder="Enter here..."></div>';
+  titleAttrs: function() {
+    return {
+      'id': 'title',
+      'class': 'title-editable',
+      'contenteditable': 'true',
+      'placeholder': '제목'
+    };
   }
 });
 
-Template.postNew.events({
+Template.postWrite.events({
   'click [data-handler=bootstrap-markdown-cmdUpload]': function() {
     $('input.cloudinary_fileupload').trigger('click');
     console.log('trigger: ');
@@ -58,7 +58,7 @@ Template.postNew.events({
       wrapper.addClass('aside-left-set');
   },
 
-  'input #content': function(e, instance) {
+  'input [data-provide]': function(e, instance) {
     e.preventDefault();
 
     instance.autoSave.clear();
@@ -124,8 +124,11 @@ Template.postNew.events({
     });
   },
 
-  'submit #formPostNew': function(e, instance) {
+  'submit #formPostWrite': function(e, instance) {
     e.preventDefault();
+
+    console.log('submit: ');
+
 
     instance.autoSave.clear();
 

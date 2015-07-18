@@ -84,7 +84,7 @@ Template.postView.helpers({
   titleAttrs: function(editable) {
     var attrs = {
       id: "title",
-      class: "title-editable block-wrapper",
+      class: "title-editable",
       contenteditable: editable
     };
 
@@ -102,6 +102,8 @@ Template.postView.helpers({
   isEditable: function() {
     var user = Meteor.user();
     var postId = Template.instance().data.postId;
+
+    // todo : 포스트 삭제 후 이 헬퍼 함수가 다시 작동해서 throw error..
     return postAccess('update', user, postId);
   },
 
@@ -116,16 +118,17 @@ Template.postView.events({
     history.back(-1);
   },
 
-  'click #edit': function(e, instance) {
+  'click [data-role=edit]': function(e, instance) {
     instance.setEditMode(true);
   },
 
-  'click #delete': function(e, instance) {
+  'click [data-role=delete]': function(e, instance) {
     e.preventDefault();
-
     var self = this;
 
-    Alerts.dialog('confirm', 'delete?', function(confirm) {
+    console.log('self.postId: ', self.postId);
+
+    Alerts.dialog('confirm', '정말 삭제하시겠습니까?', function(confirm) {
       if (confirm) {
         Meteor.call('postRemove', self.postId, function(error, result) {
           if (error) {
@@ -159,7 +162,7 @@ Template.postView.events({
     });
   },
 
-  'click #save': function(e, instance) {
+  'click [data-role=save]': function(e, instance) {
     e.preventDefault();
     var $contents = instance.$('textarea');
     var dataType = instance.post().content.type;
@@ -211,8 +214,9 @@ Template.postView.events({
       if (error) {
         Alerts.notify('error', error.message);
       } else {
-        Alerts.notify('success', 'post_insert_success');
+        Alerts.notify('success', 'post_update_success');
         instance.setEditMode(false);
+        history.go(-1);
       }
     });
   },

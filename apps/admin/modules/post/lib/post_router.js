@@ -23,8 +23,8 @@ Router.route('/post/:_id', { name: 'postView',
   }
 });
 
-Router.route('/postNew', {
-  name: 'postNew',
+Router.route('/postWrite', {
+  name: 'postWrite',
   waitOn: function() {
     Meteor.subscribe('postCategoriesList', { state: 'ON' },
       { sort: { seq: 1 }});

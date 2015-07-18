@@ -128,7 +128,6 @@ Meteor.methods({
     }
 
     if (_.include(blog.likers, this.userId)) {
-      // Todo : 이 부분부터 시작해야함
       var updated = Blogs.update(
         { 'likers': this.userId },
         { '$pull': { 'likers': this.userId }, '$inc': { "count.likes": -1} }

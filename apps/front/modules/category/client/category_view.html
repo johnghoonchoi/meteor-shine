@@ -14,24 +14,16 @@
                                      role="button">인기순</a></li>
             <li class="pull-left"><a class="btn btn-default"
                                      href="#" role="button">추천순</a></li>
-            <!-- Post Write Button -->
-            {{#if currentUser}}
-              <li role="presentation" class="{{activeRoute 'postNew'}} pull-right">
-                <a href="{{pathFor 'postNew'}}">
-                  <i class="fa fa-plus"></i>
-                </a>
-              </li>
+            {{#if permissionWrite}}
+            <li class="pull-right"><a class="btn btn-default"
+                                      href="{{pathFor 'postWrite' categoryId=categoryId}}"
+                                      role="button"><i class="fa fa-plus"></i></a></li>
             {{/if}}
           </ul>
-          {{#if permissionWrite}}
-            <ul class="pull-right">
-              <li><a class="btn btn-default" href="{{pathFor 'postNew' categoryId=categoryId}}" role="button">New</a></li>
-            </ul>
-          {{/if}}
         </nav>
       </div>
       <div class="row-fluid">
-        <div>
+        <div class="block-wrapper">
           Posts count: {{postsCount}}
         </div>
         <ul class="list-unstyled">

@@ -51,7 +51,7 @@ Template.postCommentsList.onCreated(function() {
   });
 
   instance.commentsCount = function() {
-    return Counts.get('postCommentsCount');
+    return Counts.get('postCommentsListCount');
   };
 
   instance.comments = function() {

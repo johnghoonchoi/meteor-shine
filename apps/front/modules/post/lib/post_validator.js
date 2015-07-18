@@ -8,7 +8,7 @@ PostValidator = {
       minLength: 1,
       maxLength: 100
     },
-
+    // todo: 이 부분은 어떻게 벨리데이션 체크해야되는지..
     content: {
       name: 'content',
       type: 'object',

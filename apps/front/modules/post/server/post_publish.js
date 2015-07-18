@@ -22,6 +22,8 @@ Meteor.publish('releasedPostsList', function(query, options) {
 
 });
 
+
+
 Meteor.publish('releasedPostsListCount', function(query) {
   check(query, Match.ObjectIncluding({
     "categoryId": Match.Optional(String)

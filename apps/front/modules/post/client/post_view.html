@@ -4,17 +4,17 @@
       <button type="button" id="back" class="btn btn-default">List</button>
       {{#if isEditable}}
         {{#if isEditMode}}
-          <button type="submit" id="save" class="btn btn-primary pull-right">Save</button>
+          <button type="submit" class="btn btn-primary pull-right" data-role="save">Save</button>
         {{else}}
           <div class="pull-right">
-            <button type="button" id="edit" class="btn btn-primary">Edit</button>
-            <button type="button" id="delete" class="btn btn-danger">Delete</button>
+            <button type="button" class="btn btn-primary" data-role="edit" >Edit</button>
+            <button type="button" class="btn btn-danger" data-role="delete">Delete</button>
           </div>
         {{/if}}
       {{/if}}
     </div>
     <article id="articleWrap">
-      <section id="contentWrapper">
+      <section id="contentWrapper" class="block-wrapper">
         <h3 {{titleAttrs false}}>{{titleText}}</h3>
         <div>
 		      by {{post.author.username}}
@@ -26,7 +26,6 @@
     <div class="sns block-wrapper">
       {{#if isEditable}}
         {{#if isEditMode}}
-	        Edit모드
         {{/if}}
       {{/if}}
 
