@@ -126,14 +126,13 @@ Template.postView.events({
     e.preventDefault();
     var self = this;
 
-    console.log('self.postId: ', self.postId);
-
     Alerts.dialog('confirm', '정말 삭제하시겠습니까?', function(confirm) {
       if (confirm) {
         Meteor.call('postRemove', self.postId, function(error, result) {
           if (error) {
             Alerts.notify('error', error.message);
           } else {
+            BothLog.log('one post successfully removed..');
             Alerts.notify('success', 'post_remove_success');
             history.go(-1);
           }
