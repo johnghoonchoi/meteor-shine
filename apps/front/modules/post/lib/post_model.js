@@ -202,7 +202,7 @@ Meteor.methods({
     check(postId, String);
 
     // check permission
-    postAccess('remove', Meteor.user(), object.categoryId);
+    postAccess('remove', Meteor.user(), postId);
 
     var post = Posts.findOne({ _id: postId });
     if ( post.author._id !== this.userId ) {

@@ -16,6 +16,7 @@ check@1.0.5
 chuangbo:marked@0.3.5
 coffeescript@1.0.6
 cosmos:browserify@0.4.0
+davidsunny:bothlog@0.0.1
 dburles:collection-helpers@1.0.3
 dburles:mongo-collection-instances@0.3.4
 ddp@1.1.0

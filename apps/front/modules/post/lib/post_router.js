@@ -14,8 +14,8 @@ Router.route('/post/:_id', {
   }
 });
 
-Router.route('/post/:categoryId/new', {
-  name: 'postNew',
+Router.route('/post/:categoryId/write', {
+  name: 'postWrite',
   waitOn: function() {
     Meteor.subscribe('categoryView', this.params.categoryId,
       { sort: { seq: 1 }});

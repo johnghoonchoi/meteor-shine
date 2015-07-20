@@ -28,7 +28,7 @@ Meteor.methods({
     var user = Meteor.user();
 
     var comment = {
-      blogId: object.blogId,
+      postId: object.postId,
       msg: object.msg,
       user: {
         _id: user._id,
@@ -45,7 +45,7 @@ Meteor.methods({
       comment._id = PostComments.insert(comment);
 
       // increment comment count +1
-      Posts.update({ _id: comment.blogId }, { $inc: { 'count.comment': 1 }});
+      Posts.update({ _id: comment.postId }, { $inc: { 'count.comment': 1 }});
 
       // push notification
       createCommentNotification(comment);

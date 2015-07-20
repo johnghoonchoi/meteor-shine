@@ -1,4 +1,4 @@
-Template.postNew.onCreated(function() {
+Template.postWrite.onCreated(function() {
   var instance = this;
 
   instance.autoSave = new Autosave();
@@ -18,18 +18,18 @@ Template.postNew.onCreated(function() {
   };
 });
 
-Template.postNew.onDestroyed(function() {
+Template.postWrite.onDestroyed(function() {
   this.autoSave = null;
   this.draftId = null;
   this.categoriesCount = null;
   this.categories = null;
 });
 
-Template.postNew.onRendered(function() {
+Template.postWrite.onRendered(function() {
   this.$('#content').wysiwyg();
 });
 
-Template.postNew.helpers({
+Template.postWrite.helpers({
   categoriesCount: function() {
     return Template.instance().categoriesCount();
   },
@@ -49,7 +49,7 @@ Template.postNew.helpers({
   }
 });
 
-Template.postNew.events({
+Template.postWrite.events({
   'input #content': function(e, instance) {
     e.preventDefault();
 
@@ -94,7 +94,7 @@ Template.postNew.events({
     });
   },
 
-  'submit #formPostNew': function(e, instance) {
+  'submit #formPostWrite': function(e, instance) {
     e.preventDefault();
 
     var object = {

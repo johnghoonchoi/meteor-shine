@@ -43,7 +43,7 @@ Router.onBeforeAction(accessControl, { only: [
   'myBlogOne',
   'blogNew',
   'blogEdit',
-  'postNew'
+  'postWrite'
 ]});
 
 Router.route('/', function() {
