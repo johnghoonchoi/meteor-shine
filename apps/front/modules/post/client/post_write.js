@@ -4,6 +4,8 @@ Template.postWrite.onCreated(function() {
 
   instance.autoSave = new Autosave();
   instance.draftId = null;
+  instance.shineEditor = new ShineEditor();
+  instance.titleMax = 30;
 
   instance.autorun(function() {
     instance.subscribe('postCategoriesList',
@@ -19,6 +21,7 @@ Template.postWrite.onDestroyed(function() {
   this.autoSave = null;
   this.draftId = null;
   this.category = null;
+  this.shineEditor = null;
 });
 
 Template.postWrite.onRendered(function() {
@@ -40,28 +43,44 @@ Template.postWrite.helpers({
       'contenteditable': 'true',
       'placeholder': '제목'
     };
+  },
+
+  titleMax: function() {
+    return Template.instance().titleMax;
   }
 });
 
+
+
 Template.postWrite.events({
-  'click [data-handler=bootstrap-markdown-cmdUpload]': function() {
-    $('input.cloudinary_fileupload').trigger('click');
-    console.log('trigger: ');
+  'input #title': function(e, t) {
+    BothLog.log('title input..');
+    t.shineEditor.updateInputCount(t.titleMax, e.currentTarget);
   },
-  'click [data-handler=bootstrap-markdown-cmdPreview]': function() {
+
+  'click [data-handler=bootstrap-markdown-cmdUpload]': function(e) {
+    e.stopImmediatePropagation();
+    $('input.cloudinary_fileupload').trigger('click');
+    console.log('image upload click trigger..');
+  },
+  'click [data-handler=bootstrap-markdown-cmdPreview]': function(e) {
+    e.stopImmediatePropagation();
     var $pre = $('.flex-text-wrap>pre');
     $pre.toggleClass('hidden');
   },
-  'click .md-control-fullscreen': function() {
+  'click .md-control-fullscreen': function(e) {
+    e.stopImmediatePropagation();
     var wrapper = $('#wrapper');
     if (! wrapper.hasClass('aside-right-set'))
       wrapper.addClass('aside-left-set');
   },
 
+  // todo : 20, July, draft functionality here..
   'input [data-provide]': function(e, instance) {
     e.preventDefault();
 
     instance.autoSave.clear();
+
     instance.autoSave.set(function() {
       var $contents = instance.$('[data-provide]');
       var dataType = $contents.attr('data-provide');
@@ -71,7 +90,7 @@ Template.postWrite.events({
         content = {
           type: dataType,
           version: '0.0.1',
-          data: $contents.val()
+          data: $contents.val().trim()
         };
       } else if (dataType === 'wyswig') {
         content = {
@@ -121,14 +140,11 @@ Template.postWrite.events({
           });
         }
       }
-    });
+    }, 3000);
   },
 
   'submit #formPostWrite': function(e, instance) {
     e.preventDefault();
-
-    console.log('submit: ');
-
 
     instance.autoSave.clear();
 
@@ -185,7 +201,7 @@ Template.postWrite.events({
       } else {
         if (instance.draftId) {
           Meteor.call('postDraftRemove', instance.draftId, function() {
-            console.log('draft removed...');
+            BothLog.log('draft removed...');
           });
         }
         Alerts.notify('success', 'post_insert_success');

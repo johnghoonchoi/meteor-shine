@@ -1,6 +1,7 @@
 /**
  * PostDrafts
  *    _id
+ *    categoryId          String
  *    title               String 1..100
  *    content
  *      version           "1.0"
@@ -25,16 +26,21 @@ Meteor.methods({
     }
 
     var user = Meteor.user();
+
+    // build insert object
+    var author = {
+      _id: user._id,
+      username: user.username,
+      name: user.name
+    };
+
     var now = new Date();
 
     var draft = {
+      categoryId: object.categoryId,
       title: object.title,
       content: object.content,
-      author: {
-        _id: user._id,
-        username: user.username,
-        name: user.name
-      },
+      author: author,
       createdAt: now,
       updatedAt: now
     };

@@ -11,7 +11,7 @@ PostDraftValidator = {
 
     content: {
       name: 'content',
-      type: 'string',
+      type: 'object',
       required: true,
       minLength: 1,
       maxLength: 65536

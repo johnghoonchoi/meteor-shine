@@ -15,8 +15,7 @@ Autosave = function() {
     this.timer = Meteor.setTimeout(function() {
       callbackSave();
     }, interval);
-
-    return this.timer;
+    //return this.timer;
   };
 
   // release autosave operation

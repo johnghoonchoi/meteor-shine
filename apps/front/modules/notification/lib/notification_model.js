@@ -32,14 +32,14 @@ Meteor.methods({
 });
 
 createCommentNotification = function(comment) {
-  var blog = Blogs.findOne(comment.blogId);
+  var post = Posts.findOne(comment.postId);
 
-  if (blog.user._id !== comment.user._id) {
-    var message = I18n.get('text_notification_new_comment', [ userDisplayName(blog.user) ]);
-    var messageUri = 'blog/' + blog._id;
+  if (post.author._id !== comment.user._id) {
+    var message = I18n.get('text_notification_new_comment', [ userDisplayName(post.author) ]);
+    var messageUri = 'post/' + post._id;
 
     Notifications.insert({
-      user: { _id: blog.user._id },
+      user: { _id: post.author._id },
       msg: {
         type: NOTIFICATION_MSG_TYPE_COMMENT,
         content: message,

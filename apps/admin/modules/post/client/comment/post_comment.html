@@ -15,7 +15,6 @@
     <div class="panel-heading">
       <h4>{{_ 'title_comments'}} <small>{{postCommentsCount}}</small></h4>
     </div>
-
     <div class="panel-body comments-list-frame">
       {{#if loaded}}
         {{#if hasMore}}
@@ -26,7 +25,6 @@
       {{else}}
         {{> listLoading}}
       {{/if}}
-
       <ul class="media-list">
         {{#each postComments}}
           {{> postCommentsListItem}}
@@ -49,8 +47,8 @@
       </a>
     </div>
     <div class="media-body">
-      <h4 class="media-heading">{{commenter.username}} <small>{{momentFromNow createdAt}}</small></h4>
-      {{{msg}}}
+      <h4 class="media-heading">{{user.username}} <small>{{momentFromNow createdAt}}</small></h4>
+	    {{msg}}
     </div>
   </li>
 </template>

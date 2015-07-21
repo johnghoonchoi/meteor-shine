@@ -10,6 +10,7 @@ Template.postView.onCreated(function() {
     if (edit) {
       instance.$('[data-provide]').attr('data-provide','markdown-editable');
       instance.$('[data-provide]').trigger('click');
+      instance.$('textarea').attr('data-provide', 'markdown');
 
       var post = instance.post();
       if (post && ! _.isEmpty(post.draft)) {
@@ -60,6 +61,7 @@ Template.postView.onCreated(function() {
 });
 
 Template.postView.onDestroyed(function() {
+  this.autoSave.clear(); /* Clear setTimeout of Autosave instance  */
   this.editMode = null;
   this.autoSave = null;
   this.post = null;
@@ -69,9 +71,6 @@ Template.postView.onDestroyed(function() {
 
 Template.postView.onRendered(function() {
   this.insertContent();
-  //console.log('user: ', Meteor.user());
-  //console.log('post: ', this.data.postId);
-
 });
 
 Template.postView.helpers({
@@ -114,7 +113,7 @@ Template.postView.helpers({
 
 
 Template.postView.events({
-  'click #back': function() {
+  'click #back': function(e, instance) {
     history.back(-1);
   },
 
@@ -141,16 +140,39 @@ Template.postView.events({
     });
   },
 
-  'input #content': function(e, instance) {
+  'input [data-provide]': function(e, instance) {
     e.preventDefault();
-
     var self = this;
 
     instance.autoSave.clear();
     instance.autoSave.set(function() {
+
+      var $contents = instance.$('[data-provide]');
+      var dataType = $contents.attr('data-provide');
+
+      var content;
+      if (dataType === 'markdown') {
+        content = {
+          type: dataType,
+          version: '0.0.1',
+          data: $contents.val().trim()
+        };
+      } else if (dataType === 'wyswig') {
+        content = {
+          type: dataType,
+          version: '0.0.1',
+          data: $contents.html()
+        };
+      } else {
+        Alerts.notify('error', 'error_invalid_input');
+
+        return;
+      }
+
       var object = {
+        categoryId: instance.post().categoryId,
         title: instance.$('#title').html(),
-        content: instance.$('#content').html()
+        content: content
       };
 
       Meteor.call('postSaveDraft', self.postId, object, function(error) {
@@ -158,7 +180,7 @@ Template.postView.events({
           Alerts.notify('success', 'draft_saved');
         }
       });
-    });
+    }, 3000);
   },
 
   'click [data-role=save]': function(e, instance) {
@@ -238,10 +260,5 @@ Template.postView.events({
         Alerts.notify('error', error.reason);
       }
     });
-  },
-
-  'click .load-more': function(e, instance) {
-    e.preventDefault();
-    instance.limit.set(instance.limit.get() + instance.increment);
   }
 });
