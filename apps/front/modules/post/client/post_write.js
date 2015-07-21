@@ -5,7 +5,8 @@ Template.postWrite.onCreated(function() {
   instance.autoSave = new Autosave();
   instance.draftId = null;
   instance.shineEditor = new ShineEditor();
-  instance.titleMax = 30;
+  instance.data.titleMax = 100;
+  //instance.data.titleCount = new ReactiveVar(0);
 
   instance.autorun(function() {
     instance.subscribe('postCategoriesList',
@@ -27,7 +28,6 @@ Template.postWrite.onDestroyed(function() {
 Template.postWrite.onRendered(function() {
   this.$("[data-provide=markdown]").markdown();
   this.$("[data-provide=markdown]").tabOverride().flexText();
-
   //this.$('[data-provide=wyswig]').wysiwyg();
 });
 
@@ -36,26 +36,23 @@ Template.postWrite.helpers({
     return Template.instance().category();
   },
 
-  titleAttrs: function() {
+  titleAttrs: function(maxLeng) {
     return {
       'id': 'title',
       'class': 'title-editable',
-      'contenteditable': 'true',
-      'placeholder': '제목'
+      'name': 'title',
+      'placeholder': '제목',
+      'maxlength': maxLeng
     };
-  },
-
-  titleMax: function() {
-    return Template.instance().titleMax;
   }
 });
 
 
 
 Template.postWrite.events({
-  'input #title': function(e, t) {
-    BothLog.log('title input..');
-    t.shineEditor.updateInputCount(t.titleMax, e.currentTarget);
+  'input, focus [name=title]': function(e, t) {
+    var count = $(e.currentTarget).val().trim().length;
+    //t.data.titleCount.set(count);
   },
 
   'click [data-handler=bootstrap-markdown-cmdUpload]': function(e) {
@@ -105,7 +102,7 @@ Template.postWrite.events({
 
       var object = {
         categoryId: instance.category()._id,
-        title: instance.$('#title').html(),
+        title: instance.$('[name=title]').val().trim(),
         content: content
       };
 
@@ -151,7 +148,7 @@ Template.postWrite.events({
     var $contents = instance.$('[data-provide]');
     var dataType = $contents.attr('data-provide');
     var content;
-    var titleLength = $('#title').text().trim().length;
+    var titleLength = $('[name=title]').val().trim().length;
     var contentLength;
 
     if (dataType === 'markdown') {
@@ -191,7 +188,7 @@ Template.postWrite.events({
 
     var object = {
       categoryId: instance.category()._id,
-      title: instance.$('#title').text().trim(),
+      title: instance.$('[name=title]').val().trim(),
       content: content
     };
 
