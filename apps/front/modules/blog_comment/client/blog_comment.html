@@ -42,7 +42,6 @@
 </template>
 
 <template name="blogCommentsListItem">
-  <!-- <li>{{{msg}}} by {{user.username}}</li> -->
   <li class="media">
     <div class="media-left">
       <a href="#" class="avatar-sm">
@@ -50,8 +49,8 @@
       </a>
     </div>
     <div class="media-body">
-      <h4 class="media-heading">{{commenter.username}} <small>{{momentFromNow createdAt}}</small></h4>
-      {{{msg}}}
+      <h4 class="media-heading">{{comments.user.username}} <small>{{momentFromNow comments.createdAt}}</small></h4>
+      {{comments.msg}}
     </div>
   </li>
 </template>

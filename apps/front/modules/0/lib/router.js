@@ -2,6 +2,11 @@
 Router.configure({
   layoutTemplate: 'layout',
   loadingTemplate: 'loading',
+  yieldTemplates: {
+    'headerDefault': {to: 'header'},
+    'navMain': {to: 'nav'},
+    'footerDefault': {to: 'footer'}
+  },
   waitOn: function() {
     Meteor.subscribe("userStatus");
     Meteor.subscribe('profileView');

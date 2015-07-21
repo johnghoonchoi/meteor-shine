@@ -3,12 +3,12 @@
     <h3 style="display: none;">글쓰기</h3>
     <form id="formPostWrite">
       <div class="panel panel-default">
+        <div class="form-group">
+          <label>Category :</label><sapn>&nbsp;{{category.title}}</sapn>
+        </div>
         <div class="panel-body block-wrapper">
-          <h3 {{titleAttrs}}></h3>
-          <div class="form-group">
-            <label>Category</label>
-            <p>{{category.title}}</p>
-          </div>
+          <h3><input {{titleAttrs titleMax}}></h3>
+          <!--<div class="counting">글자수 제한: <span class="input-counter">{{titleCount.get}}/{{titleMax}}</span></div>-->
 	        <article id="articleWrap">
 		        <section id="contentWrapper">
 							{{> postTextarea}}

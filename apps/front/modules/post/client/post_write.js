@@ -4,6 +4,9 @@ Template.postWrite.onCreated(function() {
 
   instance.autoSave = new Autosave();
   instance.draftId = null;
+  instance.shineEditor = new ShineEditor();
+  instance.data.titleMax = 100;
+  //instance.data.titleCount = new ReactiveVar(0);
 
   instance.autorun(function() {
     instance.subscribe('postCategoriesList',
@@ -19,12 +22,12 @@ Template.postWrite.onDestroyed(function() {
   this.autoSave = null;
   this.draftId = null;
   this.category = null;
+  this.shineEditor = null;
 });
 
 Template.postWrite.onRendered(function() {
   this.$("[data-provide=markdown]").markdown();
   this.$("[data-provide=markdown]").tabOverride().flexText();
-
   //this.$('[data-provide=wyswig]').wysiwyg();
 });
 
@@ -33,35 +36,48 @@ Template.postWrite.helpers({
     return Template.instance().category();
   },
 
-  titleAttrs: function() {
+  titleAttrs: function(maxLeng) {
     return {
       'id': 'title',
       'class': 'title-editable',
-      'contenteditable': 'true',
-      'placeholder': '제목'
+      'name': 'title',
+      'placeholder': '제목',
+      'maxlength': maxLeng
     };
   }
 });
 
+
+
 Template.postWrite.events({
-  'click [data-handler=bootstrap-markdown-cmdUpload]': function() {
-    $('input.cloudinary_fileupload').trigger('click');
-    console.log('trigger: ');
+  'input, focus [name=title]': function(e, t) {
+    var count = $(e.currentTarget).val().trim().length;
+    //t.data.titleCount.set(count);
   },
-  'click [data-handler=bootstrap-markdown-cmdPreview]': function() {
+
+  'click [data-handler=bootstrap-markdown-cmdUpload]': function(e) {
+    e.stopImmediatePropagation();
+    $('input.cloudinary_fileupload').trigger('click');
+    console.log('image upload click trigger..');
+  },
+  'click [data-handler=bootstrap-markdown-cmdPreview]': function(e) {
+    e.stopImmediatePropagation();
     var $pre = $('.flex-text-wrap>pre');
     $pre.toggleClass('hidden');
   },
-  'click .md-control-fullscreen': function() {
+  'click .md-control-fullscreen': function(e) {
+    e.stopImmediatePropagation();
     var wrapper = $('#wrapper');
     if (! wrapper.hasClass('aside-right-set'))
       wrapper.addClass('aside-left-set');
   },
 
+  // todo : 20, July, draft functionality here..
   'input [data-provide]': function(e, instance) {
     e.preventDefault();
 
     instance.autoSave.clear();
+
     instance.autoSave.set(function() {
       var $contents = instance.$('[data-provide]');
       var dataType = $contents.attr('data-provide');
@@ -71,7 +87,7 @@ Template.postWrite.events({
         content = {
           type: dataType,
           version: '0.0.1',
-          data: $contents.val()
+          data: $contents.val().trim()
         };
       } else if (dataType === 'wyswig') {
         content = {
@@ -86,7 +102,7 @@ Template.postWrite.events({
 
       var object = {
         categoryId: instance.category()._id,
-        title: instance.$('#title').html(),
+        title: instance.$('[name=title]').val().trim(),
         content: content
       };
 
@@ -121,21 +137,18 @@ Template.postWrite.events({
           });
         }
       }
-    });
+    }, 3000);
   },
 
   'submit #formPostWrite': function(e, instance) {
     e.preventDefault();
-
-    console.log('submit: ');
-
 
     instance.autoSave.clear();
 
     var $contents = instance.$('[data-provide]');
     var dataType = $contents.attr('data-provide');
     var content;
-    var titleLength = $('#title').text().trim().length;
+    var titleLength = $('[name=title]').val().trim().length;
     var contentLength;
 
     if (dataType === 'markdown') {
@@ -175,7 +188,7 @@ Template.postWrite.events({
 
     var object = {
       categoryId: instance.category()._id,
-      title: instance.$('#title').text().trim(),
+      title: instance.$('[name=title]').val().trim(),
       content: content
     };
 
@@ -185,7 +198,7 @@ Template.postWrite.events({
       } else {
         if (instance.draftId) {
           Meteor.call('postDraftRemove', instance.draftId, function() {
-            console.log('draft removed...');
+            BothLog.log('draft removed...');
           });
         }
         Alerts.notify('success', 'post_insert_success');

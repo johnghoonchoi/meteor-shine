@@ -15,7 +15,7 @@ colors.setTheme({
 
 Meteor.methods({
   serverlog: function(msg) {
-    console.log(msg.warn);
+    console.log(msg.error);
   }
 });
 

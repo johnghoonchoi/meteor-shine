@@ -162,7 +162,7 @@ Meteor.methods({
     check(object, Match.Where(matchPostUpdate));
 
     // check permission
-    postAccess('update', Meteor.user(), object.categoryId);
+    postAccess('update', Meteor.user(), postId);
 
     var data = {
       draft: {

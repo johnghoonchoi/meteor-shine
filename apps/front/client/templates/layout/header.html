@@ -1,18 +1,4 @@
 <template name="headerDefault">
-  <!-- <div class="logo">{{_ 'brand'}}</div>
-
-  <div class="header-left">
-    <button type="button" class="btn btn-primary btn-header" data-toggle="aside-left"><i class="fa fa-2x fa-bars"></i></button>
-    button type="button" class="btn btn-default"><i class="fa fa-chevron-left"></i> {{_ 'command_back' }}</button
-  </div>
-
-  <div class="header-right">
-    button type="button" class="btn btn-info btn-header" data-toggle="aside-right"><i class="fa fa-2x fa-search"></i></button
-    <button type="button" id="btnNotification" class="btn btn-info btn-header" data-toggle="notifications"><i class="fa fa-2x fa-bell"></i>
-      {{#if notificationsCount}}<span class="badge">{{notificationsCount}}</span>{{/if}}
-    </button>
-  </div> -->
-
   <div role="navigation" class="navbar navbar-default navbar-custom">
     <div class="container-fluid">
       <a class="navbar-brand" href="{{pathFor 'home'}}">{{_ 'brand'}}</a>
@@ -23,7 +9,6 @@
           </a>
         </li>
       </ul>
-
       <ul class="nav navbar-nav pull-right">
 	      {{#if currentUser}}
         <li>

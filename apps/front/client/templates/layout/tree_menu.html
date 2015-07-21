@@ -8,14 +8,12 @@
     </li>
 
     {{#if currentUser}}
-      <!-- My Blogs
-      <li role="presentation" data-path="myBlogsList">
-        <a href="{{pathFor 'myBlogsList'}}">
-          <i class="fa fa-th-list"></i> {{_ 'title_my_blogs'}}
-        </a>
-      </li>
-       -->
-    {{/if}}
+    <li role="presentation" class="{{active 'postMyWorks'}}">
+      <a href="{{pathFor 'postMyWorks'}}">
+        <i class="fa fa-inbox"> </i> My Works
+      </a>
+    </li>
+	  {{/if}}
 
     {{! read from module 'category' }}
     {{> categoriesList}}

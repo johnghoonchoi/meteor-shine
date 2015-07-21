@@ -1,6 +1,6 @@
 Template.postCommentNew.helpers({
   editable: function() {
-    return '<div class="editable form-control" contenteditable="true" name="msg"></div>';
+    return '<textarea name="msg"></textarea>';
   }
 
 });
@@ -11,14 +11,14 @@ Template.postCommentNew.events({
 
     var object = {
       postId: Template.parentData(1).postId,
-      msg: $(e.target).find('[name=msg]').html().trim()
+      msg: $(e.target).find('[name=msg]').val().trim()
     };
 
     Meteor.call('postCommentInsert', object, function(error) {
       if (error) {
         Alerts.notify('error', error.reason);
       } else {
-        $(e.target).find('[name=msg]').html('');
+        $(e.target).find('[name=msg]').val('');
 
         var frame = $('.comments-list-frame');
         frame.animate({ scrollTop: frame[0].scrollHeight }, "slow");
