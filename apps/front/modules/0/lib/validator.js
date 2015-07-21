@@ -11,11 +11,15 @@
 Validator = function(schema) {
 
   var _schema = schema;
-
   var _errors = [];
 
   this.schema = function(attribute) {
-    return (_schema) ? _schema[attribute] : null;
+    var object = _schema;
+    var path = attribute.split(".");
+    for (var i = 0; i < path.length; i++) {
+      object = object[path[i]];
+    }
+    return object;
   };
 
   // get all errors
@@ -28,8 +32,9 @@ Validator = function(schema) {
 
     var _findError = function(attribute) {
       for (var i = 0; i < _errors.length; i++) {
-        if (_errors[i].attribute === attribute)
+        if (_errors[i].attribute === attribute) {
           return _errors[i];
+        }
       }
       return null;
     };
@@ -47,8 +52,14 @@ Validator = function(schema) {
     }
   };
 
-  this.validate = function(object, attributes) {
+  this.hasError = function() {
+    return (_errors && _errors.length > 0);
+  };
+
+  this.validate = function(object, attributes, parent) {
     var self = this;
+
+    var base = (! parent) ? "" : parent + ".object.";
 
     if (! _.isArray(attributes)) {
       attributes = [ attributes ];
@@ -57,26 +68,36 @@ Validator = function(schema) {
     for (var i = 0; i < attributes.length; i++) {
       var attribute = attributes[i];
 
-      var rule = self.schema(attribute);
+      var rule = self.schema(base + attribute);
       var value = object[attribute];
 
-      if (rule.required === false && ! value) {
+      if (! value) {
+        if (rule.required) {
+          self.setError(base + attribute, "error_input_required");
+        }
         return;
       }
 
-      if (typeof value !== rule.type)
-        self.setError(attribute, "error_invalid_type");
-
-      if (rule.required && ! value) {
-        self.setError(attribute, "error_input_required");
+      if (typeof value !== rule.type) {
+        self.setError(base + attribute, "error_invalid_type");
         return;
       }
 
-      if ((rule.minLength && value.length < rule.minLength) ||
-        (rule.maxLength && value.length > rule.maxLength))
-        self.setError(attribute, "error_out_of_range");
+      if (rule.type === 'object') {
+        this.validate(value, Object.keys(value), attribute);
+      } else if (rule.type === 'string') {
+        if (rule.values && rule.values.length > 0) {
+          if (! _.contains(rule.values, value)) {
+            self.setError(base + attribute, "error_invalid_input");
+          }
+        }
+
+        if ((rule.minLength && value.length < rule.minLength) ||
+          (rule.maxLength && value.length > rule.maxLength)) {
+          self.setError(base + attribute, "error_out_of_range");
+        }
+      }
     }
-
-  }
+  };
 };
 

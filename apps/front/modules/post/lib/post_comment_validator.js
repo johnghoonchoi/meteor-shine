@@ -1,14 +1,12 @@
 PostCommentValidator = {
   schema: {
     postId: {
-      name: 'postId',
       type: 'string',
       required: true,
       minLength: 8,
       maxLength: 40
     },
     msg: {
-      name: 'msg',
       type: 'string',
       required: true,
       minLength: 1,

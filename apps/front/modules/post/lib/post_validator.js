@@ -2,23 +2,36 @@
 PostValidator = {
   schema: {
     title: {
-      name: 'title',
       type: 'string',
       required: true,
       minLength: 1,
       maxLength: 100
     },
-    // todo: 이 부분은 어떻게 벨리데이션 체크해야되는지..
+
     content: {
-      name: 'content',
       type: 'object',
       required: true,
-      minLength: 1,
-      maxLength: 65536
+      object: {
+        version: {
+          type: 'string',
+          required: true,
+          values: ['0.0.1', '0.0.2']
+        },
+        type: {
+          type: 'string',
+          required: true,
+          values: ['markdown', 'html']
+        },
+        data: {
+          type: 'string',
+          required: true,
+          minLength: 1,
+          maxLength: 65536
+        }
+      }
     },
 
     categoryId: {
-      name: 'categoryId',
       type: 'string',
       required: true,
       minLength: 1,
