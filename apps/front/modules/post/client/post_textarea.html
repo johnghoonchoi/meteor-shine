@@ -5,6 +5,12 @@
 				{{> cloudinaryUploader}}
       </div>
     </div>
-	  <textarea {{attributes}}></textarea>
+		{{#if mode}}
+	  <textarea data-provide='markdown'
+    data-iconlibrary='fa' placeholder='본문'>내용입니다.</textarea>
+		{{else}}
+		<textarea data-provide='markdown'
+              data-iconlibrary='fa' placeholder='본문'>{{parentData.content.data}}</textarea>
+		{{/if}}
   </div>
 </template>

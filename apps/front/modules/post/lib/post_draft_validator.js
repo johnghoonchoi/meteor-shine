@@ -42,7 +42,7 @@ PostDraftValidator = {
   validateInsert: function(object) {
     var validator = new Validator(this.schema);
 
-    validator.validate(object, ['title', 'content']);
+    validator.validate(object, ['title', 'content', 'categoryId']);
 
     return validator;
   },

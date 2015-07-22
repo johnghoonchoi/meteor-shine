@@ -1,19 +1,19 @@
 Template.myWorksDrafts.onCreated(function() {
+  Navigations.path.set('myWorksDrafts');
+
   var instance = this;
-
   instance.increment = 50;
-
   instance.data = Template.currentData();
   instance.data.state = new ReactiveDict;
   instance.data.state.set('limit', instance.increment);
   instance.data.state.set('loaded', 0);
 
+  // template.autorun(runFunc)
+  // A version of Tracker.autorun that is stopped when the template is destroyed.
   instance.autorun(function() {
     var limit = instance.data.state.get('limit');
     instance.subscribe('postDraftsList', {}, { limit: limit, sort: { createdAt: -1 } },
       function() { instance.data.state.set('limit', limit) });
-
-    Navigations.path.set('myWorksDrafts');
   });
 
   instance.data.postDrafts = function() {
@@ -30,7 +30,6 @@ Template.myWorksDrafts.onCreated(function() {
 });
 
 Template.myWorksDrafts.onRendered(function() {
-  console.dir(this.data);
-  console.dir(this.data.state);
+  console.log('myWorksDrafts this: ', this);
 
 });

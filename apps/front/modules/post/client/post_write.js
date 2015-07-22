@@ -1,9 +1,17 @@
 Template.postWrite.onCreated(function() {
   var instance = this;
-  var data = Template.currentData();
+
+  instance.data = Template.currentData();
+  instance.data.titleMax = 20;
+  instance.data.isDraftMode = instance.data.mode === 'draft';
+
+  instance.state = new ReactiveDict;
+  instance.state.set('update', 0);
 
   instance.autoSave = new Autosave();
-  instance.draftId = null;
+
+  if (! instance.data.parentData) instance.draftId = null;
+  else instance.draftId = instance.data.parentData._id;
 
   instance.autorun(function() {
     instance.subscribe('postCategoriesList',
@@ -11,7 +19,7 @@ Template.postWrite.onCreated(function() {
   });
 
   instance.category = function() {
-    return Categories.findOne({ _id: data.categoryId, state: 'ON' });
+    return Categories.findOne({ _id: instance.data.categoryId, state: 'ON' });
   };
 });
 
@@ -20,19 +28,22 @@ Template.postWrite.onDestroyed(function() {
   this.autoSave = null;
   this.draftId = null;
   this.category = null;
+  this.data = null;
 });
 
 Template.postWrite.onRendered(function() {
-  this.$("[data-provide=markdown]").markdown();
-  this.$("[data-provide=markdown]").tabOverride().flexText();
+  var instance = this;
+  console.log('onRendered this.data: ', this.data);
+  console.log('onRendered this: ', this);
+  instance.$("[data-provide=markdown]").markdown();
+  instance.$("[data-provide=markdown]").tabOverride().flexText();
+
   //this.$('[data-provide=wyswig]').wysiwyg();
+
+
 });
 
 Template.postWrite.helpers({
-  category: function() {
-    return Template.instance().category();
-  },
-
   titleAttrs: function(maxLeng) {
     return {
       'id': 'title',
@@ -41,9 +52,12 @@ Template.postWrite.helpers({
       'placeholder': '제목',
       'maxlength': maxLeng
     };
+  },
+
+  category: function() {
+    return Template.instance().category();
   }
 });
-
 
 
 Template.postWrite.events({
@@ -97,8 +111,14 @@ Template.postWrite.events({
         return;
       }
 
+      var cateId;
+      if (instance.data.parentData)
+        cateId = instance.data.parentData.categoryId;
+      else
+        cateId = instance.category()._id;
+
       var object = {
-        categoryId: instance.category()._id,
+        categoryId: cateId,
         title: instance.$('[name=title]').val().trim(),
         content: content
       };
@@ -114,6 +134,8 @@ Template.postWrite.events({
           } else {
             instance.draftId = id;
             Alerts.notify('success', 'draft_inserted');
+            BothLog.log('드래프트 인서트 성공..');
+            instance.autoSave.clear();
           }
         });
       } else {
@@ -122,6 +144,8 @@ Template.postWrite.events({
             if (error) {
               Alerts.notify('error', error.reason);
             } else {
+              BothLog.log('드래프트 업데이트 성공..');
+
               Alerts.notify('success', 'draft_saved');
             }
           });
@@ -130,11 +154,12 @@ Template.postWrite.events({
             if (! error) {
               Alerts.notify('success', 'draft_removed');
               instance.draftId = null;
+              BothLog.log('드래프트 제거 성공..');
             }
           });
         }
       }
-    }, 3000);
+    }, 5000);
   },
 
   'submit #formPostWrite': function(e, instance) {
@@ -183,8 +208,14 @@ Template.postWrite.events({
       return;
     }
 
+    var cateId;
+    if (instance.data.parentData.categoryId)
+      cateId = instance.data.parentData.categoryId;
+    else
+      cateId = instance.category()._id;
+
     var object = {
-      categoryId: instance.category()._id,
+      categoryId: cateId,
       title: instance.$('[name=title]').val().trim(),
       content: content
     };
@@ -196,6 +227,7 @@ Template.postWrite.events({
         if (instance.draftId) {
           Meteor.call('postDraftRemove', instance.draftId, function() {
             BothLog.log('draft removed...');
+
           });
         }
         Alerts.notify('success', 'post_insert_success');
