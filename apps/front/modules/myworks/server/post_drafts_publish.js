@@ -13,11 +13,13 @@ Meteor.publish('postDraftsList', function(query, options) {
 
   //query = _.extend(query, { state: 'PUBLISHED' });
 
+  query = _.extend(query, { 'author._id': this.userId });
+
   Counts.publish(this, 'postDraftsListCount', PostDrafts.find(query),
     { noReady: true });
 
-  var postDraft = PostDrafts.find(query, options);
+  var postDrafts = PostDrafts.find(query, options);
 
-  return posts;
+  return postDrafts;
 
 });

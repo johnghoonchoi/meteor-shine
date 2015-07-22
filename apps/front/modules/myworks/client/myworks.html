@@ -5,12 +5,12 @@
 				<ul class="navTabs-list">
 					<li class="navTabs-item active">
 						<a class="navTabs-anchor" href="{{pathFor 'myWorksDrafts'}}">
-							작성중<span class="navTabs-count">&nbsp;3</span>
+							작성중<span class="navTabs-count">&nbsp;{{draftCount}}</span>
 						</a>
 					</li>
           <li class="navTabs-item">
             <a class="navTabs-anchor" href="{{pathFor 'myWorksPublic'}}">
-              발행글<span class="navTabs-count">&nbsp;5</span>
+              발행글<span class="navTabs-count">&nbsp;0</span>
             </a>
           </li>
 				</ul>
@@ -19,7 +19,9 @@
     <div class="row-fluid">
 	    <div class="block-group container">
 				<ul class="block-list">
-					{{>myDraftItem}}
+					{{#each postDrafts}}
+						{{>myDraftItem}}
+					{{/each}}
 				</ul>
 	    </div>
     </div>
@@ -30,11 +32,11 @@
   <li class="list-item">
     <div class="block-content">
       <h3 class="block-title">
-        <a href="">미티어 번역중</a>
+        <a href="">{{title}}</a>
       </h3>
-      <div class="block-category">Tech-tips</div>
+      <div class="block-category">{{categoryId}}</div>
       <div class="block-meta-wrap">
-        <span class="post-meth-inline">5일전에 생성</span>
+        <span class="post-meth-inline">{{momentFromNow createdAt}}</span>
       </div>
     </div>
   </li>

@@ -4,9 +4,6 @@ Template.postWrite.onCreated(function() {
 
   instance.autoSave = new Autosave();
   instance.draftId = null;
-  instance.shineEditor = new ShineEditor();
-  instance.data.titleMax = 100;
-  //instance.data.titleCount = new ReactiveVar(0);
 
   instance.autorun(function() {
     instance.subscribe('postCategoriesList',
@@ -19,10 +16,10 @@ Template.postWrite.onCreated(function() {
 });
 
 Template.postWrite.onDestroyed(function() {
+  this.autoSave.clear();
   this.autoSave = null;
   this.draftId = null;
   this.category = null;
-  this.shineEditor = null;
 });
 
 Template.postWrite.onRendered(function() {
@@ -51,7 +48,7 @@ Template.postWrite.helpers({
 
 Template.postWrite.events({
   'input, focus [name=title]': function(e, t) {
-    var count = $(e.currentTarget).val().trim().length;
+    //var count = $(e.currentTarget).val().trim().length;
     //t.data.titleCount.set(count);
   },
 
@@ -73,7 +70,7 @@ Template.postWrite.events({
   },
 
   // todo : 20, July, draft functionality here..
-  'input [data-provide]': function(e, instance) {
+  'input [data-provide], input [name=title]': function(e, instance) {
     e.preventDefault();
 
     instance.autoSave.clear();

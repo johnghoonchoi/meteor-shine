@@ -2,19 +2,40 @@
 PostDraftValidator = {
   schema: {
     title: {
-      name: 'title',
       type: 'string',
-      required: false,
+      required: true,
       minLength: 1,
       maxLength: 100
     },
 
     content: {
-      name: 'content',
       type: 'object',
+      required: false,
+      object: {
+        version: {
+          type: 'string',
+          required: true,
+          values: ['0.0.1', '0.0.2']
+        },
+        type: {
+          type: 'string',
+          required: true,
+          values: ['markdown', 'html']
+        },
+        data: {
+          type: 'string',
+          required: true,
+          minLength: 1,
+          maxLength: 65536
+        }
+      }
+    },
+
+    categoryId: {
+      type: 'string',
       required: true,
       minLength: 1,
-      maxLength: 65536
+      maxLength: 100
     }
   },
 
