@@ -1,0 +1,43 @@
+<template name="myWorksDrafts">
+	<article id="myworks" class="page container-fluid">
+		<div class="row-fluid">
+			<nav class="navTabs">
+				<ul class="navTabs-list">
+					<li class="navTabs-item active">
+						<a class="navTabs-anchor" href="{{pathFor 'myWorksDrafts'}}">
+							작성중<span class="navTabs-count">&nbsp;{{draftCount}}</span>
+						</a>
+					</li>
+          <li class="navTabs-item">
+            <a class="navTabs-anchor" href="{{pathFor 'myWorksPublic'}}">
+              발행글<span class="navTabs-count">&nbsp;0</span>
+            </a>
+          </li>
+				</ul>
+			</nav>
+		</div>
+    <div class="row-fluid">
+	    <div class="block-group container">
+				<ul class="block-list">
+					{{#each postDrafts}}
+						{{>myDraftItem}}
+					{{/each}}
+				</ul>
+	    </div>
+    </div>
+	</article>
+</template>
+
+<template name="myDraftItem">
+  <li class="list-item">
+    <div class="block-content">
+      <h3 class="block-title">
+        <a href="">{{title}}</a>
+      </h3>
+      <div class="block-category">{{categoryId}}</div>
+      <div class="block-meta-wrap">
+        <span class="post-meth-inline">{{momentFromNow createdAt}}</span>
+      </div>
+    </div>
+  </li>
+</template>
