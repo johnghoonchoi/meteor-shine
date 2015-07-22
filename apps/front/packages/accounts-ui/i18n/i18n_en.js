@@ -3,6 +3,7 @@ I18nAccountsUI_en = {
   "nav_sign_up"                        : "Sign up",
   "nav_forgot_password"                : "Forgot password",
   "nav_reset_password"                 : "Reset password",
+  "nav_change_password"                : "Change password",
   "title_welcome"                      : "Welcome",
   "title_profile"                      : "Profile",
   "title_change_picture"               : "Profile Picture Change",

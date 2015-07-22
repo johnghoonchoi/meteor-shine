@@ -48,6 +48,8 @@ Package.onUse(function(api) {
     'forgot_password.js',
     'reset_password.html',
     'reset_password.js',
+    'change_password.html',
+    'change_password.js',
     'enroll_account.html',
     'enroll_account.js',
 

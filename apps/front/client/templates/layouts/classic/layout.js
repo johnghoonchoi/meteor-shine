@@ -1,5 +1,5 @@
 Template.layoutClassic.events({
-  'click #content': function(e) {
+  'click #content, click aside': function(e) {
     asideSlide();
   }
 });
