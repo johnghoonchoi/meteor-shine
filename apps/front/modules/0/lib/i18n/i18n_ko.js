@@ -16,6 +16,7 @@ I18n_data_ko = {
   "title_verify_email"            : "Email 제목입니다.",
   "title_user_list"               : "유저목록",
   "title_new_message"             : "새 메시지",
+  "title_profile"                 : "사용자 정보",
 
 
   "command_sign_in"               : "로그인",
