@@ -1,17 +1,14 @@
 <template name="layoutClassic">
-  <div class="container layout-default">
-    {{> headerDefault}}
+  <div id="container" class="layout-classic">
+    {{> headerClassic}}
 
-    <div class="body">
-      {{> asideLeft}}
+    {{> asideLeftClassic}}
+    {{> asideRightClassic}}
 
-      <div class="content">
-        {{> yield}}
-      </div>
+    <main id="content">
+      {{> yield}}
+    </main>
 
-      {{> asideRight}}
-    </div>
-
-    {{> footerDefault}}
+    {{> footerClassic}}
   </div>
 </template>
