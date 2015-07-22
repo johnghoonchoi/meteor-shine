@@ -1,6 +1,6 @@
 
 Router.configure({
-  layoutTemplate: 'layout',
+  layoutTemplate: 'layoutClassic',
   loadingTemplate: 'loading',
   yieldTemplates: {
     'headerDefault': {to: 'header'},
