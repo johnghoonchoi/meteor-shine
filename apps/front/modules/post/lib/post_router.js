@@ -29,6 +29,3 @@ Router.route('/post/:categoryId/write', {
 });
 
 
-Router.route('/myworks', {
-  name: 'postMyWorks'
-});
