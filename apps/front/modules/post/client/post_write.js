@@ -3,7 +3,6 @@ Template.postWrite.onCreated(function() {
 
   instance.data = Template.currentData();
   instance.data.titleMax = 20;
-  instance.data.isDraftMode = instance.data.mode === 'draft';
 
   instance.state = new ReactiveDict;
   instance.state.set('update', 0);

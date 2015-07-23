@@ -1,54 +1,61 @@
-<template name="myWorksDrafts">
-	<article id="myworks" class="page container-fluid">
-		{{>myworksNav}}
-    <div class="row-fluid">
-	    <div class="block-group container">
-				<ul class="block-list">
-					{{#each postDrafts}}
-						{{>myDraftItem}}
-					{{/each}}
-				</ul>
-	    </div>
-    </div>
-	</article>
+<template name="myworks">
+  <article id="myworks" class="page container-fluid">
+		{{> myworksNav}}
+		{{> myworksList}}
+  </article>
 </template>
 
-<template name="myDraftItem">
+<template name="myworksNav">
+	<div id="myworks">
+	  <div class="row-fluid">
+	    <nav class="navTabs">
+	      <ul class="navTabs-list">
+	        <li class="navTabs-item active" data-switch="draft">
+	          <a class="navTabs-anchor" href="">
+	            작성중<span class="navTabs-count">&nbsp;{{myDraftCount}}</span>
+	          </a>
+	        </li>
+	        <li class="navTabs-item" data-switch="public">
+	          <a class="navTabs-anchor" href="">
+	            발행글<span class="navTabs-count">&nbsp;{{myPublicCount}}</span>
+	          </a>
+	        </li>
+	      </ul>
+	    </nav>
+	  </div>
+  </div>
+</template>
+
+<template name="myworksList">
+  <div class="row-fluid">
+    <div class="block-group">
+      <ul class="block-list">
+				{{#each myworksList}}
+					{{> myworksItem}}
+				{{/each}}
+	      {{#if Template.subscriptionsReady}}
+          <div class="row-fluid">
+			      {{#if hasMore}}
+              <a class="btn btn-default btn-block load-more">더 보기</a>
+			      {{/if}}
+          </div>
+	      {{else}}
+		      <div class="loading">{{> spinner}}</div>
+	      {{/if}}
+      </ul>
+    </div>
+  </div>
+</template>
+
+<template name="myworksItem">
   <li class="list-item">
     <div class="block-content">
       <h3 class="block-title">
-        <a href="{{pathFor 'draftEdit' _id=_id categoryId=categoryId}}">{{title}}</a>
+        <a href="{{pathFor 'postWrite' _id=_id categoryId=categoryId}}">{{title}}</a>
       </h3>
       <div class="block-category">{{categoryId}}</div>
       <div class="block-meta-wrap">
         <span class="post-meth-inline">{{momentFromNow createdAt}}</span>
-      </div>
-    </div>
-  </li>
-</template>
-
-<template name="myWorksPublic">
-  <article id="myworks" class="page container-fluid">
-		{{>myworksNav}}
-    <div class="row-fluid">
-      <div class="block-group container">
-        <ul class="block-list">
-
-        </ul>
-      </div>
-    </div>
-  </article>
-</template>
-
-<template name="myPublicItem">
-  <li class="list-item">
-    <div class="block-content">
-      <h3 class="block-title">
-        <a href="">타이틀</a>
-      </h3>
-      <div class="block-category">카테고리</div>
-      <div class="block-meta-wrap">
-        <span class="post-meth-inline">시간</span>
       </div>
     </div>
   </li>

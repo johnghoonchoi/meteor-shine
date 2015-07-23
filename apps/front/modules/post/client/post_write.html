@@ -4,7 +4,7 @@
     <form id="formPostWrite">
       <div class="panel panel-default">
         <div class="form-group">
-          {{#if mode}}
+          {{#if isDraftMode}}
           <label>Category :</label><sapn>&nbsp; {{parentData.categoryId}}</sapn>
           <label>State :</label><sapn>&nbsp;draft</sapn>
 	        {{else}}
@@ -12,7 +12,7 @@
           {{/if}}
         </div>
         <div class="panel-body block-wrapper">
-					{{#if mode}}
+					{{#if isDraftMode}}
           <h3><input {{titleAttrs titleMax}} value="{{parentData.title}}"></h3>
 					{{else}}
           <h3><input {{titleAttrs titleMax}}></h3>
@@ -30,7 +30,7 @@
               <button type="button" class="btn btn-default">{{_ 'command_cancel'}}</button>
             </div>
             <div class="btn-group">
-							{{#if mode}}
+							{{#if isDraftMode}}
               <button type="submit" class="btn btn-primary">발행</button>
 							{{else}}
 							<button type="submit" class="btn btn-primary">{{_ 'command_ok'}}</button>
