@@ -3,21 +3,20 @@
   {{> connectionsList}}
 
   {{#if currentUser}}
-    <div class="panel panel-info clearfix">
-      <div class="panel-heading">
-        <a href="{{pathFor 'profileView'}}" class="avatar-sm">
-          {{{myPic}}}
-          <span class="user-name">{{userDisplayName currentUser}}</span>
-        </a>
-        <button class="btn pull-right logout-btn" data-action="signOut">
-          <i class="fa fa-sign-out" title="Logout" style="font-size:15px"></i>
-        </button>
-      </div>
+    <div id="user-status" class="well well-sm">
+      <a href="{{pathFor 'profileView'}}" class="avatar-sm">
+        {{{accountPicture currentUser}}}
+        <span class="user-name">{{userDisplayName currentUser}}</span>
+      </a>
+      <button class="btn btn-default pull-right" data-action="signOut">
+        <i class="fa fa-sign-out" title="Logout"></i>
+      </button>
     </div>
   {{else}}
-    <button class="btn btn-info btn-block" data-action="signIn" style="margin-bottom: 5px;">{{_ 'command_sign_in'}}</button>
+    <button id="sign-in" class="btn btn-info btn-block" data-action="signIn">{{_ 'command_sign_in'}}</button>
   {{/if}}
 
-  {{> treeMenu}}
-
+  <div id="nav-main">
+    {{> treeMenu}}
+  </div>
  </template>

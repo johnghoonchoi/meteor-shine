@@ -1,11 +1,17 @@
 
 Template.navMain.events({
 
-  'click [data-action=signIn]': function() {
+  'click [data-action=signIn]': function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
     Accounts.ui.render('signIn');
   },
 
-  'click [data-action=signOut]': function() {
+  'click [data-action=signOut]': function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
     Meteor.logout();
     Router.go('home');
   }

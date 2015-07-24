@@ -7,6 +7,7 @@ Template.connectionsList.onCreated(function() {
   instance.increment = 10;
   instance.limit = new ReactiveVar(instance.increment);
   instance.loadead = new ReactiveVar(0);
+  instance.expand = new ReactiveVar(false);
 
   instance.autorun(function() {
     var limit = instance.limit.get();
@@ -41,5 +42,18 @@ Template.connectionsList.helpers({
 
   connections: function() {
     return Template.instance().connections();
+  },
+
+  expand: function() {
+    return Template.instance().expand.get() ? "show" : "hide";
+  }
+});
+
+Template.connectionsList.events({
+  'click .expand a': function(e, instance) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    instance.expand.set(! instance.expand.get());
   }
 });

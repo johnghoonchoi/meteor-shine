@@ -1,7 +1,12 @@
 <template name="connectionsList">
-  <div class="access-monitor">
-    <p>Access: {{connectionsCount}}</p>
-    <div class="list">
+  <div id="connections-list" class="panel panel-info">
+    <div class="panel-heading">
+      <i class="fa fa-users"></i> {{connectionsCount}}
+      <div class="expand">
+        <a><i class="fa fa-angle-down"></i></a>
+      </div>
+    </div>
+    <div class="panel-body {{expand}}">
       {{#each connections}}
         {{> connectionsListItem}}
       {{/each}}

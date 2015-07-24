@@ -20,7 +20,7 @@ flagUrl = function(lang) {
 
 Template.registerHelper('flagUrl', flagUrl);
 
-var pictureStatus = function(user) {
+var pictureState = function(user) {
   if (user.profile && user.profile.picture) {
     if (user.profile.picture.origin) {
       if (user.profile.picture.temp) {
@@ -34,6 +34,10 @@ var pictureStatus = function(user) {
   return 'PICTURE_DEFAULT';
 };
 
+var firstCap = function(value) {
+  return value.charAt(0).toUpperCase();
+};
+
 /**
  * return '<img ...>' element to draw user's profile picture
  *
@@ -43,18 +47,13 @@ accountPicture = function(user) {
   if (! user) { return ''; }
 
   var src;
-  var status = pictureStatus(user);
-  switch (status) {
-    case 'PICTURE_BOTH':
-    case 'PICTURE_ORIGIN':
-      src = "<img src='" + url + "' alt='Profile image' class='img-circle'>";
-      break;
-
-    case 'PICTURE_TEMP':
-      break;
-
-    default:
-
+  var state = pictureState(user);
+  if (state === 'PICTURE_ORIGIN' || state === 'PICTURE_BOTH') {
+    return '<img src="' + user.profile.picture.origin.urlCropped +
+      '" alt="Profile image" class="img-circle">';
   }
 
+  return "<span class='avatar-initials'>" + firstCap(user.username) + "</span>";
 };
+
+Template.registerHelper('accountPicture', accountPicture);
