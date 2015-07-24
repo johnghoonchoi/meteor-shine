@@ -54,24 +54,21 @@
 
 <template name="signInOtherService">
   <div class="login-text-and-button">
-    <div class="login-button single-login-button {{#unless configured}}configure-button{{/unless}}"
-         id="login-buttons-{{name}}">
-      <div class="login-image" id="login-buttons-image-{{name}}"></div>
+    <button class="btn btn-color-{{name}} btn-block {{#unless configured}}configure-button{{/unless}}">
+      <i class="fa fa-{{name}}"></i>&nbsp;
       {{#if configured}}
-        <span class="text-besides-image sign-in-text-{{name}}">Sign in with {{capitalizedName}}</span>
+        <span class="text-besides-image sign-in-text-{{name}}">
+          {{_ 'accounts-ui:label_sign_in_with' 0=capitalizedName}}</span>
       {{else}}
-        <span class="text-besides-image configure-text-{{name}}">Configure {{capitalizedName}} Login</span>
+        <span class="text-besides-image configure-text-{{name}}">
+          {{_ 'accounts-ui:label_configure_sign_in' 0=capitalizedName}}</span>
       {{/if}}
-    </div>
+    </button>
   </div>
 </template>
 
 <template name="signInServiceSeparator">
-  <div class="or">
-    <span class="hline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    <span class="or-text">or</span>
-    <span class="hline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-  </div>
+  <div class="separator"></div>
 </template>
 
 <template name="backToSignIn">

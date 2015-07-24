@@ -4,15 +4,19 @@ Template.resetPasswordService.events({
 
     var newPassword = instance.$('#new-password').val();
 
-    Accounts.resetPassword(
-      loginButtonsSession.get('resetPasswordToken'),
-      newPassword,
+    if (! Accounts.ui.validator.password(newPassword)) {
+      Alerts.notifyModal('error', 'accounts-ui:error_invalid_password');
+      return;
+    }
+
+    Accounts.resetPassword(Accounts.ui.token, newPassword,
       function (error) {
         if (error) {
-          Alerts.notify('error', error.reason || "Unknown error");
+          var msg = error.reason || "error_unknown";
+          Alerts.notifyModal('error', "accounts-ui:" + msg);
         } else {
-          if (doneCallback)
-            doneCallback();
+          Alerts.notify('success', 'accounts-ui:text_reset_password_done');
+          $('#accountsUIModal').modal('hide');
         }
       }
     );

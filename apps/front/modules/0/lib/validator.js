@@ -83,18 +83,30 @@ Validator = function(schema) {
         return;
       }
 
-      if (rule.type === 'object') {
-        this.validate(value, Object.keys(value), attribute);
-      } else if (rule.type === 'string') {
-        if (rule.values && rule.values.length > 0) {
-          if (! _.contains(rule.values, value)) {
-            self.setError(base + attribute, "error_invalid_input");
+      switch (rule.type) {
+        case 'string':
+          if (rule.values && rule.values.length > 0) {
+            if (! _.contains(rule.values, value)) {
+              self.setError(base + attribute, "error_invalid_input");
+            }
           }
-        }
 
-        if ((rule.minLength && value.length < rule.minLength) ||
-          (rule.maxLength && value.length > rule.maxLength)) {
-          self.setError(base + attribute, "error_out_of_range");
+          if ((rule.minLength && value.length < rule.minLength) ||
+            (rule.maxLength && value.length > rule.maxLength)) {
+            self.setError(base + attribute, "error_out_of_range");
+          }
+          break;
+
+        case 'object':
+          this.validate(value, Object.keys(value), attribute);
+          break;
+      }
+
+      if (rule.custom && typeof rule.custom === 'function') {
+        try {
+          rule.custom(value);
+        } catch (ex) {
+          self.setError(base + attribute, ex.message);
         }
       }
     }

@@ -26,7 +26,7 @@ I18nAccountsUI_ko = {
   "label_current_password"             : "현재 비밀번호",
   "label_new_password"                 : "새 비밀번호",
   "label_password_again"               : "비밀번호 한 번 더 입력",
-  "label_username"                     : "사용자 이름",
+  "label_username"                     : "아이디",
   "label_username_or_email"            : "아이디 또는 이메일주소",
   "label_picture"                      : "프로파일 사진",
   "label_profile"                      : "개인정보",
@@ -35,12 +35,15 @@ I18nAccountsUI_ko = {
   "label_connect_us"                   : "SNS 연결정보",
   "label_contact_info"                 : "연락정보",
   "label_unsubscribe"                  : "탈퇴",
+  "label_sign_in_with"                 : "{0} 계정으로 로그인",
+  "label_configure_sign_in"            : "{0} 로그인 설정",
 
   "text_no_login_services"             : "설정된 로그인 서비스가 없습니다.",
   "text_input_username_or_email"       : "아이디 또는 이메일주소를 입력하십시오.",
   "text_input_password"                : "비밀번호를 입력하십시오.",
   "text_forgot_password"               : "비밀번호를 잊으셨습니까?",
   "text_reset_password"                : "비밀번호 초기화를 위한 링크가 입력하신 Email 주소로 전송되었습니다.",
+  "text_reset_password_done"           : "비밀번호가 성공적으로 변경되었습니다.",
   "text_stay_signed_in"                : "로그인 상태 유지",
   "text_agreement"                     : "{0}과 {1}에 동의합니다.",
   "text_verify_email"                  : "에 회원가입하신 것을 환영합니다. 입력하신 메일주소가 유효한지 확인하기 위해 이 링크를 클릭해 주세요 : ",
@@ -49,6 +52,7 @@ I18nAccountsUI_ko = {
 
   "placeholder_email_address"          : "Email 주소를 입력해주세요.",
 
+  "error_unknown"                      : "알 수 없는 오류입니다.",
   "error_sign_in"                      : "존재하지 않는 아이디이거나 비밀번호가 일치하지 않습니다.",
   "error_reset_password_token_expired" : "유효기간이 지났습니다.",
   "error_username_already_exist"       : "이미 존재하는 아이디입니다.",
@@ -57,7 +61,15 @@ I18nAccountsUI_ko = {
   "error_agreements_required"          : "동의가 필요합니다.",
   "error_need_username_or_email"       : "아이디 또는 이메일주소를 입력하여야 합니다.",
   "error_no_password_set"              : "비밀번호를 입력하십시오.",
-  "error_fail_password_confirm"        : "비밀번호 입력값이 서로 일치하지 않습니다."
+  "error_fail_password_confirm"        : "비밀번호 입력값이 서로 일치하지 않습니다.",
+  "error_invalid_username"             : "아이디 입력값이 유효하지 않습니다.",
+  "error_invalid_email"                : "이메일주소 입력값이 유효하지 않습니다.",
+  "error_invalid_password"             : "비밀번호 입력값이 유효하지 않습니다.",
+  "error_validation"                   : "입력값이 유효하지 않습니다.",
 
+  "User not found"                     : "존재하지 않는 사용자입니다.",
+  "Need to set a username or email"    : "아이디 또는 이메일주소를 입력하여야 합니다",
+  "Password may not be empty"          : "비밀번호를 입력하여야 합니다.",
+  "Token expired"                      : "이미 처리되어 유효하지 않은 요청입니다."
 };
 

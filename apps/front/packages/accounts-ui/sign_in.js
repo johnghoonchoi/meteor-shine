@@ -97,7 +97,6 @@ Template.signInPasswordService.events({
     var username = instance.$('#login-username').val();
     var email = instance.$('#login-email').val();
     var usernameOrEmail = instance.$('#login-username-or-email').val();
-    // notably not trimmed. a password could (?) start or end with a space
     var password = instance.$('#login-password').val();
 
     var loginSelector;
@@ -108,19 +107,75 @@ Template.signInPasswordService.events({
     } else if (usernameOrEmail) {
       loginSelector = usernameOrEmail.trim();
     } else {
-      Alerts.notifyModal('error', 'accounts-ui:error_input_required');
+      Alerts.notifyModal('error', 'accounts-ui:error_sign_in');
       return;
     }
 
-    Meteor.loginWithPassword(loginSelector, password, function (error, result) {
+    Meteor.loginWithPassword(loginSelector, password, function (error) {
       if (error) {
-        //loginButtonsSession.errorMessage(error.reason || "Unknown error");
-        Alerts.notifyModal('error', error.reason || "Unknown error");
+        Alerts.notifyModal('error', 'accounts-ui:error_sign_in');
       } else {
         $('#accountsUIModal').modal('hide');
       }
     });
   }
+});
+
+// XXX from http://epeli.github.com/underscore.string/lib/underscore.string.js
+var capitalize = function(str){
+  str = str == null ? '' : String(str);
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+Template.signInOtherService.helpers({
+  configured: function() {
+    return !! ServiceConfiguration.configurations.findOne({
+      service: this.name });
+  },
+  capitalizedName: function () {
+    if (this.name === 'github')
+    // XXX we should allow service packages to set their capitalized name
+      return 'GitHub';
+    else if (this.name === 'meteor-developer')
+      return 'Meteor';
+    else
+      return capitalize(this.name);
+  }
+});
+
+Template.signInOtherService.events({
+  'click button': function () {
+    var serviceName = this.name;
+
+    // XXX Service providers should be able to specify their
+    // `Meteor.loginWithX` method name.
+    var loginWithService = Meteor["loginWith" +
+      (serviceName === 'meteor-developer' ?
+        'MeteorDeveloperAccount' : capitalize(serviceName))];
+
+    var options = {}; // use default scope unless specified
+    if (Accounts.ui._options.requestPermissions[serviceName])
+      options.requestPermissions = Accounts.ui._options.requestPermissions[serviceName];
+    if (Accounts.ui._options.requestOfflineToken[serviceName])
+      options.requestOfflineToken = Accounts.ui._options.requestOfflineToken[serviceName];
+    if (Accounts.ui._options.forceApprovalPrompt[serviceName])
+      options.forceApprovalPrompt = Accounts.ui._options.forceApprovalPrompt[serviceName];
+
+    loginWithService(options, function (error) {
+      if (! error) {
+        $('#accountsUIModal').modal('hide');
+      } else if (error instanceof Accounts.LoginCancelledError) {
+        // do nothing
+      } else if (error instanceof ServiceConfiguration.ConfigError) {
+        //Alerts.notifyModal('error', '')
+      } else {
+        var msg = error.reason || "error_unknown";
+        Alerts.notifyModal('error', "accounts-ui:" + msg);
+      }
+
+    });
+  }
+
 });
 
 Template.backToSignIn.events({
