@@ -19,3 +19,42 @@ flagUrl = function(lang) {
 };
 
 Template.registerHelper('flagUrl', flagUrl);
+
+var pictureStatus = function(user) {
+  if (user.profile && user.profile.picture) {
+    if (user.profile.picture.origin) {
+      if (user.profile.picture.temp) {
+        return 'PICTURE_BOTH';
+      }
+      return 'PICTURE_ORIGIN';
+    }
+    return 'PICTURE_TEMP';
+  }
+
+  return 'PICTURE_DEFAULT';
+};
+
+/**
+ * return '<img ...>' element to draw user's profile picture
+ *
+ * @param user
+ */
+accountPicture = function(user) {
+  if (! user) { return ''; }
+
+  var src;
+  var status = pictureStatus(user);
+  switch (status) {
+    case 'PICTURE_BOTH':
+    case 'PICTURE_ORIGIN':
+      src = "<img src='" + url + "' alt='Profile image' class='img-circle'>";
+      break;
+
+    case 'PICTURE_TEMP':
+      break;
+
+    default:
+
+  }
+
+};

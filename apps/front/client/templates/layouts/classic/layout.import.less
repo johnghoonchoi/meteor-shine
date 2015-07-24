@@ -15,6 +15,7 @@ body {
   overflow: hidden;
 
   background: #006687;
+  box-shadow: 0 1px 3px #666;
 
   .logo {
     width: @logo-width;
@@ -71,7 +72,7 @@ body {
 }
 
 .layout-classic > aside {
-  z-index: @zindex-navbar-fixed - 1;
+  z-index: @zindex-navbar-fixed;
 }
 
 .layout-classic > aside.left {
@@ -80,8 +81,10 @@ body {
   bottom: @footer-height;
   left: -@aside-left-width;
   width: @aside-left-width;
+  padding: 5px;
 
-  background: #555;
+  background: @aside-left-bg;
+  box-shadow: none;
 }
 
 .layout-classic > aside.right {
@@ -91,7 +94,8 @@ body {
   right: -@aside-right-width;
   width: @aside-right-width;
 
-  background: #555;
+  background: @aside-right-bg;
+  box-shadow: none;
 }
 
 /* toggle asides */
@@ -103,9 +107,11 @@ body {
 
 .layout-classic.aside-left-on > aside.left {
   left: 0;
+  box-shadow: 1px 0 3px #666;
 }
 .layout-classic.aside-right-on > aside.right {
   right: 0;
+  box-shadow: -1px 0 3px #666;
 }
 
 /*
