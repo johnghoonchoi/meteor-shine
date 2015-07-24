@@ -12,52 +12,75 @@
 // });
 
 Template.home.onCreated(function() {
-  var instance = this;
+  Navigations.path.set('home');
 
+  var instance = this;
+  var data;
   instance.increment = 5;
   instance.limit = new ReactiveVar(instance.increment);
   instance.loaded = new ReactiveVar(0);
 
+  instance.sortBy = function(value) {
+    if (value === 'like') {
+      return { 'count.likes': -1 };
+    } else {
+      return { createdAt: -1 };
+    }
+  };
+
   // Control Subscriptions
   instance.autorun(function() {
+    data = Template.currentData();
     var limit = instance.limit.get();
+    var sort = instance.sortBy(data.sortBy);
 
-    instance.subscribe('blogsList',
-      {}, { limit: limit, sort: { createdAt: -1 }},
+    instance.subscribe('releasedPostsList',
+      {}, { limit: limit, sort: sort},
       function() { instance.loaded.set(limit); });
 
+    console.log('autorun..');
   });
 
   // Control Cursors
-  instance.blogsCount = function() {
-    return Counts.get('blogsCount');
+  instance.postsCount = function() {
+    return Counts.get('releasedPostsListCount');
   };
 
-  instance.blogs = function() {
-    return Blogs.find({}, {
-      limit: instance.loaded.get(), sort: { createdAt: -1}
+  instance.posts = function() {
+    return Posts.find({}, {
+      limit: instance.loaded.get()
     });
   };
 
-  Navigations.path.set('home');
+  instance.active = function() {
+    return data.sortBy === 'like' ? 'active' : '';
+  }
+});
+
+Template.home.onRendered(function() {
+
 });
 
 
 Template.home.helpers({
-  noBlogs: function() {
-    return Template.instance().blogsCount() === 0;
+  noPosts: function() {
+    return Template.instance().postsCount() === 0;
   },
 
-  blogsCount: function() {
-    return Template.instance().blogsCount();
+  postsCount: function() {
+    return Template.instance().postsCount();
   },
 
-  blogs: function() {
-    return Template.instance().blogs();
+  posts: function() {
+    return Template.instance().posts();
   },
 
   hasMore: function() {
-    return (Template.instance().blogsCount() > Template.instance().limit.get());
+    return (Template.instance().postsCount() > Template.instance().limit.get());
+  },
+
+  active: function() {
+    return Template.instance().active();
   }
 });
 
@@ -69,12 +92,6 @@ Template.home.events({
     //Router.go(Router.current().nextPath());
   },
 
-  //'click #alert-test': function() {
-  //  Alerts.dialog('alert', 'Hi there...', function() {
-  //    console.log('done...');
-  //  });
-  //},
-
   'click .title-link': function() {
     Meteor.call('hitUpdate', this._id, function(error, result) {
       if (error) console.log('error.reason: ', error.reason);
@@ -82,12 +99,18 @@ Template.home.events({
       console.log('hit result: ', result);
     });
   }
+
+  //'click #alert-test': function() {
+  //  Alerts.dialog('alert', 'Hi there...', function() {
+  //    console.log('done...');
+  //  });
+  //},
 });
 
 
 Template.homeListItem.helpers({
-  blogContent: function() {
-    var content = this.content;
+  postContent: function() {
+    var content = this.content.data;
     //return content.replace(/<(?:.|\n)*?>/gm, '');
     //return content.replace(/(<([^>]+)>)/ig, "");
     return content;
@@ -105,21 +128,7 @@ Template.homeListItem.helpers({
     return (this.count && this.count.likes) ? this.count.likes : 0;
   },
 
-  ownBlog: function() {
+  ownPost: function() {
     return this.user._id === Meteor.userId();
   }
 });
-
-/*
-Template.home.events({
-  'change input[name=theme]': function(e) {
-    e.preventDefault();
-
-    var theme = $(e.target).val();
-    $('body').attr('class', '');
-    if (theme !== 'none') {
-      $('body').addClass(theme);
-    }
-  }
-});
-*/

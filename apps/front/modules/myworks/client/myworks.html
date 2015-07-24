@@ -1,38 +1,55 @@
-<template name="myWorksDrafts">
-	<article id="myworks" class="page container-fluid">
-		<div class="row-fluid">
-			<nav class="navTabs">
-				<ul class="navTabs-list">
-					<li class="navTabs-item active">
-						<a class="navTabs-anchor" href="{{pathFor 'myWorksDrafts'}}">
-							작성중<span class="navTabs-count">&nbsp;{{draftCount}}</span>
-						</a>
-					</li>
-          <li class="navTabs-item">
-            <a class="navTabs-anchor" href="{{pathFor 'myWorksPublic'}}">
-              발행글<span class="navTabs-count">&nbsp;0</span>
-            </a>
-          </li>
-				</ul>
-			</nav>
-		</div>
-    <div class="row-fluid">
-	    <div class="block-group container">
-				<ul class="block-list">
-					{{#each postDrafts}}
-						{{>myDraftItem}}
-					{{/each}}
-				</ul>
-	    </div>
-    </div>
-	</article>
+<template name="myworks">
+  <article class="page container-fluid shine-wrapper">
+		{{> myworksNav}}
+		{{> myworksList}}
+  </article>
 </template>
 
-<template name="myDraftItem">
+<template name="myworksNav">
+	  <div class="row-fluid">
+	    <nav class="navTabs">
+	      <ul class="navTabs-list">
+	        <li class="navTabs-item active" data-switch="draft">
+	          <a class="navTabs-anchor" href="">
+	            작성중<span class="navTabs-count">&nbsp;{{myDraftCount}}</span>
+	          </a>
+	        </li>
+	        <li class="navTabs-item" data-switch="public">
+	          <a class="navTabs-anchor" href="">
+	            발행글<span class="navTabs-count">&nbsp;{{myPublicCount}}</span>
+	          </a>
+	        </li>
+	      </ul>
+	    </nav>
+	  </div>
+</template>
+
+<template name="myworksList">
+  <div class="row-fluid">
+    <div class="block-group">
+      <ul class="block-list">
+				{{#each myworksList}}
+					{{> myworksItem}}
+				{{/each}}
+	      {{#if Template.subscriptionsReady}}
+          <div class="row-fluid">
+			      {{#if hasMore}}
+              <a class="btn btn-default btn-block load-more">더 보기</a>
+			      {{/if}}
+          </div>
+	      {{else}}
+		      <div class="loading">{{> spinner}}</div>
+	      {{/if}}
+      </ul>
+    </div>
+  </div>
+</template>
+
+<template name="myworksItem">
   <li class="list-item">
     <div class="block-content">
       <h3 class="block-title">
-        <a href="">{{title}}</a>
+        <a href="{{pathFor 'postView' _id=_id categoryId=categoryId}}">{{title}}</a>
       </h3>
       <div class="block-category">{{categoryId}}</div>
       <div class="block-meta-wrap">

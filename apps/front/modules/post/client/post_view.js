@@ -19,7 +19,6 @@ Template.postView.onCreated(function() {
       }
     } else {
       instance.$('.md-editor').remove();
-      // todo : 포스트 수정 후 바로 뷰 페이지가 보이는 부분부터 해야함
     }
 
     instance.editMode.set(edit);

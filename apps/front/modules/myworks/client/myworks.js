@@ -1,36 +1,26 @@
-Template.myWorksDrafts.onCreated(function() {
-  var instance = this;
+Template.myworks.onCreated(function() {
+  Navigations.path.set('myworks');
 
-  instance.increment = 50;
-
-  instance.data = Template.currentData();
-  instance.data.state = new ReactiveDict;
-  instance.data.state.set('limit', instance.increment);
-  instance.data.state.set('loaded', 0);
-
-  instance.autorun(function() {
-    var limit = instance.data.state.get('limit');
-    instance.subscribe('postDraftsList', {}, { limit: limit, sort: { createdAt: -1 } },
-      function() { instance.data.state.set('limit', limit) });
-
-    Navigations.path.set('myWorksDrafts');
-  });
-
-  instance.data.postDrafts = function() {
-    return PostDrafts.find({}, {
-      limit: instance.data.state.get('loaded'),
-      sort: {createdAt: -1}
-    });
-  };
-
-  instance.data.draftCount = function() {
-    return Counts.get('postDraftsListCount');
-  }
-
+  this.data.mode = new ReactiveVar('draft');
 });
+Template.myworks.onDestroyed(function() {
+});
+Template.myworks.onRendered(function() {
+});
+Template.myworks.helpers({
+});
+Template.myworks.events({
+  'click [data-switch]': function(e, instance) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
 
-Template.myWorksDrafts.onRendered(function() {
-  console.dir(this.data);
-  console.dir(this.data.state);
+    var $this = $(e.currentTarget);
+    $this.addClass('active');
+    $this.siblings().not($this).removeClass('active');
 
+    if ($this.attr('data-switch') === 'draft')
+      instance.data.mode.set('draft');
+    else
+      instance.data.mode.set('public');
+  }
 });

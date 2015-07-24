@@ -62,14 +62,24 @@ Template.postTextarea.onRendered(function() {
   );
 });
 
+
+Template.postTextarea.onCreated(function(){
+  console.log('this: ', this);
+
+  var instance = this;
+  instance.data = Template.currentData();
+
+});
+
 Template.postTextarea.helpers({
-  attributes: function () {
+  attributes: function() {
     return {
       'data-provide': 'markdown',
       'data-iconlibrary': 'fa',
       'placeholder': '본문'
     }
   }
+
 });
 
 

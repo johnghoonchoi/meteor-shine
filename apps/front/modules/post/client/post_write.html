@@ -4,11 +4,19 @@
     <form id="formPostWrite">
       <div class="panel panel-default">
         <div class="form-group">
+          {{#if isDraftMode}}
+          <label>Category :</label><sapn>&nbsp; {{parentData.categoryId}}</sapn>
+          <label>State :</label><sapn>&nbsp;draft</sapn>
+	        {{else}}
           <label>Category :</label><sapn>&nbsp;{{category.title}}</sapn>
+          {{/if}}
         </div>
         <div class="panel-body block-wrapper">
+					{{#if isDraftMode}}
+          <h3><input {{titleAttrs titleMax}} value="{{parentData.title}}"></h3>
+					{{else}}
           <h3><input {{titleAttrs titleMax}}></h3>
-          <!--<div class="counting">글자수 제한: <span class="input-counter">{{titleCount.get}}/{{titleMax}}</span></div>-->
+					{{/if}}
 	        <article id="articleWrap">
 		        <section id="contentWrapper">
 							{{> postTextarea}}
@@ -22,7 +30,11 @@
               <button type="button" class="btn btn-default">{{_ 'command_cancel'}}</button>
             </div>
             <div class="btn-group">
-              <button type="submit" class="btn btn-primary">{{_ 'command_ok'}}</button>
+							{{#if isDraftMode}}
+              <button type="submit" class="btn btn-primary">발행</button>
+							{{else}}
+							<button type="submit" class="btn btn-primary">{{_ 'command_ok'}}</button>
+							{{/if}}
             </div>
           </div>
         </div>
@@ -30,6 +42,6 @@
     </form>
   </article>
   {{> cloudinaryProgressBar}}
-  <!--<div id="ie-clipboard-contenteditable" class="hidden" contenteditable="true"></div>-->
-  <!--<input id="hidden-input" class="hidden" type="text" value="" />-->
 </template>
+<!--<div id="ie-clipboard-contenteditable" class="hidden" contenteditable="true"></div>-->
+<!--<input id="hidden-input" class="hidden" type="text" value="" />-->
