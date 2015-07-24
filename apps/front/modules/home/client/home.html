@@ -10,10 +10,10 @@
       <div class="row-fluid">
         <nav class="navTabs">
           <ul class="navTabs-list">
-            <li class="navTabs-item active">
+            <li class="navTabs-item {{active 'time'}}">
               <a class="navTabs-anchor" href="{{pathFor 'home'}}">최신순</a>
             </li>
-            <li class="navTabs-item {{active}}">
+            <li class="navTabs-item {{active 'like'}}">
               <a class="navTabs-anchor" href="{{pathFor 'home' query='sortBy=like'}}">인기순</a>
             </li>
           </ul>

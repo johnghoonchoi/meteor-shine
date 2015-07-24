@@ -16,6 +16,7 @@ Template.home.onCreated(function() {
 
   var instance = this;
   var data;
+
   instance.increment = 5;
   instance.limit = new ReactiveVar(instance.increment);
   instance.loaded = new ReactiveVar(0);
@@ -31,6 +32,7 @@ Template.home.onCreated(function() {
   // Control Subscriptions
   instance.autorun(function() {
     data = Template.currentData();
+
     var limit = instance.limit.get();
     var sort = instance.sortBy(data.sortBy);
 
@@ -47,14 +49,9 @@ Template.home.onCreated(function() {
   };
 
   instance.posts = function() {
-    return Posts.find({}, {
-      limit: instance.loaded.get()
-    });
+    return Posts.find({}, { limit: instance.loaded.get() });
   };
 
-  instance.active = function() {
-    return data.sortBy === 'like' ? 'active' : '';
-  }
 });
 
 Template.home.onRendered(function() {
@@ -79,8 +76,11 @@ Template.home.helpers({
     return (Template.instance().postsCount() > Template.instance().limit.get());
   },
 
-  active: function() {
-    return Template.instance().active();
+  active: function(type) {
+    if (type === 'like') {
+      return (this.sortBy === 'like') ? "active" : "";
+    }
+    return (this.sortBy !== 'like') ? "active" : "";
   }
 });
 

@@ -2,13 +2,13 @@ Template.myworksNav.onCreated(function() {
   var instance = this;
 
   instance.subscribe('myDraftCount', {});
-  instance.subscribe('releasedPostsListCount', {});
+  instance.subscribe('myPostsListCount', {});
 
   instance.myDraftCount = function() {
     return Counts.get('myDraftCount');
   };
   instance.myPublicCount = function() {
-    return Counts.get('releasedPostsListCount');
+    return Counts.get('myPostsListCount');
   };
 });
 

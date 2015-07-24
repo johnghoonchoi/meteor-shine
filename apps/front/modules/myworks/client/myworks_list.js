@@ -15,7 +15,7 @@ Template.myworksList.onCreated(function() {
       instance.subscribe('postDraftsList', {}, { limit: limit, sort: { createdAt: -1 } },
         function() { instance.state.set('limit', limit) });
     } else {
-      instance.subscribe('releasedPostsList', {}, { limit: limit, sort: { createdAt: -1 } },
+      instance.subscribe('myPostsList', {}, { limit: limit, sort: { createdAt: -1 } },
         function() { instance.state.set('limit', limit) });
     }
   });
@@ -39,7 +39,7 @@ Template.myworksList.onCreated(function() {
   };
 
   instance.myPublicCount = function() {
-    return Counts.get('releasedPostsListCount');
+    return Counts.get('myPostsListCount');
   };
 
 });
