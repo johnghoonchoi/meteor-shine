@@ -1,30 +1,24 @@
 <template name="treeMenu">
-  <ul id="navMain" class="nav nav-pills nav-stacked">
+  <div class="list-group">
     <!-- Home -->
-    <li role="presentation" class="{{active 'home'}}">
-      <a href="{{pathFor 'home'}}">
-        <i class="fa fa-home"> </i> {{_ 'title_home'}}
-      </a>
-    </li>
+    <a href="{{pathFor 'home'}}" class="list-group-item {{active 'home'}}">
+      <i class="fa fa-home"> </i> {{_ 'title_home'}}
+    </a>
 
     {{#if currentUser}}
-    <li role="presentation" class="{{active 'myworks'}}">
-      <a href="{{pathFor 'myworks'}}">
+      <a href="{{pathFor 'myworks'}}"
+         class="list-group-item {{active 'myworks'}}">
         <i class="fa fa-inbox"> </i> My Works
       </a>
-    </li>
-	  {{/if}}
+    {{/if}}
 
     {{! read from module 'category' }}
     {{> categoriesList}}
 
     <!-- Preferences -->
-    <li role="presentation" class="{{active 'preference'}}">
-      <!-- todo: Theme less refactoring by yongsunlee -->
-      <!--<a href="{{pathFor 'preference'}}">-->
-      <a href="#">
-        <i class="fa fa-gear"> </i> {{_ 'title_preference'}}
-      </a>
-    </li>
-  </ul>
+    <a href="{{pathFor 'preference'}}"
+       class="list-group-item {{active 'preference'}}">
+      <i class="fa fa-gear"> </i> {{_ 'title_preference'}}
+    </a>
+  </div>
 </template>

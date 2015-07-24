@@ -69,6 +69,48 @@ article.notification-frame {
 }
 
 //
+// connections list
+//--------------------------------------------------------------
+
+#connections-list {
+  margin-bottom: 5px;
+
+  .panel-heading {
+    position: relative;
+
+    .expand {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+    }
+  }
+
+  .panel-body {
+    /*
+    -webkit-transition: all @slide-transition-time ease-out;
+         -o-transition: all @slide-transition-time ease-out;
+            transition: all @slide-transition-time ease-out;
+    */
+    -webkit-transition: all 0.5s ease-out;
+         -o-transition: all 0.5s ease-out;
+            transition: all 0.5s ease-out;
+  }
+  .panel-body.show {
+    //display: block;
+    height: auto;
+  }
+  .panel-body.hide {
+    //display: none;
+    height: 0;
+  }
+}
+
+#user-status, button#sign-in {
+  margin-bottom: 5px;
+}
+
+
+//
 //
 //--------------------------------------------------------------
 [contenteditable][placeholder]:empty:before {
