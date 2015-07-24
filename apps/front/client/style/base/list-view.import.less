@@ -4,15 +4,15 @@
   ul { list-style: none; }
 
   // start list navigation css
-  .navTabs { margin-top: 50px; }
-  .navTabs-list { border-bottom: 1px rgba(0,0,0,0.15) solid; }
-  .navTabs-item {
+  .navtabs { margin-top: 50px; }
+  .navtabs-list { border-bottom: 1px rgba(0,0,0,0.15) solid; }
+  .navtabs-item {
     display: inline-block;
     margin-right: 20px;
     margin-bottom: -1px;
   }
 
-  .navTabs-anchor {
+  .navtabs-anchor {
     font-weight: 700;
     font-style: normal;
     display: inline-block;
@@ -23,7 +23,7 @@
     padding: 20px 20px;
     white-space: nowrap;
   }
-  .navTabs-item.active .navTabs-anchor {
+  .navtabs-item.active .navtabs-anchor {
     color: rgba(0,0,0,0.8);
     border-bottom: 2px rgba(0,0,0,0.6) solid;
   }
@@ -55,7 +55,33 @@
           overflow: hidden;
         }
 
+        .block-title {
+          color: red;
+          display: inline-block;
+          max-width: 80%;
+          font-size: 21px;
+          height: 25px;
+          font-weight: 600;
+          margin-bottom: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          text-rendering: optimizeLegibility;
+        }
       } /* .block-content end*/
     } /* .list-item end*/
   } /* .block-list end*/
+
+
+
+
+  .category_tags {
+    margin:0;
+    padding:0;
+    position:absolute;
+    bottom: 0;
+    left: 0;
+  }
+
 }
+

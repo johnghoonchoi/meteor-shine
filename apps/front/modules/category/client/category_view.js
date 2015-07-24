@@ -58,6 +58,10 @@ Template.categoryView.onDestroyed(function() {
 
 
 Template.categoryView.helpers({
+  noPosts: function() {
+    return Template.instance().postsCount() === 0;
+  },
+
   category: function() {
     return Template.instance().category();
   },

@@ -18,14 +18,25 @@ Template.home.onCreated(function() {
   var data;
 
   instance.increment = 5;
-  instance.limit = new ReactiveVar(instance.increment);
-  instance.loaded = new ReactiveVar(0);
+  instance.default = 0;
+
+  instance.state = new ReactiveDict;
+  instance.state.set('limit',  instance.increment);
+  instance.state.set('loaded',  instance.default);
 
   instance.sortBy = function(value) {
-    if (value === 'like') {
-      return { 'count.likes': -1 };
-    } else {
-      return { createdAt: -1 };
+    switch(value) {
+      case 'like':
+        return { 'count.likes': -1 };
+        break;
+      case 'hit':
+        return { 'count.hits': -1 };
+        break;
+      case 'comment':
+        return { 'count.comments': -1 };
+        break;
+      default:
+        return { createdAt: -1 };
     }
   };
 
@@ -33,12 +44,12 @@ Template.home.onCreated(function() {
   instance.autorun(function() {
     data = Template.currentData();
 
-    var limit = instance.limit.get();
+    var limit = instance.state.get('limit');
     var sort = instance.sortBy(data.sortBy);
 
     instance.subscribe('releasedPostsList',
       {}, { limit: limit, sort: sort},
-      function() { instance.loaded.set(limit); });
+      function() { instance.state.get('loaded'); });
 
     console.log('autorun..');
   });
@@ -49,7 +60,7 @@ Template.home.onCreated(function() {
   };
 
   instance.posts = function() {
-    return Posts.find({}, { limit: instance.loaded.get() });
+    return Posts.find({}, { limit: instance.state.get('loaded') });
   };
 
 });
@@ -73,14 +84,26 @@ Template.home.helpers({
   },
 
   hasMore: function() {
-    return (Template.instance().postsCount() > Template.instance().limit.get());
+    return (Template.instance().postsCount() > Template.instance().state.get('limit'));
   },
 
-  active: function(type) {
-    if (type === 'like') {
-      return (this.sortBy === 'like') ? "active" : "";
+  isActive: function(type) {
+    if (type === this.sortBy) {
+      switch(type) {
+        case 'like':
+          return 'active';
+          break;
+        case 'hit':
+          return 'active';
+          break;
+        case 'comment':
+          return 'active';
+          break;
+        default:
+          return "";
+      }
     }
-    return (this.sortBy !== 'like') ? "active" : "";
+    return (! type && ! this.sortBy) ? "active" : "";
   }
 });
 
