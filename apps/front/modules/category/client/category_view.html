@@ -1,21 +1,23 @@
 <template name="categoryView">
-  <article class="page container-fluid">
-    {{#if noPosts}}
-      {{_ 'text_no_blogs'}}
-    {{else}}
+  <article class="page container-fluid shine-wrapper">
+	  {{#if noPosts}}
       <div class="row-fluid">
-        <nav class="wrap-nav clearfix">
-          <ul class="list-unstyled">
-            <li class="pull-left"><a class="btn btn-primary"
-                                     href="{{pathFor 'categoryView' _id=categoryId}}"
-                                     role="button">최신순</a></li>
-            <li class="pull-left"><a class="btn btn-default"
-                                     href="{{pathFor 'categoryView' _id=categoryId query='sortBy=like'}}"
-                                     role="button">인기순</a></li>
-            <li class="pull-left"><a class="btn btn-default"
-                                     href="#" role="button">추천순</a></li>
+			  {{#if Template.subscriptionsReady}}
+				  {{_ 'text_no_blogs'}}
+			  {{/if}}
+      </div>
+	  {{else}}
+      <div class="row-fluid">
+        <nav class="navtabs">
+          <ul class="navtabs-list clearfix">
+            <li class="navtabs-item pull-left"><a class="navtabs-anchor"
+                                                        href="{{pathFor 'categoryView' _id=categoryId}}"
+                                                        role="button">최신순</a></li>
+            <li class="navtabs-item pull-left"><a class="navtabs-anchor"
+                                                        href="{{pathFor 'categoryView' _id=categoryId query='sortBy=like'}}"
+                                                        role="button">인기순</a></li>
             {{#if permissionWrite}}
-            <li class="pull-right"><a class="btn btn-default"
+            <li class="navtabs-item pull-right"><a class="navtabs-anchor"
                                       href="{{pathFor 'postWrite' categoryId=categoryId}}"
                                       role="button"><i class="fa fa-plus"></i></a></li>
             {{/if}}
@@ -39,7 +41,7 @@
           {{/if}}
         </div>
       {{else}}
-        {{> listLoading}}
+        <div class="loading">{{> listLoading}}</div>
       {{/if}}
     {{/if}}
   </article>

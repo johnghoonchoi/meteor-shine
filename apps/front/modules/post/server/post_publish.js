@@ -73,7 +73,6 @@ Meteor.publishComposite('releasedPostView', function(postId) {
   };
 });
 
-
 Meteor.publish('myPostsList', function(options) {
   check(options, Match.ObjectIncluding({
     "limit": Number,
