@@ -72,11 +72,14 @@ body {
 }
 
 .layout-classic > aside {
+  position: fixed;
   z-index: @zindex-navbar-fixed;
+  overflow-y: auto;
+
+  box-shadow: none;
 }
 
 .layout-classic > aside.left {
-  position: fixed;
   top: @header-height;
   bottom: @footer-height;
   left: -@aside-left-width;
@@ -84,18 +87,19 @@ body {
   padding: 5px;
 
   background: @aside-left-bg;
-  box-shadow: none;
+
+  #nav-main {
+    min-height: 100%;
+  }
 }
 
 .layout-classic > aside.right {
-  position: fixed;
   top: @header-height;
   bottom: @footer-height;
   right: -@aside-right-width;
   width: @aside-right-width;
 
   background: @aside-right-bg;
-  box-shadow: none;
 }
 
 /* toggle asides */
