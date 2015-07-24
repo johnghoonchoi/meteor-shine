@@ -17,6 +17,23 @@ Template.signUp.helpers({
 });
 
 
+Template.signUpPasswordService.onCreated(function() {
+  this.modalTermsOfUse = Blaze.render(Template.modalTermsOfUse, document.body);
+  this.modalPrivacyPolicy = Blaze.render(Template.modalPrivacyPolicy, document.body);
+});
+
+Template.signUpPasswordService.onDestroyed(function() {
+  if (this.modalTermsOfUse) {
+    Blaze.remove(this.modalTermsOfUse);
+    this.modalTermsOfUse = null;
+  }
+
+  if (this.modalPrivacyPolicy) {
+    Blaze.remove(this.modalPrivacyPolicy);
+    this.modalPrivacyPolicy = null;
+  }
+});
+
 Template.signUpPasswordService.helpers({
   fields: function () {
     return [
@@ -83,17 +100,13 @@ Template.signUpPasswordService.helpers({
 Template.signUpPasswordService.events({
   'click #termsOfUse': function(e) {
     e.preventDefault();
-    e.stopPropagation();
 
-    Blaze.render(Template.modalTermsOfUse, document.getElementById('accountsUIModal'));
     $('#modalTermsOfUse').modal('show');
   },
 
   'click #privacyPolicy': function(e) {
     e.preventDefault();
-    e.stopPropagation();
 
-    Blaze.render(Template.modalPrivacyPolicy, document.getElementById('accountsUIModal'));
     $('#modalPrivacyPolicy').modal('show');
   },
 
@@ -103,7 +116,7 @@ Template.signUpPasswordService.events({
     var options = {}; // to be passed to Accounts.createUser
 
     if (! instance.$('#agreements:checked').val()) {
-      Alerts.notifyModal('warning', 'accounts-ui:text_agreements_required');
+      Alerts.notifyModal('error', 'accounts-ui:error_agreements_required');
       return;
     }
 
@@ -112,7 +125,6 @@ Template.signUpPasswordService.events({
     var password = instance.$('#login-password').val();
 
     var matchPasswordAgainIfPresent = function() {
-      // notably not trimmed. a password could (?) start or end with a space
       var passwordAgain = instance.$('#login-password-again').val();
       if (passwordAgain) {
         return (password !== passwordAgain);
@@ -120,24 +132,39 @@ Template.signUpPasswordService.events({
       return true;
     };
 
+    if (! matchPasswordAgainIfPresent()) {
+      Alerts.notifyModal('error', 'accounts-ui:error_fail_password_confirm');
+      return;
+    }
+
     if (username !== null) {
       options.username = username.trim();
+
+      if (! Accounts.ui.validator.username(options.username)) {
+        Alerts.notifyModal('error', 'accounts-ui:error_invalid_username');
+        return;
+      }
     }
+
     if (email !== null) {
       options.email = email.trim();
+
+      if (! Accounts.ui.validator.email(options.email)) {
+        Alerts.notifyModal('error', 'accounts-ui:error_invalid_email');
+        return;
+      }
     }
 
-    // notably not trimmed. a password could (?) start or end with a space
     options.password = password;
-
-    if (! matchPasswordAgainIfPresent()) {
-      Alerts.notifyModal('accounts:error_fail_password_confirm');
+    if (! Accounts.ui.validator.password(options.password)) {
+      Alerts.notifyModal('error', 'accounts-ui:error_invalid_password');
       return;
     }
 
     Accounts.createUser(options, function (error) {
       if (error) {
-        Alerts.notifyModal('error', error.reason || "Unknown error");
+        var msg = error.reason || "error_unknown";
+        Alerts.notifyModal('error', "accounts-ui:" + msg);
       } else {
         $('#accountsUIModal').modal('hide');
         Alerts.dialog('msg', 'accounts-ui:text_verify_email');

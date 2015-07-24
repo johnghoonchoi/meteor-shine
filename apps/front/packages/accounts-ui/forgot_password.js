@@ -16,10 +16,12 @@ Template.forgotPasswordService.events({
 
         Accounts._setLoggingIn(false);
 
-        if (error)
-          Alerts.notifyModal('error', error.reason || "Unknown error");
-        else
-          Alerts.notifyModal('success', "Email sent");
+        if (error) {
+          var msg = error.reason || "error_unknown";
+          Alerts.notifyModal('error', "accounts-ui:" + msg);
+        } else {
+          Alerts.notifyModal('success', "accounts-ui:text_reset_password");
+        }
       });
     } else {
       Alerts.notifyModal('error', 'accounts-ui:error_invalid_input');

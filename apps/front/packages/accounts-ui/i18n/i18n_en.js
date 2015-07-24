@@ -35,12 +35,15 @@ I18nAccountsUI_en = {
   "label_connect_us"                   : "Connect with us",
   "label_contact_info"                 : "Contact Information",
   "label_unsubscribe"                  : "Unsubscription",
+  "label_sign_in_with"                 : "Sign in with {0}",
+  "label_configure_sign_in"            : "Configure {0} Sign In",
 
   "text_no_login_services"             : "There is no login service configured.",
   "text_input_username_or_email"       : "Input username or email address",
   "text_input_password"                : "Input password",
   "text_forgot_password"               : "Forgot password?",
   "text_reset_password"                : "We sent email to your email address just typed for password reset",
+  "text_reset_password_done"           : "Your password was changed to the new password",
   "text_stay_signed_in"                : "Stay signed in",
   "text_agreement"                     : "I agree with the {0} and {1}",
   "text_verify_email"                  : "You just signed up. Click this link to validate your email address : ",
@@ -49,6 +52,7 @@ I18nAccountsUI_en = {
 
   "placeholder_email_address"          : "Input email address",
 
+  "error_unknown"                      : "Unknown error",
   "error_sign_in"                      : "User not found or incorrect password",
   "error_reset_password_token_expired" : "Token expired",
   "error_username_already_exist"       : "Username already exists.",
@@ -57,5 +61,14 @@ I18nAccountsUI_en = {
   "error_agreements_required"          : "Agreements required",
   "error_need_username_or_email"       : "Need to set a username or email",
   "error_no_password_set"              : "User has no password set",
-  "error_fail_password_confirm"        : "Input passwords are not equal each other"
+  "error_fail_password_confirm"        : "Input passwords are not equal each other",
+  "error_invalid_username"             : "Username input is invalid format",
+  "error_invalid_email"                : "Email input is invalid format",
+  "error_invalid_password"             : "Password input is invalid format",
+  "error_validation"                   : "Input values are invalid",
+
+  "User not found"                     : "User not found",
+  "Need to set a username or email"    : "Need to set a username or email",
+  "Password may not be empty"          : "Password may not be empty",
+  "Token expired"                      : "Token expired"
 };
