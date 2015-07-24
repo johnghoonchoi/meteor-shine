@@ -14,6 +14,7 @@ Accounts.config({
 
 /**
  * Facebook login configuration
+ */
 ServiceConfiguration.configurations.remove({
   service: "facebook"
 });
@@ -23,15 +24,21 @@ ServiceConfiguration.configurations.insert({
   appId: Meteor.settings.facebook.appId,
   secret: Meteor.settings.facebook.secret
 });
- */
+
 
 /**
  * check the validation of user information
  * initialize user information
  */
 Accounts.onCreateUser(function(options, user) {
-  console.log('onCreateUser:options = ' + JSON.stringify(options));
-  console.log('onCreateUser:user = ' + JSON.stringify(user));
+  console.log('options: ' + JSON.stringify(options));
+  console.log('user:' + JSON.stringify(user));
+
+  var validation = AccountValidator.validateInsert(options);
+
+  if (! _.isEmpty(validation.errors())) {
+    throw new Meteor.Error(ERROR_CODE_MATCH, 'error_validation');
+  }
 
   return user;
 });

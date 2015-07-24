@@ -1,6 +1,6 @@
 Package.describe({
   name: 'leesangwon:accounts-ui',
-  version: '0.7.0',
+  version: '0.7.1',
   summary: 'Accounts-ui for Meteor application',
   git: '',
   documentation: 'README.md'
@@ -56,15 +56,9 @@ Package.onUse(function(api) {
     'style/style.less',
 
     'login_buttons.html',
-    'login_buttons_single.html',
-    'login_buttons_dropdown.html',
     'login_buttons_dialogs.html',
-
     'login_buttons_session.js',
-
     'login_buttons.js',
-    'login_buttons_single.js',
-    'login_buttons_dropdown.js',
     'login_buttons_dialogs.js'], 'client');
 
   api.addFiles([

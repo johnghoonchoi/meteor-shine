@@ -17,6 +17,7 @@ I18n_data_ko = {
   "title_user_list"               : "유저목록",
   "title_new_message"             : "새 메시지",
   "title_profile"                 : "사용자 정보",
+  "title_profile_edit_picture"    : "사진 수정",
 
 
   "command_sign_in"               : "로그인",
@@ -44,6 +45,8 @@ I18n_data_ko = {
   "label_connect_us"              : "SNS 연결정보",
   "label_contact_info"            : "연락정보",
   "label_unsubscribe"             : "탈퇴",
+  "label_profile_picture"         : "사진",
+  "label_profile_personal_info"   : "개인 정보",
 
 
   "text_notification_new_comment" : "{0}님의 블로그에 새로운 댓글이 등록되었습니다.",

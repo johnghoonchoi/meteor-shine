@@ -100,6 +100,7 @@ Accounts.ui.render = function(templateName, callback) {
   if (! Accounts.ui.view) {
     Accounts.ui.view = Blaze.render(Template.accountsUIModal, document.body);
   }
+
   $('#accountsUIModal').modal('show');
 
   if (callback && typeof callback === 'function') {
@@ -107,8 +108,25 @@ Accounts.ui.render = function(templateName, callback) {
   }
 };
 
+Accounts.ui.validator = {
+  username: function(value) {
+    var regex = /^[a-z0-9_]{3,20}$/i;
+    return regex.test(value);
+  },
+
+  email: function(value) {
+    var regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    return regex.test(value);
+  },
+
+  password: function(value) {
+    var regex = /^[A-Za-z0-9!@#$%^&*()_]{6,20}$/;
+    return regex.test(value);
+  }
+};
 
 Accounts.onResetPasswordLink(function (token, done) {
+  Accounts.ui.token = token;
   Accounts.ui.render('resetPassword', done);
 });
 
@@ -130,3 +148,16 @@ Accounts.onEmailVerificationLink(function (token, done) {
   });
 });
 
+// In the login redirect flow, we'll have the result of the login
+// attempt at page load time when we're redirected back to the
+// application.  Register a callback to update the UI (i.e. to close
+// the dialog on a successful login or display the error on a failed
+// login).
+//
+/*
+Accounts.onPageLoadLogin(function (attemptInfo) {
+  // Ignore if we have a left over login attempt for a service that is no longer registered.
+  if (_.contains(_.pluck(getLoginServices(), "name"), attemptInfo.type))
+    loginResultCallback(attemptInfo.type, attemptInfo.error);
+});
+*/

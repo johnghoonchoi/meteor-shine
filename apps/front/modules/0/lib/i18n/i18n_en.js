@@ -17,7 +17,7 @@ I18n_data_en = {
   "title_user_list"               : "User List",
   "title_new_message"             : "New Message",
   "title_profile"                 : "Profile",
-
+  "title_profile_edit_picture"    : "Edit picture",
 
   "command_sign_in"               : "Sign in",
   "command_sign_out"              : "Sign out",
@@ -44,7 +44,8 @@ I18n_data_en = {
   "label_connect_us"              : "Connect with us",
   "label_contact_info"            : "Contact Information",
   "label_unsubscribe"             : "Unsubscription",
-
+  "label_profile_picture"         : "Picture",
+  "label_profile_personal_info"   : "Personal information",
 
   "text_notification_new_comment" : "A new comment registered for {0}'s blog",
   "text_no_blogs"                 : "There is no blog registered.",
