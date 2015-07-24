@@ -14,10 +14,8 @@ Template.myworksNav.onCreated(function() {
 
 Template.myworksNav.onDestroyed(function() {
 });
-
 Template.myworksNav.onRendered(function() {
 });
-
 Template.myworksNav.helpers({
   myDraftCount: function() {
     return Template.instance().myDraftCount();
@@ -26,7 +24,3 @@ Template.myworksNav.helpers({
     return Template.instance().myPublicCount();
   }
 });
-
-Template.myworksNav.events({
-});
-

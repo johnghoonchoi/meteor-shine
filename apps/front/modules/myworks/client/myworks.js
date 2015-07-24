@@ -1,8 +1,8 @@
 Template.myworks.onCreated(function() {
-	var instance = this;
-  instance.data.mode = new ReactiveVar('draft');
-});
+  Navigations.path.set('myworks');
 
+  this.data.mode = new ReactiveVar('draft');
+});
 Template.myworks.onDestroyed(function() {
 });
 Template.myworks.onRendered(function() {

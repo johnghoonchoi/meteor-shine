@@ -1,13 +1,17 @@
-HomeController = RouteController.extend({
-  template: 'home',
-
-  action: function() {
-    this.render();
-  }
-});
+//HomeController = RouteController.extend({
+//  template: 'home',
+//
+//  action: function() {
+//    this.render();
+//  }
+//});
 
 
 Router.route('/home', {
   name: 'home',
-  controller: 'HomeController'
+  data: function() {
+    return {
+      sortBy: (this.params.query) ? this.params.query.sortBy : ''
+    };
+  }
 });

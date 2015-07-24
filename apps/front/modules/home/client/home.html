@@ -1,75 +1,71 @@
 <template name="home">
-  <article class="page container-fluid">
-      {{#if noBlogs}}
+  <article class="page container-fluid shine-wrapper">
+    {{#if noPosts}}
+      <div class="row-fluid">
+      {{#if Template.subscriptionsReady}}
         {{_ 'text_no_blogs'}}
-      {{else}}
-        <div class="row-fluid">
-          <nav class="wrap-nav clearfix">
-            <ul class="list-unstyled">
-              <li class="pull-left"><a class="btn btn-primary" href="#" role="button">최신순</a></li>
-              <li class="pull-left"><a class="btn btn-default" href="#" role="button">인기순</a></li>
-              <li class="pull-left"><a class="btn btn-default" href="#" role="button">추천순</a></li>
-              <!-- Post Write Button -->
-	            {{#if currentUser}}
-              <li role="presentation" class="{{activeRoute 'blogNew'}} pull-right">
-                <a href="{{pathFor 'blogNew'}}">
-                  <i class="fa fa-plus"></i>
-                </a>
-              </li>
-		          {{/if}}
-            </ul>
-          </nav>
+      {{/if}}
+      </div>
+    {{else}}
+      <div class="row-fluid">
+        <nav class="navTabs">
+          <ul class="navTabs-list">
+            <li class="navTabs-item active">
+              <a class="navTabs-anchor" href="{{pathFor 'home'}}">최신순</a>
+            </li>
+            <li class="navTabs-item {{active}}">
+              <a class="navTabs-anchor" href="{{pathFor 'home' query='sortBy=like'}}">인기순</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="">
+          <span class="">총:&nbsp;{{postsCount}}개</span>
         </div>
-        <div class="row-fluid">
-	        <ul class="list-unstyled">
-          {{#each blogs}}
-            {{> homeListItem}}
-          {{/each}}
+      </div>
+      <div class="row-fluid">
+        <div class="block-group">
+          <ul class="block-list">
+            {{#each posts}}
+	            {{> homeListItem}}
+            {{/each}}
           </ul>
         </div>
-	      {{#if Template.subscriptionsReady}}
-        <div class="row-fluid">
-          {{#if hasMore}}
-            <a class="btn btn-default btn-block load-more">더 보기</a>
-          {{/if}}
-        </div>
-	      {{else}}
-		      {{> listLoading}}
+      </div>
+      {{#if Template.subscriptionsReady}}
+      <div class="row-fluid">
+        {{#if hasMore}}
+          <a class="btn btn-default btn-block load-more">더 보기</a>
         {{/if}}
+      </div>
+      {{else}}
+      <div class="loading">{{> listLoading}}</div>
       {{/if}}
+    {{/if}}
   </article>
 </template>
 
 
-
 <template name="homeListItem">
-  <li class="">
-    <section class="wrap-cont clearfix">
-      <h2 class="post-title">
-        <strong><a href="{{pathFor 'blogOne'}}" class="title-link">{{title}}</a></strong>
-      </h2>
-      <div class="postby-author">
-        <small><i>by </i><a href="">{{userDisplayName user}}</a></small>
-	      <small>{{momentFromNow createdAt}}</small>
+  <li class="list-item">
+    <div class="block-content">
+      <h3 class="block-title">
+        <strong><a href="{{pathFor 'postView'}}">{{title}}</a></strong>
+      </h3>
+      <div class="block-postby-author">
+        <small><i>by </i><a href="">{{author.username}}</a></small>
       </div>
-      <p class="sum-content">
-	      {{{blogContent}}}
+      <p class="block-content-sum">
+		    {{{postContent}}}
       </p>
-      <div class="append-info">
-        <span class="hit-count"><i class="fa fa-eye"></i> {{hitsCount}}</span>
-        <span class="comment-count"><i class="fa fa-heart-o"></i> {{likesCount}}</span>
-        <span class="like-count"><i class="fa fa-comment-o"></i> {{commentCount}}</span>
-        <!--{{#if ownBlog}}-->
-        <!--<a href="#" class="delete-btn">Delete</a>-->
-        <!--{{/if}}-->
+      <div class="block-meta-wrap">
+        <span class="inline-category">{{categoryId}}</span>
+        <span class="inline-post-meta">{{momentFromNow createdAt}}</span>
       </div>
-      <!--<div class="append-tags">-->
-        <!--<ul class="list-unstyled">-->
-          <!--<li class="tag pull-left">category</li>-->
-          <!--<li class="tag pull-left">tag1</li>-->
-          <!--<li class="tag pull-left">tag2</li>-->
-        <!--</ul>-->
-      <!--</div>-->
-    </section>
+      <div class="block-append-info">
+	      <span class="inline-hit-count"><i class="fa fa-eye"></i> {{hitsCount}}</span>
+	      <span class="inline-comment-count"><i class="fa fa-heart-o"></i> {{likesCount}}</span>
+	      <span class="inline-like-count"><i class="fa fa-comment-o"></i> {{commentCount}}</span>
+      </div>
+    </div>
   </li>
 </template>

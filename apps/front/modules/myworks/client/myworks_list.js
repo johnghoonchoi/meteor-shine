@@ -1,6 +1,6 @@
 Template.myworksList.onCreated(function() {
-	var instance = this;
-  instance.increment = 5;
+  var instance = this;
+  instance.increment = 3;
   instance.loadDefault = 0;
   instance.modeDefault = 'draft';
 
@@ -45,27 +45,29 @@ Template.myworksList.onCreated(function() {
 });
 
 Template.myworksList.onDestroyed(function() {
+  BothLog.log('myworksList temp destroyed..');
   this.increment = null;
   this.loadDefault = null;
   this.modeDefault = null;
 });
-
 
 Template.myworksList.onRendered(function() {
 });
 
 Template.myworksList.helpers({
   myworksList: function() {
-    if (Template.instance().data.mode.get() === Template.instance().modeDefault) {
-      return Template.instance().postDrafts();
+    var instance= Template.instance();
+    if (instance.data.mode.get() === instance.modeDefault) {
+      return instance.postDrafts();
     }
-    return Template.instance().postPublic();
+    return instance.postPublic();
   },
   hasMore: function() {
-    if (Template.instance().data.mode.get() === Template.instance().modeDefault) {
-      return (Template.instance().myDraftCount() > Template.instance().state.get('limit'));
+    var instance= Template.instance();
+    if (instance.data.mode.get() === instance.modeDefault) {
+      return (instance.myDraftCount() > instance.state.get('limit'));
     }
-    return (Template.instance().myPublicCount() > Template.instance().state.get('limit'));
+    return (instance.myPublicCount() > instance.state.get('limit'));
   }
 });
 

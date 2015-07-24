@@ -1,12 +1,11 @@
 <template name="myworks">
-  <article id="myworks" class="page container-fluid">
+  <article class="page container-fluid shine-wrapper">
 		{{> myworksNav}}
 		{{> myworksList}}
   </article>
 </template>
 
 <template name="myworksNav">
-	<div id="myworks">
 	  <div class="row-fluid">
 	    <nav class="navTabs">
 	      <ul class="navTabs-list">
@@ -23,7 +22,6 @@
 	      </ul>
 	    </nav>
 	  </div>
-  </div>
 </template>
 
 <template name="myworksList">
@@ -51,7 +49,7 @@
   <li class="list-item">
     <div class="block-content">
       <h3 class="block-title">
-        <a href="{{pathFor 'postWrite' _id=_id categoryId=categoryId}}">{{title}}</a>
+        <a href="{{pathFor 'postView' _id=_id categoryId=categoryId}}">{{title}}</a>
       </h3>
       <div class="block-category">{{categoryId}}</div>
       <div class="block-meta-wrap">
