@@ -8,7 +8,6 @@ Template.postCommentNew.onCreated(function() {
 });
 
 Template.postCommentNew.onRendered(function() {
-  console.log('this.data: ', this.data);
 });
 
 Template.postCommentNew.events({

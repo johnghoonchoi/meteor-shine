@@ -16,7 +16,6 @@ Meteor.publish('postDraftsList', function(query, options) {
   Counts.publish(this, 'myDraftCount', Posts.find(query),
     { noReady: true });
 
-  Meteor._sleepForMs(200);
   return PostDrafts.find(query, options);
 });
 
@@ -24,5 +23,10 @@ Meteor.publish('myDraftCount', function(query) {
   query = _.extend({ 'author._id': this.userId }, query );
   Counts.publish(this, 'myDraftCount', PostDrafts.find(query),
     { noReady: true });
+});
+
+Meteor.publish('postDraftEdit', function(draftId) {
+  check(draftId, String);
+  return PostDrafts.find({ _id: draftId });
 });
 

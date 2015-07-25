@@ -1,6 +1,6 @@
 Template.myworksList.onCreated(function() {
   var instance = this;
-  instance.increment = 3;
+  instance.increment = 2;
   instance.loadDefault = 0;
   instance.modeDefault = 'draft';
 
@@ -20,28 +20,18 @@ Template.myworksList.onCreated(function() {
     }
   });
 
-  instance.postDrafts = function() {
+  instance.myDraftCursor = function() {
     return PostDrafts.find({}, {
       limit: instance.state.get('loaded'),
       sort: {createdAt: -1}
     });
   };
-
-  instance.postPublic = function() {
+  instance.myPostCursor = function() {
     return Posts.find({}, {
       limit: instance.state.get('loaded'),
       sort: {createdAt: -1}
     });
   };
-
-  instance.myDraftCount = function() {
-    return Counts.get('myDraftCount');
-  };
-
-  instance.myPublicCount = function() {
-    return Counts.get('myPostsListCount');
-  };
-
 });
 
 Template.myworksList.onDestroyed(function() {
@@ -58,16 +48,21 @@ Template.myworksList.helpers({
   myworksList: function() {
     var instance= Template.instance();
     if (instance.data.mode.get() === instance.modeDefault) {
-      return instance.postDrafts();
+      return instance.myDraftCursor();
     }
-    return instance.postPublic();
+    return instance.myPostCursor();
   },
   hasMore: function() {
     var instance= Template.instance();
     if (instance.data.mode.get() === instance.modeDefault) {
-      return (instance.myDraftCount() > instance.state.get('limit'));
+      return (Counts.get('myDraftCount') > instance.state.get('limit'));
     }
-    return (instance.myPublicCount() > instance.state.get('limit'));
+    return (Counts.get('myPostsListCount') > instance.state.get('limit'));
+  },
+
+  switchMode: function() {
+    var instance= Template.instance();
+    return instance.data.mode.get() === instance.modeDefault;
   }
 });
 
@@ -75,5 +70,14 @@ Template.myworksList.events({
   'click .load-more': function(e, instance) {
     e.preventDefault();
     instance.state.set('limit', instance.state.get('limit') + instance.increment);
+  }
+});
+
+Template.myworksDraft.onCreated(function() {
+  this.parent = Template.parentData(1);
+});
+Template.myworksDraft.helpers({
+  mode: function() {
+    return Template.instance().parent.mode.get();
   }
 });

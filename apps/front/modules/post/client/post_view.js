@@ -5,24 +5,24 @@ Template.postView.onCreated(function() {
   instance.editMode = new ReactiveVar(false);
 
   instance.setEditMode = function(edit) {
-    instance.$('#title').attr('contenteditable', edit);
-
     if (edit) {
-      instance.$('[data-provide]').attr('data-provide','markdown-editable');
-      instance.$('[data-provide]').trigger('click');
-      instance.$('textarea').attr('data-provide', 'markdown');
 
-      var post = instance.post();
-      if (post && ! _.isEmpty(post.draft)) {
-        instance.$('#title').html(post.draft.title);
-        instance.$('[data-provide]').val(post.draft.content.data);
-      }
-    } else {
-      instance.$('.md-editor').remove();
     }
-
     instance.editMode.set(edit);
   };
+    //instance.$('#title').attr('contenteditable', edit);
+      //instance.$('[data-provide]').attr('data-provide','markdown-editable');
+      //instance.$('[data-provide]').trigger('click');
+      //instance.$('textarea').attr('data-provide', 'markdown');
+
+      //var post = instance.post();
+      //if (post && ! _.isEmpty(post.draft)) {
+      //  instance.$('#title').html(post.draft.title);
+      //  instance.$('[data-provide]').val(post.draft.content.data);
+      //}
+    //} else {
+    //  instance.$('.md-editor').remove();
+    //}
 
   instance.insertContent = function() {
     var post = this.post();
@@ -70,6 +70,9 @@ Template.postView.onDestroyed(function() {
 
 Template.postView.onRendered(function() {
   this.insertContent();
+
+  console.log('this.data: ', this.data);
+
 });
 
 Template.postView.helpers({
@@ -102,11 +105,18 @@ Template.postView.helpers({
     var postId = Template.instance().data.postId;
 
     // todo : 포스트 삭제 후 이 헬퍼 함수가 다시 작동해서 throw error..
-    return postAccess('update', user, postId);
+    var flag = postAccess('update', user, postId);
+    if (flag === true) Template.instance().data.mode = 'edit';
+
+    return flag;
   },
 
   isEditMode: function() {
     return Template.instance().editMode.get();
+  },
+
+  mode: function() {
+    return Template.instance().data.mode;
   }
 });
 
@@ -176,7 +186,7 @@ Template.postView.events({
 
       Meteor.call('postSaveDraft', self.postId, object, function(error) {
         if (! error) {
-          Alerts.notify('success', 'draft_saved');
+          Alerts.notify('success', 'post_draft_saved');
         }
       });
     }, 3000);
