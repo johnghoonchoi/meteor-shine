@@ -1,12 +1,15 @@
 <template name="notificationsList">
-  <div class="aside-right">
-    <div class="row-fluid">
-      <h4>{{_ 'title_notifications'}}</h4>
+  <div class="panel panel-warning">
+    <div class="panel-heading">
+      <h3>{{_ 'title_notifications'}}</h3>
+    </div>
+    <div class="panel-body">
       {{#each notifications}}
         {{> notificationsListItem}}
       {{/each}}
     </div>
   </div>
+
 </template>
 
 <template name="notificationsListItem">
