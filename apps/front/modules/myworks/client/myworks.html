@@ -11,12 +11,12 @@
 	      <ul class="navtabs-list">
 	        <li class="navtabs-item active" data-switch="draft">
 	          <a class="navtabs-anchor" href="">
-	            작성중<span class="navtabs-count">&nbsp;{{myDraftCount}}</span>
+	            작성중<span class="navtabs-count">&nbsp;{{getPublishedCount 'myDraftCount'}}</span>
 	          </a>
 	        </li>
 	        <li class="navtabs-item" data-switch="public">
 	          <a class="navtabs-anchor" href="">
-	            발행글<span class="navtabs-count">&nbsp;{{myPublicCount}}</span>
+	            발행글<span class="navtabs-count">&nbsp;{{getPublishedCount 'myPostsListCount'}}</span>
 	          </a>
 	        </li>
 	      </ul>
@@ -29,7 +29,11 @@
     <div class="block-group">
       <ul class="block-list">
 				{{#each myworksList}}
-					{{> myworksItem}}
+					{{#if switchMode}}
+					{{> myworksDraft}}
+					{{else}}
+          {{> myworksPost}}
+					{{/if}}
 				{{/each}}
 	      {{#if Template.subscriptionsReady}}
           <div class="row-fluid">
@@ -45,7 +49,21 @@
   </div>
 </template>
 
-<template name="myworksItem">
+<template name="myworksDraft">
+  <li class="list-item">
+    <div class="block-content">
+      <h3 class="block-title">
+        <a href="{{pathFor 'draftWrite' mode=mode _id=_id categoryId=categoryId}}">{{title}}</a>
+      </h3>
+      <div class="block-category">{{categoryId}}</div>
+      <div class="block-meta-wrap">
+        <span class="post-meth-inline">{{momentFromNow createdAt}}</span>
+      </div>
+    </div>
+  </li>
+</template>
+
+<template name="myworksPost">
   <li class="list-item">
     <div class="block-content">
       <h3 class="block-title">

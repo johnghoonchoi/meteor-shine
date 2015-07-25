@@ -72,11 +72,7 @@ Template.home.onRendered(function() {
 
 Template.home.helpers({
   noPosts: function() {
-    return Template.instance().postsCount() === 0;
-  },
-
-  postsCount: function() {
-    return Template.instance().postsCount();
+    return Counts.get('releasedPostsListCount') === 0;
   },
 
   posts: function() {
@@ -84,7 +80,7 @@ Template.home.helpers({
   },
 
   hasMore: function() {
-    return (Template.instance().postsCount() > Template.instance().state.get('limit'));
+    return (Counts.get('releasedPostsListCount') > Template.instance().state.get('limit'));
   },
 
   isActive: function(type) {

@@ -8,6 +8,7 @@ Template.myworks.onDestroyed(function() {
 Template.myworks.onRendered(function() {
 });
 Template.myworks.helpers({
+
 });
 Template.myworks.events({
   'click [data-switch]': function(e, instance) {
