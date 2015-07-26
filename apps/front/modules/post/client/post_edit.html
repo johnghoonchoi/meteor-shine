@@ -1,16 +1,19 @@
-<template name="postWrite">
+<template name="postEdit">
   <article class="page">
     <header>
-      <h3>{{category.title}} <small>{{_ 'label_new_post'}}</small></h3>
+      <h3>Edit post</h3>
     </header>
+
     <div class="body">
       <form id="formPostWrite">
         <div class="panel panel-default">
           <div class="panel-body block-wrapper">
-            <h3><input {{titleAttrs titleMax}} value="{{docData.title}}"></h3>
+            <h3>
+              <input id="title" name="title" value="{{title}}">
+            </h3>
             <article id="articleWrap">
               <section id="contentWrapper">
-                {{> postTextarea content=docData.content.data}}
+                {{> postTextarea content=content}}
               </section>
             </article>
           </div>
@@ -28,7 +31,4 @@
       </form>
     </div>
   </article>
-  {{> cloudinaryProgressBar}}
 </template>
-<!--<div id="ie-clipboard-contenteditable" class="hidden" contenteditable="true"></div>-->
-<!--<input id="hidden-input" class="hidden" type="text" value="" />-->

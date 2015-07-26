@@ -115,7 +115,8 @@ Template.signInPasswordService.events({
       if (error) {
         Alerts.notifyModal('error', 'accounts-ui:error_sign_in');
       } else {
-        $('#accountsUIModal').modal('hide');
+//        $('#accountsUIModal').modal('hide');
+        Accounts.ui.dialog.hide();
       }
     });
   }
@@ -182,6 +183,7 @@ Template.backToSignIn.events({
   'click #backToSignIn': function(e) {
     e.preventDefault();
 
-    Accounts.ui.render('signIn');
+//    Accounts.ui.render('signIn');
+    Accounts.ui.dialog.show('signIn');
   }
 });

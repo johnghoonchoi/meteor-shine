@@ -45,10 +45,12 @@ Template.postWrite.onDestroyed(function() {
 });
 
 Template.postWrite.onRendered(function() {
+  /*
   var instance = this;
   console.log('postWrite onRendered this.data: ', instance.data);
   instance.$("[data-provide=markdown]").markdown();
   instance.$("[data-provide=markdown]").tabOverride().flexText();
+  */
   //this.$('[data-provide=wyswig]').wysiwyg();
 });
 
@@ -92,22 +94,6 @@ Template.postWrite.events({
     //t.data.titleCount.set(count);
   },
 
-  'click [data-handler=bootstrap-markdown-cmdUpload]': function(e) {
-    e.stopImmediatePropagation();
-    $('input.cloudinary_fileupload').trigger('click');
-    console.log('image upload click trigger..');
-  },
-  'click [data-handler=bootstrap-markdown-cmdPreview]': function(e) {
-    e.stopImmediatePropagation();
-    var $pre = $('.flex-text-wrap>pre');
-    $pre.toggleClass('hidden');
-  },
-  'click .md-control-fullscreen': function(e) {
-    e.stopImmediatePropagation();
-    var wrapper = $('#wrapper');
-    if (! wrapper.hasClass('aside-right-set'))
-      wrapper.addClass('aside-left-set');
-  },
 
   // todo : 20, July, draft functionality here..
   'input [data-provide], input [name=title]': function(e, instance) {

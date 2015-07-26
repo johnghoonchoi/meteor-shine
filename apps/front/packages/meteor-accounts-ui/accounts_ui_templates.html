@@ -15,6 +15,13 @@
   </div>
 </template>
 
+<template name="accountsUIOverlay">
+  <div id="accounts-ui-overlay">
+    <div class="overlay-wrapper">
+      {{> Template.dynamic template=activeTemplate}}
+    </div>
+  </div>
+</template>
 
 <template name="accountsUILoading">
   {{> loading}}

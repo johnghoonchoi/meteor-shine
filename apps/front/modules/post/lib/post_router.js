@@ -13,7 +13,7 @@ Router.route('/post/view/:categoryId/:_id', {
   }
 });
 
-Router.route('/post/write/:categoryId', {
+Router.route('/category/:categoryId/newPost', {
   name: 'postWrite',
   template: 'postWrite',
   data: function() {
@@ -23,6 +23,7 @@ Router.route('/post/write/:categoryId', {
   }
 });
 
+/*
 Router.route('/post/:mode/:categoryId/:_id', {
   name: 'postEdit',
   template: 'postWrite',
@@ -34,4 +35,14 @@ Router.route('/post/:mode/:categoryId/:_id', {
     }
   }
 });
+*/
 
+Router.route('/post/:_id/edit', {
+  name: 'postEdit',
+  template: 'postEdit',
+  data: function () {
+    return {
+      postId: this.params._id
+    };
+  }
+});
