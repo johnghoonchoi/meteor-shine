@@ -1,71 +1,39 @@
 Template.postWrite.onCreated(function() {
   var instance = this;
+  var data = Template.currentData();
 
-  instance.data = Template.currentData();
   instance.state = new ReactiveDict;
   instance.autoSave = new Autosave();
 
   instance.state.set('update', 0);
 
-  if (instance.data.mode === 'draft') instance.draftId = instance.data._id;
-  else if(instance.data.mode === 'edit') instance.postId = instance.data._id;
-  else instance.draftId = null;
-
   instance.autorun(function() {
-    if (instance.data.mode === 'draft') {
-      instance.subscribe('postDraftEdit', instance.draftId);
-    } else if (instance.data.mode === 'edit') {
-      instance.subscribe('releasedPostView', instance.postId);
-    } else {
-      instance.subscribe('postCategoriesList',
-        { state: 'ON' }, { sort: { seq: 1 }});
+    if (data.draftId) {
+      instance.subscribe('postDraftEdit', data.draftId);
     }
   });
 
   instance.category = function() {
-    return Categories.findOne({ _id: instance.data.categoryId, state: 'ON' });
+    return Categories.findOne({ _id: data.categoryId, state: 'ON' });
   };
 
-  instance.draftDoc = function() {
-    return PostDrafts.findOne({ _id: instance.draftId });
-  }
-
-  instance.postDoc = function() {
-    return Posts.findOne({ _id: instance.postId });
-  }
-
+  instance.draft = function() {
+    return (data.draftId) ? PostDrafts.findOne({ _id: data.draftId }) : null;
+  };
 });
 
 Template.postWrite.onDestroyed(function() {
   this.autoSave.clear();
   this.autoSave = null;
+
   this.draftId = null;
   this.category = null;
-  this.data = null;
 });
 
-Template.postWrite.onRendered(function() {
-  /*
-  var instance = this;
-  console.log('postWrite onRendered this.data: ', instance.data);
-  instance.$("[data-provide=markdown]").markdown();
-  instance.$("[data-provide=markdown]").tabOverride().flexText();
-  */
-  //this.$('[data-provide=wyswig]').wysiwyg();
-});
 
 Template.postWrite.helpers({
-  docData: function() {
-    if (Template.instance().data.mode === 'draft')
-      return Template.instance().draftDoc();
-    else if (Template.instance().data.mode === 'edit') {
-      if (Template.instance().postDoc().draft) {
-        var flag = confirm('드래프로가 존재합니다. 드래프트를 수정하시겠습니까?');
-      }
-      if (flag) return Template.instance().postDoc().draft;
-      return Template.instance().postDoc();
-    }
-    else return '';
+  draft: function() {
+    return Template.instance().draft();
   },
 
   titleAttrs: function(maxLeng) {
