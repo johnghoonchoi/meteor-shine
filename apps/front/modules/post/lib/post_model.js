@@ -40,6 +40,13 @@ Posts = new Mongo.Collection('posts');
  */
 PostLogs = new Mongo.Collection('postLogs');
 
+/**
+ * check access permission
+ *
+ * @param action
+ * @param user
+ * @param ticket
+ */
 postAccess = function(action, user, ticket) {
   var categoryPermission = function(user, categoryId) {
     var category = Categories.findOne(categoryId);
@@ -55,9 +62,11 @@ postAccess = function(action, user, ticket) {
 
   var postPermission = function(user, postId) {
     var post = Posts.findOne({ _id: postId });
+
     if (! post) {
       throw new Meteor.Error(ERROR_CODE_SECURITY, 'error_invalid_input');
     }
+
     var category = Categories.findOne(post.categoryId);
 
     if (! category) {
@@ -75,14 +84,15 @@ postAccess = function(action, user, ticket) {
   switch (action) {
     case 'insert':
       return categoryPermission(user, ticket);
-      break;
+
     case 'update':
       return postPermission(user, ticket);
-      break;
+
     case 'remove':
       return postPermission(user, ticket);
-      break;
   }
+
+  return false;
 };
 
 Meteor.methods({

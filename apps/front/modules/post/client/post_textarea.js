@@ -1,4 +1,9 @@
 Template.postTextarea.onRendered(function() {
+  var instance = this;
+
+  instance.$("[data-provide=markdown]").markdown();
+  instance.$("[data-provide=markdown]").tabOverride().flexText();
+
   Cloudinary.uploadImagePreset(
     {
       config: {
@@ -62,24 +67,22 @@ Template.postTextarea.onRendered(function() {
   );
 });
 
-
-Template.postTextarea.onCreated(function(){
-  console.log('this: ', this);
-
-  var instance = this;
-  instance.data = Template.currentData();
-
-});
-
-Template.postTextarea.helpers({
-  attributes: function() {
-    return {
-      'data-provide': 'markdown',
-      'data-iconlibrary': 'fa',
-      'placeholder': '본문'
-    }
+Template.postTextarea.events({
+  'click [data-handler=bootstrap-markdown-cmdUpload]': function(e) {
+    e.stopImmediatePropagation();
+    $('input.cloudinary_fileupload').trigger('click');
+    console.log('image upload click trigger..');
+  },
+  'click [data-handler=bootstrap-markdown-cmdPreview]': function(e) {
+    e.stopImmediatePropagation();
+    var $pre = $('.flex-text-wrap>pre');
+    $pre.toggleClass('hidden');
+  },
+  'click .md-control-fullscreen': function(e) {
+    e.stopImmediatePropagation();
+    var wrapper = $('#wrapper');
+    if (! wrapper.hasClass('aside-right-set'))
+      wrapper.addClass('aside-left-set');
   }
-
 });
-
 

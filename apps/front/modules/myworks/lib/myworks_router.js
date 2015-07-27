@@ -6,6 +6,7 @@ Router.route('/myworks', {
     }
 });
 
+/*
 Router.route('/:mode/:categoryId/:_id/', {
   name: 'draftWrite',
   template: 'postWrite',
@@ -17,3 +18,4 @@ Router.route('/:mode/:categoryId/:_id/', {
     };
   }
 });
+*/

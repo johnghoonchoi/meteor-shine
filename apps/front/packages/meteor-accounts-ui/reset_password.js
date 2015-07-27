@@ -16,7 +16,8 @@ Template.resetPasswordService.events({
           Alerts.notifyModal('error', "accounts-ui:" + msg);
         } else {
           Alerts.notify('success', 'accounts-ui:text_reset_password_done');
-          $('#accountsUIModal').modal('hide');
+          //$('#accountsUIModal').modal('hide');
+          Accounts.ui.dialog.hide();
         }
       }
     );

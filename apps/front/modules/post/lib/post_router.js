@@ -1,11 +1,6 @@
 
-Router.route('/post/view/:categoryId/:_id', {
+Router.route('/post/:_id', {
   name: 'postView',
-  template: 'postView',
-  waitOn: function() {
-    Meteor.subscribe('releasedPostView', this.params._id);
-    //Meteor.subscribe('postLikeView', this.params._id);
-  },
   data: function() {
     return {
       postId: this.params._id
@@ -13,7 +8,7 @@ Router.route('/post/view/:categoryId/:_id', {
   }
 });
 
-Router.route('/post/write/:categoryId', {
+Router.route('/category/:categoryId/newPost', {
   name: 'postWrite',
   template: 'postWrite',
   data: function() {
@@ -23,6 +18,7 @@ Router.route('/post/write/:categoryId', {
   }
 });
 
+/*
 Router.route('/post/:mode/:categoryId/:_id', {
   name: 'postEdit',
   template: 'postWrite',
@@ -34,4 +30,13 @@ Router.route('/post/:mode/:categoryId/:_id', {
     }
   }
 });
+*/
 
+Router.route('/post/:_id/edit', {
+  name: 'postEdit',
+  data: function () {
+    return {
+      postId: this.params._id
+    };
+  }
+});

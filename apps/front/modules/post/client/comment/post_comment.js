@@ -47,7 +47,7 @@ Template.postCommentsList.onCreated(function() {
   instance.autorun(function() {
     var limit = instance.limit.get();
     instance.subscribe('postCommentsList', { postId: data.postId },
-      { limit: limit, sort: { createdAt: 1 }});
+      { limit: limit, sort: { createdAt: -1 }});
     instance.data.count.get();
     BothLog.log('comments subscription..');
   });
@@ -55,7 +55,6 @@ Template.postCommentsList.onCreated(function() {
   instance.autorun(function() {
     if (instance.subscriptionsReady()) {
       instance.loaded.set(instance.limit.get());
-      BothLog.log('comments subscriptions ready..');
     }
   });
 
@@ -65,7 +64,7 @@ Template.postCommentsList.onCreated(function() {
 
   instance.comments = function() {
     return PostComments.find({ postId: data.postId },
-      { limit: instance.loaded.get(), sort: { createdAt: 1 }});
+      { limit: instance.loaded.get(), sort: { createdAt: -1 }});
   };
 });
 

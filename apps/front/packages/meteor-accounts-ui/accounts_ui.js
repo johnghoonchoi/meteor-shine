@@ -95,6 +95,32 @@ passwordSignupFields = function () {
 
 Accounts.ui.activeTemplate = new ReactiveVar('signIn');
 
+Accounts.ui.dialog = {
+  show: function(templateName, callback) {
+
+    Accounts.ui.activeTemplate.set(templateName);
+
+    if (! Accounts.ui.view) {
+      Accounts.ui.view = Blaze.render(Template.accountsUIOverlay, document.body);
+    }
+
+    $('#accounts-ui-overlay').fadeIn('slow');
+
+    if (callback && typeof callback === 'function') {
+      callback();
+    }
+  },
+
+  hide: function() {
+    $('#accounts-ui-overlay').fadeOut('slow', function() {
+      if (Accounts.ui.view) {
+        Blaze.remove(Accounts.ui.view);
+        Accounts.ui.view = null;
+      }
+    });
+  }
+};
+
 Accounts.ui.render = function(templateName, callback) {
   Accounts.ui.activeTemplate.set(templateName);
   if (! Accounts.ui.view) {
@@ -127,11 +153,11 @@ Accounts.ui.validator = {
 
 Accounts.onResetPasswordLink(function (token, done) {
   Accounts.ui.token = token;
-  Accounts.ui.render('resetPassword', done);
+  Accounts.ui.dialog.show('resetPassword', done);
 });
 
 Accounts.onEnrollmentLink(function (token, done) {
-  Accounts.ui.render('enrollAccount', done);
+  Accounts.ui.dialog.show('enrollAccount', done);
 });
 
 Accounts.onEmailVerificationLink(function (token, done) {

@@ -53,3 +53,23 @@
   background: #fff;
   color: #333;
 }
+
+#accounts-ui-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  border: solid 1px #999;
+  border-radius: @border-radius-base;
+  z-index: @zindex-modal;
+
+  background: #fff;
+  display: none;
+
+  .overlay-wrapper {
+    width: 50%;
+    margin: 0 auto;
+  }
+}

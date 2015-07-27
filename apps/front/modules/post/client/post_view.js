@@ -2,47 +2,20 @@ Template.postView.onCreated(function() {
   var instance = this;
   var data = Template.currentData();
 
-  instance.editMode = new ReactiveVar(false);
-
-  instance.setEditMode = function(edit) {
-    if (edit) {
-
-    }
-    instance.editMode.set(edit);
-  };
-    //instance.$('#title').attr('contenteditable', edit);
-      //instance.$('[data-provide]').attr('data-provide','markdown-editable');
-      //instance.$('[data-provide]').trigger('click');
-      //instance.$('textarea').attr('data-provide', 'markdown');
-
-      //var post = instance.post();
-      //if (post && ! _.isEmpty(post.draft)) {
-      //  instance.$('#title').html(post.draft.title);
-      //  instance.$('[data-provide]').val(post.draft.content.data);
-      //}
-    //} else {
-    //  instance.$('.md-editor').remove();
-    //}
-
-  instance.insertContent = function() {
-    var post = this.post();
-
-    var $contentWrap = $('[data-provide]');
-    var content = post ? post.content : '';
-
-    if (content.type === 'markdown') {
-      $contentWrap.append(marked(content.data));
-    } else if (content.type === 'wyswig') {
-      $contentWrap.append(content.data);
-    } else {
-      Alerts.notify('error', 'error_invalid_content');
-    }
-  };
+  instance.isEditable = new ReactiveVar(false);
 
   instance.autoSave = new Autosave();
 
   instance.autorun(function() {
     Meteor.subscribe('releasedPostView', data.postId);
+  });
+
+  // lazy update
+  instance.autorun(function() {
+    var post = Posts.findOne(data.postId);
+    if (post) {
+      instance.isEditable.set(postAccess('update', Meteor.user(), data.postId));
+    }
   });
 
   instance.post = function() {
@@ -68,13 +41,6 @@ Template.postView.onDestroyed(function() {
   this.like = null;
 });
 
-Template.postView.onRendered(function() {
-  this.insertContent();
-
-  console.log('this.data: ', this.data);
-
-});
-
 Template.postView.helpers({
   titleText: function() {
     var post = Template.instance().post();
@@ -92,6 +58,10 @@ Template.postView.helpers({
     return attrs;
   },
 
+  category: function() {
+    return Template.instance().category();
+  },
+
   post: function() {
     return Template.instance().post();
   },
@@ -101,22 +71,7 @@ Template.postView.helpers({
   },
 
   isEditable: function() {
-    var user = Meteor.user();
-    var postId = Template.instance().data.postId;
-
-    // todo : 포스트 삭제 후 이 헬퍼 함수가 다시 작동해서 throw error..
-    var flag = postAccess('update', user, postId);
-    if (flag === true) Template.instance().data.mode = 'edit';
-
-    return flag;
-  },
-
-  isEditMode: function() {
-    return Template.instance().editMode.get();
-  },
-
-  mode: function() {
-    return Template.instance().data.mode;
+    return Template.instance().isEditable.get();
   }
 });
 
@@ -126,12 +81,9 @@ Template.postView.events({
     history.back(-1);
   },
 
-  'click [data-role=edit]': function(e, instance) {
-    instance.setEditMode(true);
-  },
-
   'click [data-role=delete]': function(e, instance) {
     e.preventDefault();
+
     var self = this;
 
     Alerts.dialog('confirm', '정말 삭제하시겠습니까?', function(confirm) {
@@ -192,65 +144,6 @@ Template.postView.events({
     }, 3000);
   },
 
-  'click [data-role=save]': function(e, instance) {
-    e.preventDefault();
-    var $contents = instance.$('textarea');
-    var dataType = instance.post().content.type;
-    var content;
-    var titleLength = $('#title').text().trim().length;
-    var contentLength;
-
-    if (dataType === 'markdown') {
-      content = {
-        type: dataType,
-        version: '0.0.1',
-        data: $contents.val()
-      };
-      contentLength = content.data.trim().length;
-    } else if (dataType === 'wyswig') {
-      content = {
-        type: dataType,
-        version: '0.0.1',
-        data: $contents.html()
-      };
-      contentLength = $contents.text().trim().length;
-    } else {
-      Alerts.notify('error', 'error_invalid_input');
-      return;
-    }
-
-    if(! titleLength) {
-      Alerts.notify('error', '제목을 입력해주세요.');
-      return;
-    } else if (titleLength < 3) {
-      Alerts.notify('error', '3자 이상 입력하세요.');
-      return;
-    }
-
-    if (! contentLength) {
-      Alerts.notify('error', '내용을 입력해주세요.');
-      return;
-    } else if (contentLength < 3) {
-      Alerts.notify('error', '3자 이상 입력하세요.');
-      return;
-    }
-
-    var object = {
-      title: instance.$('#title').text().trim(),
-      content: content
-    };
-
-    Meteor.call('postUpdate', this.postId, object, function(error, result) {
-      if (error) {
-        Alerts.notify('error', error.message);
-      } else {
-        Alerts.notify('success', 'post_update_success');
-        instance.setEditMode(false);
-        history.go(-1);
-      }
-    });
-  },
-
   'click #like': function(e, instance) {
     e.preventDefault();
 
@@ -269,5 +162,12 @@ Template.postView.events({
         Alerts.notify('error', error.reason);
       }
     });
+  }
+});
+
+
+Template.postViewContent.helpers({
+  isMarkdown: function() {
+    return (this.type === 'markdown');
   }
 });
