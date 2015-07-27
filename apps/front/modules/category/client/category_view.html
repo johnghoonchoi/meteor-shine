@@ -52,3 +52,25 @@
     </div>
   </article>
 </template>
+
+<template name="postsListItem">
+  <li>
+    <section class="wrap-cont clearfix">
+      <h2 class="post-title">
+        <strong><a href="{{pathFor 'postView'}}" class="title-link">{{title}}</a></strong>
+      </h2>
+      <div class="postby-author">
+        <small><i>by </i><a href="">{{userDisplayName author}}</a></small>
+        <small>{{momentFromNow createdAt}}</small>
+      </div>
+      <p class="sum-content">
+        {{{content}}}
+      </p>
+      <div class="append-info">
+        <span class="hit-count"><i class="fa fa-eye"></i> {{count.hits}}</span>
+        <span class="comment-count"><i class="fa fa-heart-o"></i> {{count.likes}}</span>
+        <span class="like-count"><i class="fa fa-comment-o"></i> {{count.comments}}</span>
+      </div>
+    </section>
+  </li>
+</template>

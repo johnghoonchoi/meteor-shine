@@ -1,17 +1,18 @@
 <template name="notificationsList">
-  <div class="panel panel-warning">
-    <div class="panel-heading">
-      <h3>{{_ 'title_notifications'}}</h3>
-    </div>
-    <div class="panel-body">
+  <article class="notifications">
+    <div class="body">
       {{#each notifications}}
         {{> notificationsListItem}}
       {{/each}}
     </div>
-  </div>
+
+    <footer>
+
+    </footer>
+  </article>
 
 </template>
 
 <template name="notificationsListItem">
-  <li>{{msg.content}}</li>
+  <p>{{msg.content}}</p>
 </template>

@@ -18,13 +18,23 @@
   }
 }
 
-article.notification-frame {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+//
+//  Account info box in the left aside
+//--------------------------------------------------------------
+article.notifications {
+  padding: 10px;
 
+  .body {
+    p {
+      margin: 0;
+      padding: 5px 0;
+      cursor: pointer;
+    }
+
+    p + p {
+      border-top: solid 1px #ccc;
+    }
+  }
   footer {
     position: absolute;
     left: 10px;

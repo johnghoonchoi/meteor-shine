@@ -14,13 +14,14 @@ Template.notificationsList.events({
 });
 
 Template.notificationsListItem.events({
-  'click li': function(e) {
+  'click p': function(e) {
     e.preventDefault();
 
     $('#container').removeClass('notification-set');
 
     Meteor.call('notificationRead', this._id);
 
+    hideBalloons();
     Router.go(Meteor.absoluteUrl(this.msg.link));
   }
 });
