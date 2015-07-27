@@ -7,9 +7,8 @@
         </div>
         {{#if isEditable}}
           <div class="btn-toolbar pull-right">
-            <!--<button type="button" class="btn btn-primary" data-role="edit" >Edit</button>-->
-            <a class="btn btn-primary" data-role="edit" href="{{pathFor 'postEdit' _id=post._id}}">Edit</a>
-            <button type="button" class="btn btn-danger" data-role="delete">Delete</button>
+            <a class="btn btn-primary" href="{{pathFor 'postEdit' _id=post._id}}">Edit</a>
+            <button type="button" id="remove" class="btn btn-danger">Delete</button>
           </div>
         {{/if}}
       </header>
@@ -17,11 +16,10 @@
       <article id="articleWrap">
         <h4>{{post.title}}</h4>
         <section id="contentWrapper" class="block-wrapper">
-
           <div>
             by {{post.author.username}}
           </div>
-          <div>{{> postViewContent post.content}}</div>
+          <div>{{#markdown}}{{post.content.data}}{{/markdown}}</div>
         </section>
       </article>
 
@@ -41,9 +39,5 @@
 </template>
 
 <template name="postViewContent">
-  {{#if isMarkdown}}
     {{#markdown}}{{data}}{{/markdown}}
-  {{else}}
-    {{{data}}}
-  {{/if}}
 </template>

@@ -56,12 +56,20 @@ I18n_data_ko = {
   "text_company_address"          : "회사 주소",
   "text_reset_password"           : "비밀번호 초기화",
   "text_verify_email"             : "에 회원가입하신 것을 환영합니다. 입력하신 메일주소가 유효한지 확인하기 위해 이 링크를 클릭해 주세요 : ",
+  "text_post_insert_success"      : "포스트 발행 완료",
+  "text_post_update_success"      : "포스트 업데이트 완료",
+  "text_post_remove_success"      : "포스트 삭제 완료",
+  "text_draft_inserted"           : "Draft 저장",
+  "text_draft_updated"            : "Draft 업데이트",
+  "text_draft_removed"            : "Draft 삭제",
+  "text_post_draft_success"       : "Post draft 저장",
 
 
   "error_access_denied"           : "접근 권한이 없습니다.",
   "error_invalid_type"            : "입력값이 유효한 자료형이 아닙니다.",
   "error_input_required"          : "값을 입력하여야 합니다.",
   "error_input_out_of_range"      : "입력값이 유효한 범위 밖에 있습니다.",
+  "error_validation_errors"       : "유효성 검사 오류",
 
 
   "theme"                         : {

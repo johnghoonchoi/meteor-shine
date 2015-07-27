@@ -9,13 +9,13 @@
 	  <div class="row-fluid">
 	    <nav class="navtabs">
 	      <ul class="navtabs-list">
-	        <li class="navtabs-item active" data-switch="draft">
-	          <a class="navtabs-anchor" href="">
+	        <li class="navtabs-item {{mode 'draft'}}">
+	          <a class="navtabs-anchor" href="{{pathFor 'myworks' mode='draft'}}">
 	            작성중<span class="navtabs-count">&nbsp;{{getPublishedCount 'myDraftCount'}}</span>
 	          </a>
 	        </li>
-	        <li class="navtabs-item" data-switch="public">
-	          <a class="navtabs-anchor" href="">
+	        <li class="navtabs-item {{mode 'post'}}">
+	          <a class="navtabs-anchor" href="{{pathFor 'myworks' mode='post'}}">
 	            발행글<span class="navtabs-count">&nbsp;{{getPublishedCount 'myPostsListCount'}}</span>
 	          </a>
 	        </li>
@@ -30,9 +30,9 @@
       <ul class="block-list">
 				{{#each myworksList}}
 					{{#if switchMode}}
-					{{> myworksDraft}}
+						{{> myworksDraft}}
 					{{else}}
-          {{> myworksPost}}
+            {{> myworksPost}}
 					{{/if}}
 				{{/each}}
 	      {{#if Template.subscriptionsReady}}
@@ -56,6 +56,9 @@
         <a href="{{pathFor 'postWrite' categoryId=categoryId draftId=_id}}">{{title}}</a>
       </h3>
       <div class="block-category">{{categoryId}}</div>
+      <div class="btn-group pull-right">
+        <button id="remove" type="button" class="btn btn-danger">{{_ 'command_remove'}}</button>
+      </div>
       <div class="block-meta-wrap">
         <span class="post-meth-inline">{{momentFromNow createdAt}}</span>
       </div>

@@ -54,12 +54,20 @@ I18n_data_en = {
   "text_company_address"          : "Company Address",
   "text_reset_password"           : "Password Reset",
   "text_verify_email"             : "You just signed up. Click this link to validate your email address : ",
+  "text_post_insert_success"      : "Post published",
+  "text_post_update_success"      : "Post updated",
+  "text_post_remove_success"      : "Post removed",
+  "text_draft_inserted"           : "Draft saved",
+  "text_draft_updated"            : "Draft updated",
+  "text_draft_removed"            : "Draft removed",
+  "text_post_draft_success"       : "Post draft saved",
 
 
   "error_access_denied"           : "Access denied",
   "error_invalid_type"            : "Input data type is invalid",
   "error_input_required"          : "Input value is required",
   "error_input_out_of_range"      : "Input value is out of range",
+  "error_validation_errors"       : "Error in validataion",
 
   "theme"                         : {
     "default"                       : "Default",

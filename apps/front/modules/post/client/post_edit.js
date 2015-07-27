@@ -29,7 +29,6 @@ Template.postEdit.onCreated(function() {
 Template.postEdit.onDestroyed(function() {
   this.autoSave.clear();
   this.autoSave = null;
-
   this.post = null;
   this.category = null;
 });
@@ -76,7 +75,7 @@ Template.postEdit.events({
         if (error) {
           Alerts.notify('error', error.message);
         } else {
-          Alerts.notify('success', 'post_save_draft_success');
+          Alerts.notify('success', 'text_post_draft_success');
         }
       });
     });
@@ -109,7 +108,7 @@ Template.postEdit.events({
       if (error) {
         Alerts.notify('error', error.message);
       } else {
-        Alerts.notify('success', 'post_update_success');
+        Alerts.notify('success', 'text_post_update_success');
         Router.go('postView', { _id: self.postId });
       }
     });

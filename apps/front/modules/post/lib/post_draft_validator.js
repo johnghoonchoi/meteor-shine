@@ -14,17 +14,17 @@ PostDraftValidator = {
       object: {
         version: {
           type: 'string',
-          required: true,
+          required: false,
           values: ['0.0.1', '0.0.2']
         },
         type: {
           type: 'string',
-          required: true,
+          required: false,
           values: ['markdown', 'html']
         },
         data: {
           type: 'string',
-          required: true,
+          required: false,
           minLength: 1,
           maxLength: 65536
         }

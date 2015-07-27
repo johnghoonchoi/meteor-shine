@@ -33,8 +33,7 @@ Template.postView.onCreated(function() {
 });
 
 Template.postView.onDestroyed(function() {
-  this.autoSave.clear(); /* Clear setTimeout of Autosave instance  */
-  this.editMode = null;
+  this.autoSave.clear();
   this.autoSave = null;
   this.post = null;
   this.category = null;
@@ -42,22 +41,6 @@ Template.postView.onDestroyed(function() {
 });
 
 Template.postView.helpers({
-  titleText: function() {
-    var post = Template.instance().post();
-    var title = (post) ? post.title : '';
-    return title;
-  },
-
-  titleAttrs: function(editable) {
-    var attrs = {
-      id: "title",
-      class: "title-editable",
-      contenteditable: editable
-    };
-
-    return attrs;
-  },
-
   category: function() {
     return Template.instance().category();
   },
@@ -77,22 +60,21 @@ Template.postView.helpers({
 
 
 Template.postView.events({
-  'click #back': function(e, instance) {
+  'click #back': function() {
     history.back(-1);
   },
 
-  'click [data-role=delete]': function(e, instance) {
+  'click #remove': function(e) {
     e.preventDefault();
 
     var self = this;
 
     Alerts.dialog('confirm', '정말 삭제하시겠습니까?', function(confirm) {
       if (confirm) {
-        Meteor.call('postRemove', self.postId, function(error, result) {
+        Meteor.call('postRemove', self.postId, function(error) {
           if (error) {
             Alerts.notify('error', error.message);
           } else {
-            BothLog.log('one post successfully removed..');
             Alerts.notify('success', 'post_remove_success');
             history.go(-1);
           }
@@ -101,50 +83,7 @@ Template.postView.events({
     });
   },
 
-  'input [data-provide]': function(e, instance) {
-    e.preventDefault();
-    var self = this;
-
-    instance.autoSave.clear();
-    instance.autoSave.set(function() {
-
-      var $contents = instance.$('[data-provide]');
-      var dataType = $contents.attr('data-provide');
-
-      var content;
-      if (dataType === 'markdown') {
-        content = {
-          type: dataType,
-          version: '0.0.1',
-          data: $contents.val().trim()
-        };
-      } else if (dataType === 'wyswig') {
-        content = {
-          type: dataType,
-          version: '0.0.1',
-          data: $contents.html()
-        };
-      } else {
-        Alerts.notify('error', 'error_invalid_input');
-
-        return;
-      }
-
-      var object = {
-        categoryId: instance.post().categoryId,
-        title: instance.$('#title').html(),
-        content: content
-      };
-
-      Meteor.call('postSaveDraft', self.postId, object, function(error) {
-        if (! error) {
-          Alerts.notify('success', 'post_draft_saved');
-        }
-      });
-    }, 3000);
-  },
-
-  'click #like': function(e, instance) {
+  'click #like': function(e) {
     e.preventDefault();
 
     Meteor.call('postLikeInsert', this.postId, function(error) {
@@ -154,7 +93,7 @@ Template.postView.events({
     });
   },
 
-  'click #unlike': function(e, instance) {
+  'click #unlike': function(e) {
     e.preventDefault();
 
     Meteor.call('postLikeRemove', this.postId, function(error) {
@@ -162,12 +101,5 @@ Template.postView.events({
         Alerts.notify('error', error.reason);
       }
     });
-  }
-});
-
-
-Template.postViewContent.helpers({
-  isMarkdown: function() {
-    return (this.type === 'markdown');
   }
 });
