@@ -70,5 +70,6 @@ I18nAccountsUI_en = {
   "User not found"                     : "User not found",
   "Need to set a username or email"    : "Need to set a username or email",
   "Password may not be empty"          : "Password may not be empty",
-  "Token expired"                      : "Token expired"
+  "Token expired"                      : "Token expired",
+  "Incorrect password"                 : "Incorrect password"
 };

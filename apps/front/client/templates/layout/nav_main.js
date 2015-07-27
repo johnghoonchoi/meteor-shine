@@ -5,7 +5,6 @@ Template.navMain.events({
     e.preventDefault();
     e.stopPropagation();
 
-//    Accounts.ui.render('signIn');
     Accounts.ui.dialog.show('signIn');
   },
 

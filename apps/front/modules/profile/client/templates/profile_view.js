@@ -36,7 +36,7 @@ Template.profileView.events({
   'click #changePassword': function(e) {
     e.preventDefault();
 
-    Accounts.ui.render('changePassword');
+    Accounts.ui.dialog.show('changePassword');
   },
 
   'click #editProfile': function() {

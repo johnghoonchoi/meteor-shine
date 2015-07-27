@@ -38,7 +38,7 @@ Template.signIn.events({
   'click #signUpLink': function(e) {
     e.preventDefault();
 
-    Accounts.ui.render('signUp');
+    Accounts.ui.dialog.show('signUp');
   }
 });
 
@@ -88,7 +88,7 @@ Template.signInPasswordService.events({
   'click #forgotPasswordLink': function(e) {
     e.preventDefault();
 
-    Accounts.ui.render('forgotPassword');
+    Accounts.ui.dialog.show('forgotPassword');
   },
 
   'submit #formSignIn': function(e, instance) {
@@ -183,7 +183,6 @@ Template.backToSignIn.events({
   'click #backToSignIn': function(e) {
     e.preventDefault();
 
-//    Accounts.ui.render('signIn');
     Accounts.ui.dialog.show('signIn');
   }
 });

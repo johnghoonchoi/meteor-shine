@@ -2,14 +2,16 @@ Template.postWrite.onCreated(function() {
   var instance = this;
   var data = Template.currentData();
 
+  instance.draftId = data.draftId;
+
   instance.state = new ReactiveDict;
   instance.autoSave = new Autosave();
 
   instance.state.set('update', 0);
 
   instance.autorun(function() {
-    if (data.draftId) {
-      instance.subscribe('postDraftEdit', data.draftId);
+    if (instance.draftId) {
+      instance.subscribe('postDraftEdit', instance.draftId);
     }
   });
 
