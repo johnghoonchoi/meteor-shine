@@ -8,16 +8,3 @@ Router.route('/myworks/:mode', {
     }
 });
 
-/*
-Router.route('/:mode/:categoryId/:_id/', {
-  name: 'draftWrite',
-  template: 'postWrite',
-  data: function() {
-    return {
-      mode: this.params.mode,
-      categoryId: this.params.categoryId,
-      _id: this.params._id
-    };
-  }
-});
-*/

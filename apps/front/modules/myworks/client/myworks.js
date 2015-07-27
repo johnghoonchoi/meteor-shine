@@ -1,29 +1,108 @@
 Template.myworks.onCreated(function() {
   Navigations.path.set('myworks');
-
-  this.data.mode = new ReactiveVar('draft');
 });
 
-Template.myworks.onDestroyed(function() {
+Template.myworksList.onCreated(function() {
+  var instance = this;
+  var data;
+  instance.increment = 10;
+  instance.loadDefault = 0;
+  instance.modeDefault = 'draft';
+
+  instance.state = new ReactiveDict;
+  instance.state.set('limit', instance.increment);
+  instance.state.set('loaded', instance.loadDefault);
+
+  instance.autorun(function() {
+    var limit = instance.state.get('limit');
+    data = Template.parentData(1);
+
+    if (data.mode === instance.modeDefault) {
+      instance.subscribe('postDraftsList', {}, { limit: limit, sort: { createdAt: -1 } },
+        function() { instance.state.set('limit', limit) });
+    } else {
+      instance.subscribe('myPostsList', { limit: limit, sort: { createdAt: -1 } },
+        function() { instance.state.set('limit', limit) });
+    }
+  });
+
+  instance.drafts = function() {
+    return PostDrafts.find({}, {
+      limit: instance.state.get('loaded'),
+      sort: {createdAt: -1}
+    });
+  };
+  instance.posts = function() {
+    return Posts.find({}, {
+      limit: instance.state.get('loaded'),
+      sort: {createdAt: -1}
+    });
+  };
 });
 
-Template.myworks.onRendered(function() {
+Template.myworksList.onDestroyed(function() {
+  this.increment = null;
+  this.loadDefault = null;
+  this.modeDefault = null;
 });
-Template.myworks.helpers({
 
+Template.myworksList.onRendered(function() {
 });
-Template.myworks.events({
-  'click [data-switch]': function(e, instance) {
+
+Template.myworksList.helpers({
+  myworksList: function() {
+    var instance= Template.instance();
+    if (instance.data.mode === instance.modeDefault) {
+      return instance.drafts();
+    }
+    return instance.posts();
+  },
+  hasMore: function() {
+    var instance= Template.instance();
+    if (instance.data.mode === instance.modeDefault) {
+      return (Counts.get('myDraftCount') > instance.state.get('limit'));
+    }
+    return (Counts.get('myPostsListCount') > instance.state.get('limit'));
+  },
+
+  switchMode: function() {
+    var instance= Template.instance();
+    return instance.data.mode === instance.modeDefault;
+  }
+});
+
+Template.myworksList.events({
+  'click .load-more': function(e, instance) {
     e.preventDefault();
-    e.stopImmediatePropagation();
+    instance.state.set('limit', instance.state.get('limit') + instance.increment);
+  }
+});
 
-    var $this = $(e.currentTarget);
-    $this.addClass('active');
-    $this.siblings().not($this).removeClass('active');
+Template.myworksDraft.events({
+  'click #remove': function() {
+    Meteor.call('postDraftRemove', this._id, function (error) {
+      if (!error) {
+        Alerts.notify('success', 'text_draft_removed');
+      }
+    });
+  }
+});
 
-    if ($this.attr('data-switch') === 'draft')
-      instance.data.mode.set('draft');
-    else
-      instance.data.mode.set('public');
+
+Template.myworksNav.onCreated(function() {
+  var instance = this;
+  var data;
+
+  instance.autorun(function() {
+    data = Template.parentData(1);
+    instance.subscribe('myDraftCount', {});
+    instance.subscribe('myPostsListCount', {});
+  });
+
+});
+
+Template.myworksNav.helpers({
+  mode: function(mode) {
+    return Template.instance().data.mode === mode ? 'active' : '';
   }
 });

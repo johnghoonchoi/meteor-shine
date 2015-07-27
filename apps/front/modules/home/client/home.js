@@ -65,11 +65,6 @@ Template.home.onCreated(function() {
 
 });
 
-Template.home.onRendered(function() {
-
-});
-
-
 Template.home.helpers({
   noPosts: function() {
     return Counts.get('releasedPostsListCount') === 0;
@@ -107,7 +102,7 @@ Template.home.helpers({
 Template.home.events({
   'click .load-more': function (e, instance) {
     e.preventDefault();
-    instance.limit.set(instance.limit.get() + instance.increment);
+    instance.state.set('limit', instance.state.get('limit') + instance.increment);
     //Router.go(Router.current().nextPath());
   },
 

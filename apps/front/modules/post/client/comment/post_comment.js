@@ -1,13 +1,7 @@
-Template.postCommentNew.helpers({
-
-});
 
 Template.postCommentNew.onCreated(function() {
   var instance = this;
   instance.data = Template.currentData();
-});
-
-Template.postCommentNew.onRendered(function() {
 });
 
 Template.postCommentNew.events({
@@ -49,7 +43,6 @@ Template.postCommentsList.onCreated(function() {
     instance.subscribe('postCommentsList', { postId: data.postId },
       { limit: limit, sort: { createdAt: -1 }});
     instance.data.count.get();
-    BothLog.log('comments subscription..');
   });
 
   instance.autorun(function() {
