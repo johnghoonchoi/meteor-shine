@@ -1,0 +1,20 @@
+<template name="systemEdit">
+  <article class="page">
+    <header>
+      <h3>System Edit</h3>
+    </header>
+
+    <div class="body">
+      <form id="formSystemEdit">
+        <section class="form-group">
+          <label>{{_ 'label_site_name'}}</label>
+          <input type="text" id="siteName" name="siteName" value="{{siteName.value}}" >
+        </section>
+
+        <section class="form-group">
+          <button type="submit" class="btn btn-primary">{{_ 'command_save'}}</button>
+        </section>
+      </form>
+    </div>
+  </article>
+</template>
