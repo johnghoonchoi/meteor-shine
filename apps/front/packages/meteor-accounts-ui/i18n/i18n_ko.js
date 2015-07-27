@@ -70,6 +70,7 @@ I18nAccountsUI_ko = {
   "User not found"                     : "존재하지 않는 사용자입니다.",
   "Need to set a username or email"    : "아이디 또는 이메일주소를 입력하여야 합니다",
   "Password may not be empty"          : "비밀번호를 입력하여야 합니다.",
-  "Token expired"                      : "이미 처리되어 유효하지 않은 요청입니다."
+  "Token expired"                      : "이미 처리되어 유효하지 않은 요청입니다.",
+  "Incorrect password"                 : "입력하신 비밀번호가 일치하지 않습니다."
 };
 

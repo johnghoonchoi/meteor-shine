@@ -150,7 +150,7 @@ Meteor.methods({
 
   postUpdate: function(postId, object) {
     check(postId, String);
-    //check(object, Match.Where(matchPostUpdate));
+    check(object, Match.Where(matchPostUpdate));
 
     // check permission
     postAccess('update', Meteor.user(), postId);

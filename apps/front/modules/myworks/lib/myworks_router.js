@@ -1,5 +1,4 @@
 
-// Myworks list view
 Router.route('/myworks/:mode', {
     name: 'myworks',
     data: function() {
@@ -8,3 +7,4 @@ Router.route('/myworks/:mode', {
       };
     }
 });
+

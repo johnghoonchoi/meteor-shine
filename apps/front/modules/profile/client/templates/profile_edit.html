@@ -9,24 +9,21 @@
 </template>
 
 <template name="profileEditForm">
-  <form class="form-horizontal" role="form">
+  <form id="formProfileEdit">
     <div class="form-group">
-      <label class="col-lg-3 control-label">{{_ 'accounts-ui:label_username'}}</label>
-      <div class="col-lg-8">
-        <p>{{currentUser.username}}</p>
-      </div>
+      <label>{{_ 'accounts-ui:label_username'}}</label>
+      <p>{{currentUser.username}}</p>
     </div>
+
     <div class="form-group">
-      <label class="col-lg-3 control-label">{{_ 'accounts-ui:label_email'}}</label>
-      <div class="col-lg-8">
-        <input class="form-control" value="{{userEmail}}" type="email">
-      </div>
+      <label>{{_ 'accounts-ui:label_email'}}</label>
+      <input type="email" id="email" class="form-control"
+             name="email" value="{{userEmail}}">
     </div>
+
     <div class="form-group">
-      <label class="col-md-3 control-label"></label>
-      <div class="col-md-8 text-center">
-        <input class="btn btn-primary" value="{{_ 'command_save'}}" type="button">
-      </div>
+      <input type="submit"
+             class="btn btn-primary pull-right" value="{{_ 'command_save'}}">
     </div>
   </form>
 </template>

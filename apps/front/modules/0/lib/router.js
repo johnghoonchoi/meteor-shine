@@ -20,8 +20,7 @@ var accessControl = function() {
     if (Meteor.loggingIn())
       this.render(this.loadingTemplate);
     else
-      //this.render('accessDenied');
-      Accounts.ui.render('signIn');
+      Accounts.ui.dialog.show('signIn');
   } else {
     this.next();
   }

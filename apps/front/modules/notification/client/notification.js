@@ -1,26 +1,29 @@
 
 Template.notificationsList.helpers({
+  isEmpty: function() {
+    return Notifications.find().count() === 0;
+  },
+
   notifications: function() {
     return Notifications.find();
   }
 });
 
 Template.notificationsList.events({
-  // Close notification window
-  'click #close': function(e) {
-    e.preventDefault();
-    $('#container').removeClass('notification-set');
+  'click .notifications': function() {
+    hideBalloons();
   }
 });
 
 Template.notificationsListItem.events({
-  'click li': function(e) {
+  'click p': function(e) {
     e.preventDefault();
 
     $('#container').removeClass('notification-set');
 
     Meteor.call('notificationRead', this._id);
 
+    hideBalloons();
     Router.go(Meteor.absoluteUrl(this.msg.link));
   }
 });

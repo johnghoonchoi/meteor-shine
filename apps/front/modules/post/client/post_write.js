@@ -2,6 +2,8 @@ Template.postWrite.onCreated(function() {
   var instance = this;
   var data = Template.currentData();
 
+  instance.draftId = data.draftId;
+
   instance.autoSave = new Autosave();
   instance.draftId = data.draftId;
 
