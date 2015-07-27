@@ -16,6 +16,8 @@
     </div>
 
     <div class="panel-body comments-list-frame">
+      {{> postCommentNew}}
+
       {{#if loaded}}
         {{#if hasMore}}
           <div class="row-fluid">
@@ -31,10 +33,6 @@
           {{> postCommentsListItem}}
         {{/each}}
       </ul>
-    </div>
-
-    <div class="panel-footer">
-      {{> postCommentNew}}
     </div>
   </div>
 </template>

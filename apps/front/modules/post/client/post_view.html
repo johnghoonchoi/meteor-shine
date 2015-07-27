@@ -1,40 +1,49 @@
 <template name="postView">
-  <article class="page">
-    <div class="btn-toolbar block-wrapper">
-      <button type="button" id="back" class="btn btn-default">List</button>
-      {{#if isEditable}}
-        {{#if isEditMode}}
-          <button type="submit" class="btn btn-primary pull-right" data-role="save">Save</button>
-        {{else}}
-          <div class="pull-right">
+  {{#if Template.subscriptionsReady}}
+    <article class="page">
+      <header>
+        <div class="pull-left">
+          <h3>{{category.title}}</h3>
+        </div>
+        {{#if isEditable}}
+          <div class="btn-toolbar pull-right">
             <!--<button type="button" class="btn btn-primary" data-role="edit" >Edit</button>-->
-            <a class="btn btn-primary" data-role="edit" href="{{pathFor 'postEdit' mode=mode _id=post._id categoryId=post.categoryId}}">Edit</a>
+            <a class="btn btn-primary" data-role="edit" href="{{pathFor 'postEdit' _id=post._id}}">Edit</a>
             <button type="button" class="btn btn-danger" data-role="delete">Delete</button>
           </div>
         {{/if}}
-      {{/if}}
-    </div>
-    <article id="articleWrap">
-      <section id="contentWrapper" class="block-wrapper">
-        <h3 {{titleAttrs false}}>{{titleText}}</h3>
-        <div>
-		      by {{post.author.username}}
+      </header>
+
+      <article id="articleWrap">
+        <h4>{{post.title}}</h4>
+        <section id="contentWrapper" class="block-wrapper">
+
+          <div>
+            by {{post.author.username}}
+          </div>
+          <div>{{> postViewContent post.content}}</div>
+        </section>
+      </article>
+
+      <div class="sns block-wrapper">
+        <div class="sns">
+          {{#if like}}
+            <button type="button" id="unlike" class="btn btn-default" style="border-radius: 0">Unlike</button>
+          {{else}}
+            <button type="button" id="like" class="btn btn-danger" style="border-radius: 0">Like</button>
+          {{/if}}
         </div>
-        <div data-provide>{{insertContent}}</div>
-      </section>
-    </article>
-
-    <div class="sns block-wrapper">
-      <div class="sns">
-        {{#if like}}
-          <button type="button" id="unlike" class="btn btn-default" style="border-radius: 0">Unlike</button>
-        {{else}}
-          <button type="button" id="like" class="btn btn-danger" style="border-radius: 0">Like</button>
-        {{/if}}
       </div>
-    </div>
 
-    {{> postCommentsList}}
+      {{> postCommentsList}}
   </article>
-  {{> cloudinaryProgressBar}}
+  {{/if}}
+</template>
+
+<template name="postViewContent">
+  {{#if isMarkdown}}
+    {{#markdown}}{{data}}{{/markdown}}
+  {{else}}
+    {{{data}}}
+  {{/if}}
 </template>

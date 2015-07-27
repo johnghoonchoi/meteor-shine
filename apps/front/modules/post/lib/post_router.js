@@ -1,11 +1,6 @@
 
-Router.route('/post/view/:categoryId/:_id', {
+Router.route('/post/:_id', {
   name: 'postView',
-  template: 'postView',
-  waitOn: function() {
-    Meteor.subscribe('releasedPostView', this.params._id);
-    //Meteor.subscribe('postLikeView', this.params._id);
-  },
   data: function() {
     return {
       postId: this.params._id
@@ -39,7 +34,6 @@ Router.route('/post/:mode/:categoryId/:_id', {
 
 Router.route('/post/:_id/edit', {
   name: 'postEdit',
-  template: 'postEdit',
   data: function () {
     return {
       postId: this.params._id
