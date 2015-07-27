@@ -1,7 +1,7 @@
 Template.navMain.events({
 
   'click [data-action=signIn]': function() {
-    Accounts.ui.render('signIn');
+    Accounts.ui.dialog.show('signIn');
   },
 
   'click [data-action=signOut]': function() {

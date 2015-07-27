@@ -15,7 +15,7 @@ var accessControl = function() {
     if (Meteor.loggingIn())
       this.render(this.loadingTemplate);
     else
-      Accounts.ui.render('signIn');
+      Accounts.ui.dialog.show('signIn');
   } else {
     this.next();
   }
@@ -37,12 +37,7 @@ var closeAsideMobile = function () {
 
 Router.onBeforeAction(closeAsideMobile);
 
-Router.onBeforeAction(accessControl, { only: [
-  'myBlogsList',
-  'myBlogOne',
-  'blogNew',
-  'blogEdit'
-]});
+Router.onBeforeAction(accessControl);
 
 
 Router.route('/', function() {
