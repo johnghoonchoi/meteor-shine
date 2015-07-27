@@ -7,10 +7,14 @@
       <form id="formPostWrite">
         <div class="panel panel-default">
           <div class="panel-body block-wrapper">
-            <h3><input {{titleAttrs titleMax}} value="{{docData.title}}"></h3>
+            <h3><input {{titleAttrs titleMax}} value="{{draft.title}}"></h3>
             <article id="articleWrap">
               <section id="contentWrapper">
-                {{> postTextarea content=docData.content.data}}
+                {{#if draft}}
+                  {{> postTextarea content=draft.content.data}}
+                {{else}}
+                  {{> postTextarea}}
+                {{/if}}
               </section>
             </article>
           </div>

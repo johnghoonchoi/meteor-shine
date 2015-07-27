@@ -3,8 +3,10 @@ Template.myworks.onCreated(function() {
 
   this.data.mode = new ReactiveVar('draft');
 });
+
 Template.myworks.onDestroyed(function() {
 });
+
 Template.myworks.onRendered(function() {
 });
 Template.myworks.helpers({

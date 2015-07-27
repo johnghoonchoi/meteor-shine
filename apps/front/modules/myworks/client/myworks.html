@@ -53,7 +53,7 @@
   <li class="list-item">
     <div class="block-content">
       <h3 class="block-title">
-        <a href="{{pathFor 'draftWrite' mode=mode _id=_id categoryId=categoryId}}">{{title}}</a>
+        <a href="{{pathFor 'postWrite' categoryId=categoryId draftId=_id}}">{{title}}</a>
       </h3>
       <div class="block-category">{{categoryId}}</div>
       <div class="block-meta-wrap">
