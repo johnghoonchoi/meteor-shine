@@ -60,3 +60,9 @@ AccountValidator = {
     return validator;
   }
 };
+
+matchAccountUpdate = function(object) {
+  var validation = AccountValidator.validateUpdate(object);
+  return _.isEmpty(validation.errors());
+};
+

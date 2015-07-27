@@ -1,5 +1,5 @@
 <template name="signIn">
-  <article>
+  <article id="accounts-ui-sign-in" class="accounts-ui-page">
     {{> accountsUIHeader title='accounts-ui:nav_sign_in'}}
 
     <div class="body">
@@ -53,7 +53,7 @@
 </template>
 
 <template name="signInOtherService">
-  <div class="login-text-and-button">
+  <section class="form-group">
     <button class="btn btn-color-{{name}} btn-block {{#unless configured}}configure-button{{/unless}}">
       <i class="fa fa-{{name}}"></i>&nbsp;
       {{#if configured}}
@@ -64,11 +64,13 @@
           {{_ 'accounts-ui:label_configure_sign_in' 0=capitalizedName}}</span>
       {{/if}}
     </button>
-  </div>
+  </section>
 </template>
 
 <template name="signInServiceSeparator">
-  <div class="separator"></div>
+  <section class="form-group">
+    <div class="separator"></div>
+  </section>
 </template>
 
 <template name="backToSignIn">

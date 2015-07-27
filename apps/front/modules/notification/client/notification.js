@@ -1,15 +1,17 @@
 
 Template.notificationsList.helpers({
+  isEmpty: function() {
+    return Notifications.find().count() === 0;
+  },
+
   notifications: function() {
     return Notifications.find();
   }
 });
 
 Template.notificationsList.events({
-  // Close notification window
-  'click #close': function(e) {
-    e.preventDefault();
-    $('#container').removeClass('notification-set');
+  'click .notifications': function() {
+    hideBalloons();
   }
 });
 

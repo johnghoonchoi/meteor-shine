@@ -1,8 +1,10 @@
 
-Router.route('/myworks', {
+Router.route('/myworks/:mode', {
     name: 'myworks',
     data: function() {
-      return {};
+      return {
+        mode: this.params.mode
+      };
     }
 });
 

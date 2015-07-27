@@ -1,17 +1,5 @@
 
 
-Template.accountsUIModal.onDestroyed = function() {
-  if (! Accounts.ui.view) {
-    Blaze.remove(Accounts.ui.view);
-  }
-};
-
-Template.accountsUIModal.helpers({
-  activeTemplate: function() {
-    return Accounts.ui.activeTemplate.get();
-  }
-});
-
 Template.accountsUIOverlay.onDestroyed = function() {
   if (! Accounts.ui.view) {
     Blaze.remove(Accounts.ui.view);

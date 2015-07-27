@@ -60,7 +60,7 @@
         <strong><a href="{{pathFor 'postView'}}" class="title-link">{{title}}</a></strong>
       </h2>
       <div class="postby-author">
-        <small><i>by </i><a href="">{{userDisplayName author}}</a></small>
+        <small><i>by </i><a href="{{pathFor 'accountView' username=author.username}}">{{userDisplayName author}}</a></small>
         <small>{{momentFromNow createdAt}}</small>
       </div>
       <p class="sum-content">

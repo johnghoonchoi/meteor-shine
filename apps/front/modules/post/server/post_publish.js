@@ -98,6 +98,53 @@ Meteor.publish('myPostsListCount', function() {
 });
 
 
+Meteor.publishComposite('userPostsList', function(query, options) {
+  check(query, Match.ObjectIncluding({
+    "username": Match.Optional(String)
+  }));
+
+  check(options, Match.ObjectIncluding({
+    "limit": Number,
+    "sort": Match.ObjectIncluding({
+      "createdAt": Match.Optional(Number),
+      "publishedAt": Match.Optional(Number)
+    })
+  }));
+
+  var object = {
+    'author.username': query.username,
+    state: 'PUBLISHED'
+  };
+
+  return {
+    find: function() {
+      return Posts.find(object, options);
+    },
+    children: [
+      {
+        find: function() {
+          return Meteor.users.find({ username: query.username });
+        }
+      }
+    ]
+  };
+});
+
+
+Meteor.publish('userPostsListCount', function(query) {
+  check(query, Match.ObjectIncluding({
+    "username": Match.Optional(String)
+  }));
+
+  var object = {
+    'author.username': query.username,
+    state: 'PUBLISHED'
+  };
+
+  Counts.publish(this, 'userPostsListCount', Posts.find(object));
+});
+
+
 Meteor.publish('postsList', function(query, options) {
   check(query, Match.ObjectIncluding({
     "categoryId": Match.Optional(String)
