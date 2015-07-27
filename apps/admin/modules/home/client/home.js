@@ -29,7 +29,6 @@ Template.home.onCreated(function() {
   // Control Subscriptions
   instance.autorun(function() {
     var limit = instance.limit.get();
-    //console.log('limit: ', limit);
 
     instance.subscribe('blogsList',
       {}, { limit: limit, sort: { createdAt: -1 }},

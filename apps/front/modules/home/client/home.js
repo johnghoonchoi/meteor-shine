@@ -49,9 +49,8 @@ Template.home.onCreated(function() {
 
     instance.subscribe('releasedPostsList',
       {}, { limit: limit, sort: sort},
-      function() { instance.state.get('loaded'); });
-
-    console.log('autorun..');
+      function() { instance.state.get('loaded'); }
+    );
   });
 
   // Control Cursors
@@ -72,6 +71,14 @@ Template.home.helpers({
 
   posts: function() {
     return Template.instance().posts();
+  },
+
+  postWithCategory: function() {
+    var post = this;
+    var category = Categories.findOne({ _id: post.categoryId });
+    if (category) {
+      return _.extend(post, { category: category });
+    }
   },
 
   hasMore: function() {
@@ -103,31 +110,20 @@ Template.home.events({
   'click .load-more': function (e, instance) {
     e.preventDefault();
     instance.state.set('limit', instance.state.get('limit') + instance.increment);
-    //Router.go(Router.current().nextPath());
   },
 
   'click .title-link': function() {
     Meteor.call('hitUpdate', this._id, function(error, result) {
       if (error) console.log('error.reason: ', error.reason);
-
-      console.log('hit result: ', result);
     });
   }
-
-  //'click #alert-test': function() {
-  //  Alerts.dialog('alert', 'Hi there...', function() {
-  //    console.log('done...');
-  //  });
-  //},
 });
 
 
 Template.homeListItem.helpers({
   postContent: function() {
-    var content = this.content.data;
-    //return content.replace(/<(?:.|\n)*?>/gm, '');
-    //return content.replace(/(<([^>]+)>)/ig, "");
-    return content;
+    var html = marked(this.content.data);
+    return html.replace(/<(?:.|\n)*?>/gm, '');;
   },
 
   commentCount: function() {

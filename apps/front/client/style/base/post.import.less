@@ -124,3 +124,65 @@ textarea,
   min-height: 100px;
   resize: none;
 }
+
+.post-item {
+  padding: 10px 0;
+
+  .title {
+    margin: 5px 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: #339;
+  }
+
+  .title > a {
+    color: #339;
+    font-size: .9em;
+  }
+
+  .title > small {
+    padding: 4px;
+    border-radius: 3px;
+    background: #20e30d;
+
+    a {
+      color: #777;
+      font-size: .8em;
+    }
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #2349e1;
+
+    small {
+      color: #666;
+    }
+  }
+
+  p {
+    height: 3em;
+    margin: 0;
+    line-height: 1.5em;
+    overflow: hidden;
+
+    color: #999;
+  }
+
+  .info {
+    color: #888;
+
+    .author a {
+      color: #888;
+    }
+
+    .counts {
+      padding: 0 20px;
+    }
+  }
+}
+
+.post-item + .post-item {
+  margin-top: 20px;
+  border-top: solid 1px #eee;
+}

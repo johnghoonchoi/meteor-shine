@@ -18,15 +18,14 @@
             </li>
           </ul>
         </nav>
-        <!--<div class="">-->
-          <!--<span class="">총:&nbsp;{{postsCount}}개</span>-->
-        <!--</div>-->
       </div>
       <div class="row-fluid">
         <div class="block-group">
           <ul class="block-list">
             {{#each posts}}
-	            {{> homeListItem}}
+              {{#with postWithCategory}}
+	              {{> homeListItem}}
+              {{/with}}
             {{/each}}
           </ul>
         </div>
@@ -46,28 +45,25 @@
 
 
 <template name="homeListItem">
-  <li class="list-item">
-    <div class="block-content">
-      <h3 class="block-title">
-        <strong><a href="{{pathFor 'postView'}}">{{title}}</a></strong>
-      </h3>
-      <div class="block-postby-author">
-        <small><i>by </i><a href="">{{author.username}}</a></small>
-      </div>
-      <p class="block-content-sum">
-		    {{{postContent}}}
-      </p>
-      <div class="block-meta-wrap">
-        <ul class="category_tags">
-          <li><a href="#">{{categoryId}}</a></li>
-        </ul>
-        <span class="inline-post-date">{{momentFromNow createdAt}}</span>
-      </div>
-      <div class="block-append-info">
-	      <span class="inline-hit-count"><i class="fa fa-eye"></i> {{hitsCount}}</span>
-	      <span class="inline-comment-count"><i class="fa fa-heart-o"></i> {{likesCount}}</span>
-	      <span class="inline-like-count"><i class="fa fa-comment-o"></i> {{commentCount}}</span>
-      </div>
+  <li class="post-item">
+    <h3 class="title">
+      <small><a href="{{pathFor 'categoryView' _id=categoryId}}">{{category.title}}</a></small>
+      <a href="{{pathFor 'postView'}}">{{title}}</a>
+    </h3>
+
+    <p>
+      {{{postContent}}}
+    </p>
+
+    <div class="info">
+      <span class="author">
+        <a href="{{pathFor 'accountView' username=author.username}}">{{author.username}}</a>
+      </span>
+      <span class="counts">
+        <span class="count"><i class="fa fa-heart-o"></i> {{likesCount}}</span>
+        <span class="count"><i class="fa fa-comment-o"></i> {{commentCount}}</span>
+      </span>
+      <span class="date">{{momentFromNow createdAt}}</span>
     </div>
   </li>
 </template>
