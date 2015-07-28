@@ -17,6 +17,7 @@ Template.accountEdit.helpers({
   },
 
   rolesToString: function() {
-    return Template.instance().account().roles.toString();
+    return (Template.instance().account().roles) ?
+      Template.instance().account().roles.toString() : "";
   }
 });
