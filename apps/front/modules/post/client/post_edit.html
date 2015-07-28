@@ -1,7 +1,7 @@
 <template name="postEdit">
   <article class="page">
     <header>
-      <h3>Edit post</h3>
+      <h3>{{category.title}} <small>{{_ 'label_edit_post'}}</small></h3>
     </header>
 
     <div class="body">
@@ -9,7 +9,7 @@
         <div class="panel panel-default">
           <div class="panel-body block-wrapper">
             <h3>
-              <input id="title" name="title" value="{{title}}">
+              <input id="title" class="form-control" name="title" value="{{title}}">
             </h3>
             <article id="articleWrap">
               <section id="contentWrapper">
@@ -19,9 +19,6 @@
           </div>
           <div class="panel-footer clearfix">
             <div class="btn-toolbar pull-right">
-              <div class="btn-group">
-                <button type="button" class="btn btn-default">{{_ 'command_cancel'}}</button>
-              </div>
               <div class="btn-group">
                 <button type="submit" class="btn btn-primary">{{_ 'command_publish'}}</button>
               </div>

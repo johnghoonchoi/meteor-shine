@@ -4,7 +4,7 @@
 
 APP_NAME                                = "SHINE";
 
-DEFAULT_LIST_INCREMENT                  = 5;
+DEFAULT_LIST_INCREMENT                  = 10;
 
 NOTIFICATION_MSG_TYPE_COMMENT           = 'comment';
 NOTIFICATION_MSG_TYPE_NOTICE            = 'notice';

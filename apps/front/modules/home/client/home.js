@@ -17,7 +17,7 @@ Template.home.onCreated(function() {
   var instance = this;
   var data;
 
-  instance.increment = 5;
+  instance.increment = DEFAULT_LIST_INCREMENT;
   instance.default = 0;
 
   instance.state = new ReactiveDict;

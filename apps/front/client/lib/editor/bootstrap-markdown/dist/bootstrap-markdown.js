@@ -452,7 +452,6 @@
         content = markdown.toHTML(val);
       } else if (typeof marked == 'function') {
         content = marked(val);
-        console.log('content: ', content);
       } else {
         content = val;
       }

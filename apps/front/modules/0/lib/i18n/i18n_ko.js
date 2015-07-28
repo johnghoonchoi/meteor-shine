@@ -48,8 +48,8 @@ I18n_data_ko = {
   "label_unsubscribe"             : "탈퇴",
   "label_profile_picture"         : "사진",
   "label_profile_personal_info"   : "개인 정보",
-  "label_new_post"                : "올리기",
-
+  "label_new_post"                : "새 글쓰기",
+  "label_edit_post"               : "글 수정",
 
   "text_notification_new_comment" : "{0}님의 블로그에 새로운 댓글이 등록되었습니다.",
   "text_no_blogs"                 : "등록된 블로그 글이 없습니다.",

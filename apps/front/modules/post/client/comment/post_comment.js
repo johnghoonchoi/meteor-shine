@@ -33,7 +33,7 @@ Template.postCommentsList.onCreated(function() {
   var instance = this;
   var data = Template.currentData();
 
-  instance.increment = 5;
+  instance.increment = DEFAULT_LIST_INCREMENT;
   instance.limit = new ReactiveVar(instance.increment);
   instance.loaded = new ReactiveVar(0);
   instance.data.count = new ReactiveVar(0);

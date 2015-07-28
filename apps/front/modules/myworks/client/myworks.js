@@ -5,7 +5,7 @@ Template.myworks.onCreated(function() {
 Template.myworksList.onCreated(function() {
   var instance = this;
   var data;
-  instance.increment = 10;
+  instance.increment = DEFAULT_LIST_INCREMENT;
   instance.loadDefault = 0;
   instance.modeDefault = 'draft';
 

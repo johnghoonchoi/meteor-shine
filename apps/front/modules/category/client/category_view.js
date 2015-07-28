@@ -2,7 +2,7 @@ Template.categoryView.onCreated(function() {
   var instance = this;
   var data;
 
-  instance.increment = 20;
+  instance.increment = DEFAULT_LIST_INCREMENT;
   instance.limit = new ReactiveVar(instance.increment);
   instance.loaded = new ReactiveVar(0);
   instance.sortBy = function(value) {
