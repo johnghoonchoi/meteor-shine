@@ -20,7 +20,7 @@ Meteor.startup(function() {
 
       {
         username: 'test',
-        email: 'dev@bookp.al',
+        email: 'test@bookp.al',
         password: '74123'
       }
     ];
