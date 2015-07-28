@@ -15,7 +15,10 @@ Open Source Meteor CMS Project
 
 ## Packages
 
-alanning:roles                1.2.13  Role-based authorization  
+###Third-party packages
+
+```  
+alanning:roles                1.2.13  Role-based authorization
 chuangbo:marked               0.3.5  A markdown parser and compiler. Built fo...  
 dburles:collection-helpers    1.0.3  Transform your collections with helpers ...  
 fastclick                     1.0.3  Faster touch events on mobile  
@@ -37,8 +40,10 @@ sacha:spin                    2.3.1  Simple spinner package for Meteor
 service-configuration         1.0.4  Manage the configuration for third-party...  
 simple:highlight.js           1.0.9  Code highlighting integrated with the ma...  
 tmeasday:publish-counts       0.4.0  Publish the count of a cursor, in real time  
+```
   
-local packages  
+### Local packages
+```
 leesangwon:accounts-ui        0.7.1+ Accounts-ui for Meteor application  
 leesangwon:alerts             0.5.2+ A package for displaying alert message b...  
 leesangwon:bootstrap-less     0.9.4+ Bootstrap wrapper with less files  
@@ -47,7 +52,7 @@ leesangwon:connections        0.1.0  monitor all the connection status of the...
 leesangwon:i18n               0.9.0+ Internationalization package  
 leesangwon:logger             0.2.4  A simple Meteor logger that works on the...  
 davidsunny:bothlog            0.0.1+ test package..  
-  
+```
 
 ## Read more
 
