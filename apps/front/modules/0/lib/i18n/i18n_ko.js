@@ -48,6 +48,7 @@ I18n_data_ko = {
   "label_unsubscribe"             : "탈퇴",
   "label_profile_picture"         : "사진",
   "label_profile_personal_info"   : "개인 정보",
+  "label_new_post"                : "올리기",
 
 
   "text_notification_new_comment" : "{0}님의 블로그에 새로운 댓글이 등록되었습니다.",
@@ -63,6 +64,7 @@ I18n_data_ko = {
   "text_draft_updated"            : "Draft 업데이트",
   "text_draft_removed"            : "Draft 삭제",
   "text_post_draft_success"       : "Post draft 저장",
+  "text_notifications_empty"      : "새로운 알림이 없습니다.",
 
 
   "error_access_denied"           : "접근 권한이 없습니다.",

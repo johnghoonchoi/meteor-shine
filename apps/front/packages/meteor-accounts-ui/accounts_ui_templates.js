@@ -1,10 +1,10 @@
 
-
 Template.accountsUIOverlay.onDestroyed = function() {
   if (! Accounts.ui.view) {
     Blaze.remove(Accounts.ui.view);
   }
 };
+
 
 Template.accountsUIOverlay.helpers({
   activeTemplate: function() {

@@ -1,23 +1,10 @@
 <template name="accountView">
-  <article class="page">
+  <article class="page container-fluid shine-wrapper">
     <header>
-      <h3>{{user.username}}</h3>
+      <h3>{{user.username}} <small>({{postsCount}})</small></h3>
     </header>
 
     <div class="body">
-      <div class="row-fluid">
-        <nav class="navtabs">
-          <ul class="navtabs-list clearfix">
-            <li class="navtabs-item pull-left"><a class="navtabs-anchor"
-                                                  href="{{pathFor 'accountView' username=username}}"
-                                                  role="button">최신순</a></li>
-            <li class="navtabs-item pull-left"><a class="navtabs-anchor"
-                                                  href="{{pathFor 'accountView' username=username query='sortBy=like'}}"
-                                                  role="button">인기순</a></li>
-          </ul>
-        </nav>
-      </div>
-
       <div class="row-fluid">
         {{#if noPosts}}
           <div class="row-fluid">
@@ -26,11 +13,7 @@
             {{/if}}
           </div>
         {{else}}
-          <div class="block-wrapper">
-            Posts count: {{postsCount}}
-          </div>
-
-          <ul class="list-unstyled">
+          <ul class="block-list">
             {{#each posts}}
               {{> postsListItem}}
             {{/each}}

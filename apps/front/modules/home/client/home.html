@@ -1,12 +1,5 @@
 <template name="home">
   <article class="page container-fluid shine-wrapper">
-    {{#if noPosts}}
-      <div class="row-fluid">
-      {{#if Template.subscriptionsReady}}
-        {{_ 'text_no_blogs'}}
-      {{/if}}
-      </div>
-    {{else}}
       <div class="row-fluid">
         <nav class="navtabs">
           <ul class="navtabs-list">
@@ -19,6 +12,13 @@
           </ul>
         </nav>
       </div>
+	    {{#if noPosts}}
+        <div class="row-fluid">
+	        {{#if Template.subscriptionsReady}}
+				    {{_ 'text_no_blogs'}}
+	        {{/if}}
+        </div>
+	    {{else}}
       <div class="row-fluid">
         <div class="block-group">
           <ul class="block-list">
@@ -50,14 +50,12 @@
       <small><a href="{{pathFor 'categoryView' _id=categoryId}}">{{category.title}}</a></small>
       <a href="{{pathFor 'postView'}}">{{title}}</a>
     </h3>
-
     <p>
       {{{postContent}}}
     </p>
-
     <div class="info">
       <span class="author">
-        <a href="{{pathFor 'accountView' username=author.username}}">{{author.username}}</a>
+        <i>by </i><a href="{{pathFor 'accountView' username=author.username}}">{{author.username}}</a>
       </span>
       <span class="counts">
         <span class="count"><i class="fa fa-heart-o"></i> {{likesCount}}</span>

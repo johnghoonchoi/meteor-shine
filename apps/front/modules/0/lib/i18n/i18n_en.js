@@ -47,6 +47,8 @@ I18n_data_en = {
   "label_unsubscribe"             : "Unsubscription",
   "label_profile_picture"         : "Picture",
   "label_profile_personal_info"   : "Personal information",
+  "label_new_post"                : "Write",
+
 
   "text_notification_new_comment" : "A new comment registered for {0}'s blog",
   "text_no_blogs"                 : "There is no blog registered.",
@@ -61,6 +63,7 @@ I18n_data_en = {
   "text_draft_updated"            : "Draft updated",
   "text_draft_removed"            : "Draft removed",
   "text_post_draft_success"       : "Post draft saved",
+  "text_notifications_empty"      : "There's no notification.",
 
 
   "error_access_denied"           : "Access denied",

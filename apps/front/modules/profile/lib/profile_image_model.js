@@ -46,6 +46,8 @@ Meteor.methods({
 
     // insert new uploaded profile image into DB
     var profileImageId = ProfileImages.insert(profileImage);
+    console.log('profileImageId: ', profileImageId);
+
     if (profileImageId) {
       // user profile picture temp field update
       var userProfileUpdateResult = Meteor.users.update(this.userId, {
@@ -58,6 +60,7 @@ Meteor.methods({
         }
       });
 
+      console.log('userProfileUpdateResult: ', userProfileUpdateResult);
       if (userProfileUpdateResult) {
         // if temporary profile info exists, remove it
         if (user.profile && user.profile.picture && user.profile.picture.temp) {

@@ -82,6 +82,25 @@ Template.categoryView.helpers({
   permissionWrite: function() {
     return categoryPermitted(Template.instance().category(),
       Meteor.user(), 'write');
+  },
+
+  isActive: function(type) {
+    if (type === this.sortBy) {
+      switch(type) {
+        case 'like':
+          return 'active';
+          break;
+        case 'hit':
+          return 'active';
+          break;
+        case 'comment':
+          return 'active';
+          break;
+        default:
+          return "";
+      }
+    }
+    return (! type && ! this.sortBy) ? "active" : "";
   }
 });
 
@@ -89,5 +108,12 @@ Template.categoryView.events({
   'click .load-more': function(e, instance) {
     e.preventDefault();
     instance.limit.set(instance.limit.get() + instance.increment);
+  }
+});
+
+Template.postsListItem.helpers({
+  postContent: function() {
+    var html = marked(this.content.data);
+    return html.replace(/<(?:.|\n)*?>/gm, '');
   }
 });

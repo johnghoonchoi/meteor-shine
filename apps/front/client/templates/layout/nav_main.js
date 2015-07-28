@@ -5,7 +5,10 @@ Template.navMain.events({
     e.preventDefault();
     e.stopPropagation();
 
-    Accounts.ui.dialog.show('signIn');
+    Accounts.ui.dialog.show('signIn', function() {
+      $('#login-username-or-email').focus();
+    });
+
   },
 
   'click [data-action=signOut]': function(e) {
