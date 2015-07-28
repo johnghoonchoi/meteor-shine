@@ -1,34 +1,37 @@
 <template name="postView">
   {{#if Template.subscriptionsReady}}
-    <article class="page">
+    <article class="page container-fluid shine-wrapper">
       <header>
-        <div class="pull-left">
-          <h3>{{category.title}}</h3>
+      {{#if isEditable}}
+        <div class="btn-toolbar pull-right">
+          <a class="btn btn-primary" href="{{pathFor 'postEdit' _id=post._id}}">Edit</a>
+          <button type="button" id="remove" class="btn btn-danger">Delete</button>
         </div>
-        {{#if isEditable}}
-          <div class="btn-toolbar pull-right">
-            <a class="btn btn-primary" href="{{pathFor 'postEdit' _id=post._id}}">Edit</a>
-            <button type="button" id="remove" class="btn btn-danger">Delete</button>
-          </div>
-        {{/if}}
+      {{/if}}
       </header>
 
       <article id="articleWrap">
-        <h4>{{post.title}}</h4>
+        <h3 class="title">
+	        {{post.title}}
+        </h3>
+        <div class="info">
+          <span class="category"><a href="{{pathFor 'categoryView' _id=post.categoryId}}">{{category.title}}</a></span>
+		      <span class="author">
+		        <i>by </i><a href="{{pathFor 'accountView' username=post.author.username}}">{{post.author.username}}</a>
+		      </span>
+          <span class="date">{{momentFromNow createdAt}}</span>
+        </div>
         <section id="contentWrapper" class="block-wrapper">
-          <div>
-            by {{post.author.username}}
-          </div>
           <div>{{#markdown}}{{post.content.data}}{{/markdown}}</div>
         </section>
       </article>
 
-      <div class="sns block-wrapper">
+      <div id="snswWrap">
         <div class="sns">
           {{#if like}}
-            <button type="button" id="unlike" class="btn btn-default" style="border-radius: 0">Unlike</button>
+            <button type="button" id="unlike" class="btn btn-default" style="border-radius: 10">Unlike</button>
           {{else}}
-            <button type="button" id="like" class="btn btn-danger" style="border-radius: 0">Like</button>
+            <button type="button" id="like" class="btn btn-danger" style="border-radius: 10">Like</button>
           {{/if}}
         </div>
       </div>

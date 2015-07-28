@@ -123,7 +123,7 @@ Template.home.events({
 Template.homeListItem.helpers({
   postContent: function() {
     var html = marked(this.content.data);
-    return html.replace(/<(?:.|\n)*?>/gm, '');;
+    return html.replace(/<(?:.|\n)*?>/gm, '');
   },
 
   commentCount: function() {

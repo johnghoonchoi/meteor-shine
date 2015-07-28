@@ -160,22 +160,6 @@ Template.profilePicture.events({
       cropperDeps.changed();
     });
   }
-
-  //"click #rotateLeft": function(){
-  //  var user = Meteor.user();
-  //  var flag = myPicState(user);
-  //  if (flag !== 'default') {
-  //    $('#avatarPreview').cropper('rotate', -90);
-  //  }
-  //},
-  //"click #rotateRight": function(){
-  //  var user = Meteor.user();
-  //  var flag = myPicState(user);
-  //  if (flag !== 'default') {
-  //    $('#avatarPreview').cropper('rotate', 90);
-  //    console.log('right: ');
-  //  }
-  //}
 });
 
 Template.profilePicture.onCreated(function() {

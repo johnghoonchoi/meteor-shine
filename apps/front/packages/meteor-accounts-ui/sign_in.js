@@ -38,7 +38,11 @@ Template.signIn.events({
   'click #signUpLink': function(e) {
     e.preventDefault();
 
-    Accounts.ui.dialog.show('signUp');
+    Accounts.ui.dialog.show('signUp', function() {
+      setTimeout(function() {
+        $('#login-username').focus();
+      }, 100);
+    });
   }
 });
 
@@ -88,7 +92,11 @@ Template.signInPasswordService.events({
   'click #forgotPasswordLink': function(e) {
     e.preventDefault();
 
-    Accounts.ui.dialog.show('forgotPassword');
+    Accounts.ui.dialog.show('forgotPassword', function() {
+      setTimeout(function() {
+        $('#forgot-password-email').focus();
+      }, 100);
+    });
   },
 
   'submit #formSignIn': function(e, instance) {
