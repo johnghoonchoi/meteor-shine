@@ -12,10 +12,12 @@ Router.configure({
 
 var accessControl = function() {
   if (! Meteor.user()) {
-    if (Meteor.loggingIn())
+    if (Meteor.loggingIn()) {
       this.render(this.loadingTemplate);
-    else
+    } else {
       Accounts.ui.dialog.show('signIn');
+      //this.next();
+    }
   } else {
     this.next();
   }

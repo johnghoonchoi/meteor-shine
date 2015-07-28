@@ -81,6 +81,10 @@ postAccess = function(action, user, ticket) {
     return true;
   };
 
+  // check 'admin' role
+  if (Roles.userIsInRole(user._id, [ 'ROLE_ADMIN' ]))
+    return true;
+
   switch (action) {
     case 'insert':
       return categoryPermission(user, ticket);
