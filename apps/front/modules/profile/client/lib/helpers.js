@@ -1,5 +1,16 @@
 /**
  *
+ * @param str
+ * @returns {string}
+ * @private
+ */
+makeUppercase = function(str) {
+  return str.slice(0, 1).toUpperCase();
+};
+
+
+/**
+ *
  * @returns {string}
  * default : there's no user's profile
  * onlyOrigin : only user`s profile image exist
@@ -40,16 +51,20 @@ getMyPic = function() {
   }
 };
 
+Template.registerHelper('myPic', function() {
+  return getMyPic();
+});
+
 /**
  *
  * @param data context of related template
  * @returns {string}
  * @private
  */
-getWriterPic = function(dataContext) {
-  if (dataContext) {
-    var writer = Meteor.users.findOne({_id: dataContext.user._id});
-    if (writer && writer.username) {
+getWriterPic = function(userId) {
+  if (userId) {
+    var writer = Meteor.users.findOne({_id: userId});
+    if (writer) {
       if (writer.profile && writer.profile.picture) {
         var writerPic = writer.profile.picture.origin.urlCropped;
         return "<img src='"+writerPic+"'alt='Profile image' class='img-circle'>";
@@ -58,16 +73,14 @@ getWriterPic = function(dataContext) {
       return "<span class='avatar-initials'>"+initial+"</span>";
     }
   }
+  return "";
 };
+
+Template.registerHelper('writerPic', function(userId) {
+  return getWriterPic(userId);
+});
 
 Template.registerHelper('firstChar', function(string) {
   return makeUppercase(string);
 });
 
-Template.registerHelper('myPic', function() {
-  return getMyPic();
-});
-
-Template.registerHelper('writerPic', function(dataContext) {
-  return getWriterPic(dataContext);
-});

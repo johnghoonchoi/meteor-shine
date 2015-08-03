@@ -15,7 +15,3 @@ Template.registerHelper('userEmail', function () {
     return user.emails[0].address;
   }
 });
-
-Template.registerHelper('showDataContext', function() {
-  console.log('DataContext: ', this);
-});

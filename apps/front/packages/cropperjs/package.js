@@ -22,6 +22,6 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
   api.use('tinytest');
   api.use('davidsunny:cropperjs');
-  api.addFiles('cropperjs-tests.js');
+  api.addFiles('cropper-tests.js');
 });
 
