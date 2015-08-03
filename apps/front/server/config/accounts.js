@@ -33,13 +33,13 @@ ServiceConfiguration.configurations.insert({
 Accounts.onCreateUser(function(options, user) {
   console.log('options: ' + JSON.stringify(options));
   console.log('user:' + JSON.stringify(user));
-
+/*
   var validation = AccountValidator.validateInsert(options);
 
   if (! _.isEmpty(validation.errors())) {
     throw new Meteor.Error(ERROR_CODE_MATCH, 'error_validation');
   }
-
+*/
   return user;
 });
 

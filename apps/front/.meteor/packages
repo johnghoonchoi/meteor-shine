@@ -44,7 +44,6 @@ leesangwon:connections
 perak:codemirror
 simple:highlight.js
 chuangbo:marked
-react
 dburles:collection-helpers
 matb33:collection-hooks
 davidsunny:bothlog
@@ -52,3 +51,6 @@ reactive-dict
 service-configuration
 fastclick
 davidsunny:cropperjs
+react
+accounts-facebook
+accounts-meetup
