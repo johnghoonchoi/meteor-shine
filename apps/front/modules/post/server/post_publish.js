@@ -59,14 +59,13 @@ Meteor.publishComposite('releasedPostView', function(postId) {
     },
     children: [
       {
-        find: function() {
-          var post = Posts.findOne(postId);
+        find: function(post) {
           return Categories.find({ _id: post.categoryId });
         }
       },
       {
-        find: function() {
-          return PostLikes.find({ 'user._id': this.userId, postId: postId });
+        find: function(post) {
+          return PostLikes.find({ 'user._id': this.userId, postId: post._id });
         }
       }
     ]

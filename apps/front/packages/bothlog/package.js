@@ -6,6 +6,8 @@ Package.describe({
   documentation: 'README.md'
 });
 
+Npm.depends({ "colors": "0.6.2" });
+
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
   api.addFiles('bothlog.js', 'client');
@@ -20,8 +22,4 @@ Package.onTest(function(api) {
   api.use('tinytest');
   api.use('davidsunny:bothlog');
   api.addFiles('bothlog-tests.js');
-});
-
-Npm.depends({
-  "colors": "0.6.2"
 });
