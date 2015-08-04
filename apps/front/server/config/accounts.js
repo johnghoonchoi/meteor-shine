@@ -33,6 +33,18 @@ ServiceConfiguration.configurations.insert({
 Accounts.onCreateUser(function(options, user) {
   console.log('options: ' + JSON.stringify(options));
   console.log('user:' + JSON.stringify(user));
+
+  if (options.profile)
+    user.profile = options.profile;
+
+  if (user.services.facebook) {
+    var id= user.services.facebook.id;
+    var img = 'http://graph.facebook.com/' + id + '/picture?type=square&height=160&width=160';
+    user.profile.url = img;
+  }
+
+  return user;
+
 /*
   var validation = AccountValidator.validateInsert(options);
 
@@ -40,7 +52,6 @@ Accounts.onCreateUser(function(options, user) {
     throw new Meteor.Error(ERROR_CODE_MATCH, 'error_validation');
   }
 */
-  return user;
 });
 
 
