@@ -99,7 +99,7 @@ Meteor.publish('myPostsListCount', function() {
 
 Meteor.publishComposite('userPostsList', function(query, options) {
   check(query, Match.ObjectIncluding({
-    "username": Match.Optional(String)
+    "_id": Match.Optional(String)
   }));
 
   check(options, Match.ObjectIncluding({
@@ -111,7 +111,7 @@ Meteor.publishComposite('userPostsList', function(query, options) {
   }));
 
   var object = {
-    'author.username': query.username,
+    'author._id': query._id,
     state: 'PUBLISHED'
   };
 
@@ -122,7 +122,7 @@ Meteor.publishComposite('userPostsList', function(query, options) {
     children: [
       {
         find: function() {
-          return Meteor.users.find({ username: query.username });
+          return Meteor.users.find({ _id: query._id });
         }
       }
     ]
@@ -132,11 +132,11 @@ Meteor.publishComposite('userPostsList', function(query, options) {
 
 Meteor.publish('userPostsListCount', function(query) {
   check(query, Match.ObjectIncluding({
-    "username": Match.Optional(String)
+    "_id": Match.Optional(String)
   }));
 
   var object = {
-    'author.username': query.username,
+    'author._id': query._id,
     state: 'PUBLISHED'
   };
 

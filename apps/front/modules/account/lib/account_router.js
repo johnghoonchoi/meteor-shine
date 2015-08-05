@@ -1,8 +1,8 @@
-Router.route('/user/:username', {
+Router.route('/user/:_id', {
   name: 'accountView',
   data: function() {
     return {
-      username: this.params.username,
+      _id: this.params._id,
       sortBy: (this.params.query) ? this.params.query.sortBy : ''
     };
   }

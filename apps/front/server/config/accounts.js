@@ -19,11 +19,29 @@ ServiceConfiguration.configurations.remove({
   service: "facebook"
 });
 
-ServiceConfiguration.configurations.insert({
-  service: "facebook",
-  appId: Meteor.settings.facebook.appId,
-  secret: Meteor.settings.facebook.secret
+if (ServiceConfiguration.configurations.find({service: 'facebook'}).count() === 0) {
+  ServiceConfiguration.configurations.insert({
+    service: "facebook",
+    appId: Meteor.settings.facebook.appId,
+    secret: Meteor.settings.facebook.secret
+  });
+}
+
+
+/**
+ * Meetup login configuration
+ */
+ServiceConfiguration.configurations.remove({
+  service: "meetup"
 });
+
+if (ServiceConfiguration.configurations.find({service: 'meetup'}).count() === 0) {
+  ServiceConfiguration.configurations.insert({
+    service: 'meetup',
+    clientId: Meteor.settings.meetup.clientId,
+    secret: Meteor.settings.meetup.secret
+  });
+}
 
 
 /**
@@ -31,17 +49,17 @@ ServiceConfiguration.configurations.insert({
  * initialize user information
  */
 Accounts.onCreateUser(function(options, user) {
-  console.log('options: ' + JSON.stringify(options));
-  console.log('user:' + JSON.stringify(user));
+  console.log('options: ' + JSON.stringify(options, null, 2));
+  console.log('user:' + JSON.stringify(user, null, 2));
 
   if (options.profile)
     user.profile = options.profile;
 
-  if (user.services.facebook) {
-    var id= user.services.facebook.id;
-    var img = 'http://graph.facebook.com/' + id + '/picture?type=square&height=160&width=160';
-    user.profile.url = img;
-  }
+  //if (user.services.facebook) {
+  //  var id= user.services.facebook.id;
+  //  var img = 'http://graph.facebook.com/' + id + '/picture?type=square&height=160&width=160';
+  //  user.profile.url = img;
+  //}
 
   return user;
 
