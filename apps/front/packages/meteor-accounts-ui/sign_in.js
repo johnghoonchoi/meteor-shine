@@ -172,7 +172,7 @@ Template.signInOtherService.events({
 
     loginWithService(options, function (error) {
       if (! error) {
-        $('#accountsUIModal').modal('hide');
+        Accounts.ui.dialog.hide();
       } else if (error instanceof Accounts.LoginCancelledError) {
         // do nothing
       } else if (error instanceof ServiceConfiguration.ConfigError) {

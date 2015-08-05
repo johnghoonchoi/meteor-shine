@@ -112,7 +112,7 @@ Accounts.ui.dialog = {
   },
 
   hide: function() {
-    $('#accounts-ui-overlay').fadeOut('slow', function() {
+    $('#accounts-ui-overlay').fadeOut('specialEasing', function() {
       if (Accounts.ui.view) {
         Blaze.remove(Accounts.ui.view);
         Accounts.ui.view = null;
@@ -205,6 +205,10 @@ displayName = function () {
     return user.username;
   if (user.emails && user.emails[0] && user.emails[0].address)
     return user.emails[0].address;
+
+  if (user.services && user.services.facebook)
+    if (user.services.facebook.name) return user.services.facebook.name;
+    if (user.services.facebook.email) return user.services.facebook.email;
 
   return '';
 };

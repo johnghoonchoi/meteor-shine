@@ -46,7 +46,7 @@
     </div>
     <div class="media-body">
 	    <span class="author">
-        <a href="{{pathFor 'accountView' username=commenter.username}}">{{commenter.username}}</a>
+        <a href="{{pathFor 'accountView' _id=myLink}}">{{displayName}}</a>
       </span>
 	    <span class="date"><small>{{momentFromNow createdAt}}</small></span>
 	    <p>{{msg}}</p>

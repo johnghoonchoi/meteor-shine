@@ -102,5 +102,25 @@ Template.postCommentsList.events({
 Template.postCommentsListItem.helpers({
   commenter: function() {
     return Meteor.users.findOne(this.user._id);
+  },
+
+  myLink: function() {
+    var user = Meteor.users.findOne(this.user._id);
+    if (!user) return '';
+    return user._id;
+  },
+
+  displayName: function() {
+    var user = Meteor.users.findOne(this.user._id);
+    if (!user) return '';
+
+    if (user.profile && user.profile.name)
+      return user.profile.name;
+    if (user.username)
+      return user.username;
+    if (user.emails && user.emails[0] && user.emails[0].address)
+      return user.emails[0].address;
+
+    return '';
   }
 });

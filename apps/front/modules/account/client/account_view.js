@@ -14,23 +14,26 @@ Template.accountView.onCreated(function() {
     }
   };
 
+
   instance.autorun(function() {
     data = Template.currentData();
     var limit = instance.limit.get();
     var sort = instance.sortBy(data.sortBy);
 
-    instance.subscribe('userPostsList', { username: data.username },
+    instance.subscribe('userPostsList', { _id: data._id },
       { limit: limit, sort: sort },
       function() { instance.loaded.set(limit); }
     );
 
-    instance.subscribe('userPostsListCount', { username: data.username });
+    instance.subscribe('userPostsListCount', { _id: data._id });
+
+    instance.subscribe('accountData', { _id: data._id });
 
     Navigations.path.set('users');
   });
 
   instance.user = function() {
-    return Meteor.users.findOne({ username: data.username });
+    return Meteor.users.findOne({ _id: data._id });
   };
 
   instance.postsCount = function() {
@@ -41,7 +44,7 @@ Template.accountView.onCreated(function() {
     var limit = instance.limit.get();
     var sort = instance.sortBy(data.sortBy);
 
-    return Posts.find({ 'author.username': data.username, state: 'PUBLISHED' },
+    return Posts.find({ 'author._id': data._id, state: 'PUBLISHED' },
       { limit: limit, sort: sort });
   };
 });
@@ -54,6 +57,10 @@ Template.accountView.onDestroyed(function() {
   this.posts = null;
 });
 
+Template.accountView.onRendered(function(){
+
+});
+
 
 Template.accountView.helpers({
   noPosts: function() {
@@ -62,6 +69,20 @@ Template.accountView.helpers({
 
   user: function() {
     return Template.instance().user();
+  },
+
+  displayName: function() {
+    var user = Template.instance().user();
+    if (!user) return '';
+
+    if (user.username)
+      return user.username;
+    if (user.profile && user.profile.name)
+      return user.profile.name;
+    if (user.emails && user.emails[0] && user.emails[0].address)
+      return user.emails[0].address;
+
+    return '';
   },
 
   postsCount: function() {
