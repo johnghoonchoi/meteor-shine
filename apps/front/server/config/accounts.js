@@ -10,39 +10,87 @@ Accounts.config({
   forbidClientAccountCreation: false
 });
 
+/**
+ * First, add the service configuration package :
+ * `meteor add service-configuration`
+ */
 
+// Function: Create Service Configuration
+// Here, we create a function to help us reset and create our third-party login
+// configurations to keep our code as DRY as possible.
+createServiceConfiguration = function(service, clientId, secret) {
+  ServiceConfiguration.configurations.remove({
+    service: service
+  });
+
+  // Note: here we have to do a bit of light testing on our service argument.
+  // Facebook and Twitter use different key names for their OAuth client ID,
+  // so we need to update our passed object accordingly before we insert it
+  // into our configurations.
+  var config = {
+    generic: {
+      clientId: clientId,
+      secret: secret,
+      loginStyle: 'redirect'
+    },
+    facebook: {
+      appId: clientId,
+      secret: secret,
+      loginStyle: 'redirect'
+    },
+    twitter: {
+      consumerKey: clientId,
+      secret: secret,
+      loginStyle: 'redirect'
+      // https://github.com/meteor/meteor/wiki/OAuth-for-mobile-Meteor-clients
+      //
+      // The "redirect" style can be used in situations where a popup window can't be opened,
+      // such as in a mobile UIWebView. The "redirect" style however relies on
+      // session storage which isn't available in Safari private mode,
+      // so the "popup" style will be forced if session storage can't be used.
+      // - Inside UIWebViews (when your app is loaded inside a mobile app)
+      // - In Safari on iOS8 (window.close is not supported due to a bug)
+    }
+  };
+
+  // To simplify this a bit, we make use of a case/switch statement. This is
+  // a shorthand way to say "when the service argument is equal to <x> do this."
+  switch(service) {
+    case 'facebook' :
+      ServiceConfiguration.configurations.upsert({ service: service }, { $set: config.facebook });
+      break;
+    case 'twitter' :
+      ServiceConfiguration.configurations.upsert({ service: service }, { $set: config.facebook });
+      break;
+    default :
+      ServiceConfiguration.configurations.upsert({ service: service }, { $set: config.generic });
+  }
+};
 
 /**
- * Facebook login configuration
+ * Configure Third-Party Login Services
+ * Note: We're passing the Service Name, Client Id, and Secret.
  */
-ServiceConfiguration.configurations.remove({
-  service: "facebook"
-});
 
-if (ServiceConfiguration.configurations.find({service: 'facebook'}).count() === 0) {
-  ServiceConfiguration.configurations.insert({
-    service: "facebook",
-    appId: Meteor.settings.facebook.appId,
-    secret: Meteor.settings.facebook.secret
-  });
-}
+// Facebook
+// Generate your appId & Secret here: https://developers.facebook.com/apps/
+createServiceConfiguration('facebook', Meteor.settings.facebook.appId, Meteor.settings.facebook.secret);
 
+// Google
+// Generate your ClientId & Secret here: https://console.developers.google.com
+//createServiceConfiguration('google', 'Insert your clientId here.', 'Insert your secret here.');
 
-/**
- * Meetup login configuration
- */
-ServiceConfiguration.configurations.remove({
-  service: "meetup"
-});
+// Twitter
+// Generate your ConsumerKey & Secret here: https://apps.twitter.com/
+//createServiceConfiguration('twitter', 'Insert your consumerKey here.', 'Insert your secret here.');
 
-if (ServiceConfiguration.configurations.find({service: 'meetup'}).count() === 0) {
-  ServiceConfiguration.configurations.insert({
-    service: 'meetup',
-    clientId: Meteor.settings.meetup.oauthKey,
-    secret: Meteor.settings.meetup.oauthSecret
-  });
-}
+// GitHub
+// Generate your ClientId & Secret here: https://github.com/settings/applications
+//createServiceConfiguration('github', 'Insert your clientId here.', 'Insert your secret here.');
 
+// Meetup
+// Generate your ClientId & Secret here: https://secure.meetup.com/meetup_api/oauth_consumers/
+createServiceConfiguration('meetup', Meteor.settings.meetup.clientId, Meteor.settings.meetup.secret);
 
 /**
  * check the validation of user information
@@ -50,6 +98,7 @@ if (ServiceConfiguration.configurations.find({service: 'meetup'}).count() === 0)
  */
 Accounts.onCreateUser(function(options, user) {
   console.log('options: ' + JSON.stringify(options, null, 2));
+  console.log('user:' + JSON.stringify(user, null, 2));
   Logger.info('options: ' + JSON.stringify(options, null, 2));
 
   if (user.services.facebook) {
@@ -60,11 +109,9 @@ Accounts.onCreateUser(function(options, user) {
 
     options.profile = {
       'name': userData.name,
-      'facebookProfileUrl': profileLink,
-      'thumbnailUrl': thumbnailUrl
+      'thumbnailUrl': thumbnailUrl,
+      'profileUrl': profileLink
     };
-
-    user.profile = options.profile;
   }
 
   if (user.services.meetup) {
@@ -84,33 +131,17 @@ Accounts.onCreateUser(function(options, user) {
       var thumbnailUrl = "/default-avatar.png";
     }
 
-    var socialLinks = [];
-    for (service in userData.other_services) {
-      if(service === "twitter") {
-        var username = userData.other_services['twitter']['identifier'];
-        socialLinks.push({'service': 'twitter', 'url': 'https://twitter.com/' + username});
-      } else if(service) {
-        var url = userData.other_services[service]['identifier'];
-        socialLinks.push({'service': service, 'url': url});
-      }
-    }
-
     options.profile = {
       'name': userData.name,
-      'meetupProfileUrl': userData.link,
       'thumbnailUrl': thumbnailUrl,
-      'bio': userData.bio,
-      'socialLinks': socialLinks
+      'profileUrl': userData.link
     };
-    user.profile = options.profile;
   }
 
+  user.profile = options.profile;
 
-  console.log('user:' + JSON.stringify(user, null, 2));
   Logger.info('user:' + JSON.stringify(user, null, 2));
-
   return user;
-
 /*
   var validation = AccountValidator.validateInsert(options);
 
