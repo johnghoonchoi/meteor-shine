@@ -8,36 +8,7 @@
 //});
 
 Meteor.publish("accountData", function (filter) {
-  var self = this,
-      ready = false;
-
-  var subHandle = Meteor.users.find(filter || {}).observeChanges({
-    added: function (id, fields) {
-      if (! ready)
-        if (fields.services && fields.services.facebook) {
-          fields.facebook = {};
-          fields.facebook.name = fields.services.facebook.name;
-          fields.facebook.id = fields.services.facebook.id;
-          delete fields.services;
-        }
-      self.added("users", id, fields);
-      console.log(" added.. ");
-    },
-    changed: function (id, fields) {
-      self.changed("users", id, fields);
-      console.log(" changed.. ");
-    },
-    removed: function (id) {
-      self.removed("users", id);
-    }
-  });
-
-  self.ready();
-
-  ready = true;
-
-  self.onStop(function() {
-    subHandle.stop();
-  });
+  check(filter, Object);
+  return Meteor.users.find(filter, {fields: {services: 0, emails: 0}});
 });
 
