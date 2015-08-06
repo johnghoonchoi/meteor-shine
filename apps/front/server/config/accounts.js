@@ -55,12 +55,12 @@ Accounts.onCreateUser(function(options, user) {
   if (user.services.facebook) {
     var userData = user.services.facebook;
     var userFacebookId= userData.id;
-    var name= userData.name;
     var thumbnailUrl = 'http://graph.facebook.com/' + userFacebookId + '/picture?type=square&height=160&width=160';
+    var profileLink = 'https://www.facebook.com/app_scoped_user_id/' + userFacebookId;
 
     options.profile = {
       'name': userData.name,
-      'facebookProfileUrl': userData.link,
+      'facebookProfileUrl': profileLink,
       'thumbnailUrl': thumbnailUrl
     };
 
