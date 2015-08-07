@@ -2,7 +2,7 @@
 Template.navMain.onCreated(function() {
   var instance = this;
   instance.autorun(function() {
-    Meteor.subscribe('userData');
+    Meteor.subscribe('myData');
   });
 });
 
