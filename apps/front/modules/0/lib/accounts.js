@@ -8,8 +8,8 @@
 // helpers
 //
 
-userDisplayName = function () {
-  var user = Meteor.user();
+userDisplayName = function (userId) {
+  var user = Meteor.users.findOne({ _id: userId });
   if (!user) return '';
 
   if (user.profile && user.profile.name)
@@ -71,16 +71,17 @@ if (Meteor.isClient)
  *
  * @returns {string}
  */
-getMyPic = function() {
-  var user= Meteor.user();
+getPicture = function(userId) {
+  var user = Meteor.users.findOne({ _id: userId });
   if (!user) return '';
 
-  var flag = myPicState(user);
-
   if (user) {
-    if (flag === 'onlyOrigin' || flag === 'both') {
-      var url = user.profile.picture.origin.urlCropped;
-      return "<img src='"+url+"'alt='Profile image' class='img-circle'>";
+    if (user.profile && user.profile.picture) {
+      var flag = myPicState(user);
+      if (flag === 'onlyOrigin' || flag === 'both') {
+        var url = user.profile.picture.origin.urlCropped;
+        return "<img src='"+url+"'alt='Profile image' class='img-circle'>";
+      }
     }
 
     if (user.username) {
@@ -89,15 +90,16 @@ getMyPic = function() {
     }
 
     if (user.oauths) {
-      if (user.oauths.facebook) {
+      if (user.oauths.facebook && user.oauths.facebook.picture) {
         return "<img src='"+user.oauths.facebook.picture+"'alt='Profile image' class='img-circle'>";
       }
-      if (user.oauths.meetup) {
+      if (user.oauths.meetup && user.oauths.meetup.picture) {
         return "<img src='"+user.oauths.meetup.picture+"'alt='Profile image' class='img-circle'>";
       }
     }
   }
 };
 
+
 if (Meteor.isClient)
-  Template.registerHelper('myPic', getMyPic);
+  Template.registerHelper('getPicture', getPicture);

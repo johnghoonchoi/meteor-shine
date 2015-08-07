@@ -92,7 +92,9 @@ perak:codemirror@1.2.3
 percolate:momentum@0.7.2
 percolate:velocityjs@1.1.0
 raix:eventemitter@0.1.2
+raix:eventstate@0.0.2
 raix:onetimeout@1.0.3
+raix:push@2.6.11
 raix:stubfence@1.0.1
 random@1.0.3
 react@0.1.4

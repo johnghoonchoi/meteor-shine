@@ -40,7 +40,8 @@ Meteor.publishComposite('postCommentsList', function(query, options) {
     children: [
       {
         find: function(comment) {
-          return Meteor.users.find( { _id: comment.user._id }, { fields: { services: 0, emails: 0 } } );
+          return Meteor.users.find( { _id: comment.user._id },
+            { fields: { services: 0 } } );
         }
       }
     ]
