@@ -16,17 +16,12 @@ Accounts.config({
  */
 
 // Function: Create Service Configuration
-// Here, we create a function to help us reset and create our third-party login
-// configurations to keep our code as DRY as possible.
 createServiceConfiguration = function(service, clientId, secret) {
   ServiceConfiguration.configurations.remove({
     service: service
   });
 
-  // Note: here we have to do a bit of light testing on our service argument.
-  // Facebook and Twitter use different key names for their OAuth client ID,
-  // so we need to update our passed object accordingly before we insert it
-  // into our configurations.
+  // Note: Facebook and Twitter use different key names for their OAuth client ID
   var config = {
     generic: {
       clientId: clientId,
@@ -42,19 +37,19 @@ createServiceConfiguration = function(service, clientId, secret) {
       consumerKey: clientId,
       secret: secret,
       loginStyle: 'redirect'
-      // https://github.com/meteor/meteor/wiki/OAuth-for-mobile-Meteor-clients
-      //
-      // The "redirect" style can be used in situations where a popup window can't be opened,
-      // such as in a mobile UIWebView. The "redirect" style however relies on
-      // session storage which isn't available in Safari private mode,
-      // so the "popup" style will be forced if session storage can't be used.
-      // - Inside UIWebViews (when your app is loaded inside a mobile app)
-      // - In Safari on iOS8 (window.close is not supported due to a bug)
     }
+    // loginStyle : redirect
+    // (ref: https://github.com/meteor/meteor/wiki/OAuth-for-mobile-Meteor-clients)
+    //
+    // The "redirect" style can be used in situations where a popup window can't be opened,
+    // such as in a mobile UIWebView. The "redirect" style however relies on
+    // session storage which isn't available in Safari private mode,
+    // so the "popup" style will be forced if session storage can't be used.
+    // - Inside UIWebViews (when your app is loaded inside a mobile app)
+    // - In Safari on iOS8 (window.close is not supported due to a bug)
   };
 
-  // To simplify this a bit, we make use of a case/switch statement. This is
-  // a shorthand way to say "when the service argument is equal to <x> do this."
+
   switch(service) {
     case 'facebook' :
       ServiceConfiguration.configurations.upsert({ service: service }, { $set: config.facebook });
@@ -73,24 +68,17 @@ createServiceConfiguration = function(service, clientId, secret) {
  */
 
 // Facebook
-// Generate your appId & Secret here: https://developers.facebook.com/apps/
 createServiceConfiguration('facebook', Meteor.settings.facebook.appId, Meteor.settings.facebook.secret);
-
+// Meetup
+createServiceConfiguration('meetup', Meteor.settings.meetup.clientId, Meteor.settings.meetup.secret);
 // Google
-// Generate your ClientId & Secret here: https://console.developers.google.com
 //createServiceConfiguration('google', 'Insert your clientId here.', 'Insert your secret here.');
-
 // Twitter
-// Generate your ConsumerKey & Secret here: https://apps.twitter.com/
 //createServiceConfiguration('twitter', 'Insert your consumerKey here.', 'Insert your secret here.');
-
 // GitHub
-// Generate your ClientId & Secret here: https://github.com/settings/applications
 //createServiceConfiguration('github', 'Insert your clientId here.', 'Insert your secret here.');
 
-// Meetup
-// Generate your ClientId & Secret here: https://secure.meetup.com/meetup_api/oauth_consumers/
-createServiceConfiguration('meetup', Meteor.settings.meetup.clientId, Meteor.settings.meetup.secret);
+
 
 /**
  * check the validation of user information
@@ -104,7 +92,8 @@ Accounts.onCreateUser(function(options, user) {
   if (user.services.facebook) {
     var userData = user.services.facebook;
     var userFacebookId= userData.id;
-    var thumbnailUrl = 'http://graph.facebook.com/' + userFacebookId + '/picture?type=square&height=160&width=160';
+    var thumbnailUrl = 'http://graph.facebook.com/' + userFacebookId
+      + '/picture?type=square&height=160&width=160';
     var profileLink = 'https://www.facebook.com/app_scoped_user_id/' + userFacebookId;
 
     options.profile = {
@@ -117,7 +106,8 @@ Accounts.onCreateUser(function(options, user) {
   if (user.services.meetup) {
     var userMeetupId = user.services.meetup.id;
     var apiKey = Meteor.settings.meetup.apiKey;
-    var requestUrl = 'https://api.meetup.com/2/member/' + userMeetupId + '?key=' + apiKey + '&signed=true&fields=other_services';
+    var requestUrl = 'https://api.meetup.com/2/member/' + userMeetupId
+      + '?key=' + apiKey + '&signed=true&fields=other_services';
     var response = HTTP.get(requestUrl, {
       params: {
         format: 'json'
