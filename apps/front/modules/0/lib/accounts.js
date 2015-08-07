@@ -18,7 +18,10 @@ userDisplayName = function () {
     return user.username;
   if (user.emails && user.emails[0] && user.emails[0].address)
     return user.emails[0].address;
-
+  if (user.oauths) {
+    if (user.oauths.facebook) return user.oauths.facebook.name;
+    if (user.oauths.meetup) return user.oauths.meetup.name;
+  }
   return '';
 };
 
@@ -85,10 +88,13 @@ getMyPic = function() {
       return "<span class='avatar-initials'>"+initial+"</span>";
     }
 
-    if (user.services && user.services.facebook) {
-      var id = user.services.facebook.id;
-      var img = 'http://graph.facebook.com/' + id + '/picture?type=square&height=160&width=160';
-      return "<img src='"+img+"'alt='Profile image' class='img-circle'>";
+    if (user.oauths) {
+      if (user.oauths.facebook) {
+        return "<img src='"+user.oauths.facebook.picture+"'alt='Profile image' class='img-circle'>";
+      }
+      if (user.oauths.meetup) {
+        return "<img src='"+user.oauths.meetup.picture+"'alt='Profile image' class='img-circle'>";
+      }
     }
   }
 };

@@ -91,15 +91,13 @@ Accounts.onCreateUser(function(options, user) {
 
   if (user.services.facebook) {
     var userData = user.services.facebook;
-    var userFacebookId= userData.id;
-    var thumbnailUrl = 'http://graph.facebook.com/' + userFacebookId
-      + '/picture?type=square&height=160&width=160';
-    var profileLink = 'https://www.facebook.com/app_scoped_user_id/' + userFacebookId;
+    var picture = 'http://graph.facebook.com/' + userData.id + '/picture?type=square&height=160&width=160';
 
     options.profile = {
-      'name': userData.name,
-      'thumbnailUrl': thumbnailUrl,
-      'profileUrl': profileLink
+      'facebook': {
+        'name': userData.name,
+        'picture': picture
+      }
     };
   }
 
@@ -116,19 +114,23 @@ Accounts.onCreateUser(function(options, user) {
 
     var userData = response.data;
     if(userData.hasOwnProperty("photo") && userData.photo.photo_link !== "") {
-      var thumbnailUrl = userData.photo.photo_link;
+      var picture = userData.photo.photo_link;
     } else {
-      var thumbnailUrl = "/default-avatar.png";
+      var picture = "/default-avatar.png";
     }
 
     options.profile = {
-      'name': userData.name,
-      'thumbnailUrl': thumbnailUrl,
-      'profileUrl': userData.link
+      'meetup': {
+        'name': userData.name,
+        'picture': picture
+      }
     };
   }
 
-  user.profile = options.profile;
+  if (options.profile) {
+    user.oauths = {};
+    user.oauths = options.profile;
+  }
 
   Logger.info('user:' + JSON.stringify(user, null, 2));
   return user;
