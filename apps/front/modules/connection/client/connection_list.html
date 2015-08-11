@@ -17,7 +17,7 @@
 <template name="connectionsListItem">
   <div>
     {{#if user}}
-      {{user.username}}
+      {{user.username}} {{#if isCurrentUser}} (me) {{/if}}
     {{else}}
       {{ip}}
     {{/if}}
