@@ -8,9 +8,25 @@ var delta = function(width) {
   return (width > diff) ? width - diff + 20 : 0;
 };
 
+var asideFix = function () {
+
+  // left priority
+  var leftPin = (localStorage.getItem("leftPin") === "true");
+  var rightPin = (localStorage.getItem("rightPin") === "true");
+
+  if (leftPin) {
+    return 'left';
+  } else if (rightPin) {
+    return 'right';
+  }
+};
+
 asideSlide = function(move) {
+
   var container = $('#container');
   var content = $('main#content');
+
+  if (!move) move = asideFix();
 
   switch (move) {
     case 'left':
@@ -36,6 +52,7 @@ asideSlide = function(move) {
     default:
       container.removeClass('aside-left-on');
       container.removeClass('aside-right-on');
+
       content.css('left', 0);
       content.css('right', 0);
   }
