@@ -1,0 +1,15 @@
+<template name="layoutModern">
+  <div id="container" class="layout-modern">
+    {{> yield}}
+
+    {{> asideModern}}
+  </div>
+</template>
+
+<template name="yieldWrapper">
+  <main id="content" class="slide" data-template="{{templateName}}">
+    {{> Template.dynamic template=header}}
+
+    {{> Template.dynamic template=content data=dataContext}}
+  </main>
+</template>

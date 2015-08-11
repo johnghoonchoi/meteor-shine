@@ -82,7 +82,7 @@ postAccess = function(action, user, ticket) {
   };
 
   // check 'admin' role
-  if (Roles.userIsInRole(user._id, [ 'ROLE_ADMIN' ]))
+  if (user && Roles.userIsInRole(user._id, [ 'ROLE_ADMIN' ]))
     return true;
 
   switch (action) {

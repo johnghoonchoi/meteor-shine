@@ -12,34 +12,33 @@
           </ul>
         </nav>
       </div>
-	    {{#if noPosts}}
+    {{#unless Template.subscriptionsReady}}
+      {{> listLoading}}
+    {{else}}
+      {{#if noPosts}}
         <div class="row-fluid">
-	        {{#if Template.subscriptionsReady}}
-				    {{_ 'text_no_blogs'}}
-	        {{/if}}
+          {{_ 'text_no_blogs'}}
         </div>
-	    {{else}}
-      <div class="row-fluid">
-        <div class="block-group">
-          <ul class="block-list">
-            {{#each posts}}
-              {{#with postWithCategory}}
-	              {{> homeListItem}}
-              {{/with}}
-            {{/each}}
-          </ul>
-        </div>
-      </div>
-      {{#if Template.subscriptionsReady}}
-      <div class="row-fluid">
-        {{#if hasMore}}
-          <a class="btn btn-default btn-block load-more">더 보기</a>
-        {{/if}}
-      </div>
       {{else}}
-      <div class="loading">{{> listLoading}}</div>
+        <div class="row-fluid">
+          <div class="block-group">
+            <ul class="block-list">
+              {{#each posts}}
+                {{#with postWithCategory}}
+                  {{> homeListItem}}
+                {{/with}}
+              {{/each}}
+            </ul>
+          </div>
+        </div>
+
+        {{#if hasMore}}
+          <div class="row-fluid">
+            <a class="btn btn-default btn-block load-more">{{_ 'command_load_more'}}</a>
+          </div>
+        {{/if}}
       {{/if}}
-    {{/if}}
+    {{/unless}}
   </article>
 </template>
 
@@ -48,7 +47,7 @@
   <li class="post-item">
     <h3 class="title">
       <small><a href="{{pathFor 'categoryView' _id=categoryId}}">{{category.title}}</a></small>
-      <a href="{{pathFor 'postView'}}">{{title}}</a>
+      <a class="title-link" href="{{pathFor 'postView'}}">{{title}}</a>
     </h3>
     <p>
       {{{postContent}}}

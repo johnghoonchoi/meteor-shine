@@ -30,10 +30,11 @@ I18n_data_ko = {
   "command_remove"                : "삭제",
   "command_save"                  : "저장",
   "command_ok"                    : "확인",
-  "command_publish"                    : "발행",
+  "command_publish"               : "발행",
   "command_cancel"                : "취소",
   "command_back"                  : "뒤로",
   "command_close"                 : "닫기",
+  "command_load_more"             : "더 보기",
 
 
   "label_theme"                   : "테마",

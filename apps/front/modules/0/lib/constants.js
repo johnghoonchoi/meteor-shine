@@ -4,6 +4,7 @@
 
 APP_NAME                                = "SHINE";
 
+DEFAULT_THEME                           = "classic";
 DEFAULT_LIST_INCREMENT                  = 10;
 
 NOTIFICATION_MSG_TYPE_COMMENT           = 'comment';

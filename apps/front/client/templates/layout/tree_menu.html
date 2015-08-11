@@ -1,13 +1,14 @@
 <template name="treeMenu">
   <div class="list-group">
     <!-- Home -->
-    <a href="{{pathFor 'home'}}" class="list-group-item {{active 'home'}}">
+    <a id="home" class="list-group-item {{active 'home'}}"
+       href="{{pathFor 'home'}}" >
       <i class="fa fa-home"> </i> {{_ 'title_home'}}
     </a>
 
     {{#if currentUser}}
-      <a href="{{pathFor 'myworks' mode='draft'}}"
-         class="list-group-item {{active 'myworks'}}">
+      <a id="myworks" class="list-group-item {{active 'myworks'}}"
+         href="{{pathFor 'myworks' mode='draft'}}">
         <i class="fa fa-inbox"> </i> My Works
       </a>
     {{/if}}

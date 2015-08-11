@@ -14,7 +14,12 @@ Template.postView.onCreated(function() {
   instance.autorun(function() {
     var post = Posts.findOne(data.postId);
     if (post) {
-      instance.isEditable.set(postAccess('update', Meteor.user(), data.postId));
+      var access = false;
+      try {
+        access = postAccess('update', Meteor.user(), data.postId)
+      } catch (ex) {
+      }
+      instance.isEditable.set(access);
     }
   });
 

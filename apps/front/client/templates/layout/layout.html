@@ -1,20 +1,5 @@
 <template name="layout">
-	<header>
-		{{> yield region='header'}}
-	</header>
-	<nav>
-		{{> yield region='nav'}}
-	</nav>
-  <section id="wrapper">
-	  {{> yield}}
-  </section>
-  <aside>
-		{{> notificationsList}}
-		{{> meteorAlerts}}
-		{{> draftModal}}
-		{{> linkModal}}
-  </aside>
-  <footer>
-  {{> yield region='footer'}}
-  </footer>
+  {{> Template.dynamic template=layoutTemplate}}
+
+  {{> meteorAlerts}}
 </template>

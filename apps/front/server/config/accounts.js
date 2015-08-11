@@ -25,6 +25,16 @@ ServiceConfiguration.configurations.insert({
   secret: Meteor.settings.facebook.secret
 });
 
+ServiceConfiguration.configurations.remove({
+  service: "meetup"
+});
+
+ServiceConfiguration.configurations.insert({
+  service: "meetup",
+  client_id: Meteor.settings.meetup.appId,
+  secret: Meteor.settings.meetup.secret
+});
+
 
 /**
  * check the validation of user information
