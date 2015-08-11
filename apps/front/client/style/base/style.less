@@ -2,7 +2,9 @@
 //@bootstrap-path-normalized: "/packages/leesangwon_bootstrap-less/3.3.4";
 @bootstrap-path: "/packages/meteor-bootstrap-less";
 
-@layout-path: "/client/templates/layouts/classic";
+@theme: "classic";
+
+@theme-path: "/client/templates/themes/@{theme}";
 
 // Bootstrap 3.3.4
 @import "@{bootstrap-path}/bootstrap.import.less";
@@ -10,7 +12,7 @@
 // Custom style
 @import "variables.import.less";
 @import "mixins.import.less";
-@import "@{layout-path}/layout.import.less";
+@import "@{theme-path}/layout.import.less";
 //@import "@{layout-path}/header.import.less";
 //@import "@{layout-path}/tree-menu.import.less";
 //@import "@{layout-path}/footer.import.less";

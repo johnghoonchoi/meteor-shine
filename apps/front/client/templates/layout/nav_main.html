@@ -3,8 +3,8 @@
     {{#if currentUser}}
       <div id="user-status" class="well well-sm">
         <a href="{{pathFor 'profileView'}}" class="avatar-sm">
-          {{{myPic}}}
-          <span class="user-name">{{userDisplayName}}</span>
+          {{{getPicture currentUser._id}}}
+          <span class="user-name">{{userDisplayName currentUser._id}}</span>
         </a>
         <button class="btn btn-default btn-link pull-right" data-action="signOut">
           <i class="fa fa-sign-out" title="Logout"></i>

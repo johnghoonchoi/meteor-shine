@@ -24,23 +24,12 @@ Template.headerClassic.events({
   'click [data-toggle=navigations]': function(e) {
     e.preventDefault();
 
-    if ($('#container').hasClass('aside-left-on')) {
-      asideSlide();
-    } else {
-      asideSlide('left');
-    }
+    $('#container').toggleClass('aside-left-on');
   },
 
   'click [data-toggle=notifications]': function(e, instance) {
     e.preventDefault();
 
     instance.$('#notifications').fadeIn('slow');
-    /*
-    if ($('#container').hasClass('aside-right-on')) {
-      asideSlide();
-    } else {
-      asideSlide('right');
-    }
-    */
   }
 });

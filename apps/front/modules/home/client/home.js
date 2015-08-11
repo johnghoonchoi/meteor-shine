@@ -105,20 +105,12 @@ Template.home.helpers({
   }
 });
 
-
 Template.home.events({
   'click .load-more': function (e, instance) {
     e.preventDefault();
     instance.state.set('limit', instance.state.get('limit') + instance.increment);
-  },
-
-  'click .title-link': function() {
-    Meteor.call('hitUpdate', this._id, function(error, result) {
-      if (error) console.log('error.reason: ', error.reason);
-    });
   }
 });
-
 
 Template.homeListItem.helpers({
   postContent: function() {
@@ -142,3 +134,13 @@ Template.homeListItem.helpers({
     return this.user._id === Meteor.userId();
   }
 });
+
+Template.homeListItem.events({
+  'click .title-link': function(e, instance) {
+    Yields.push({
+      name: 'postView',
+      postId: this._id
+    });
+  }
+});
+

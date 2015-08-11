@@ -9,6 +9,10 @@ Template.treeMenu.helpers({
 });
 
 Template.treeMenu.events({
+  'click .list-group-item': function(e) {
+    //Navigations.set('home', 'root');
+  },
+
   'click .menu-item-c': function(e) {
     e.preventDefault();
 

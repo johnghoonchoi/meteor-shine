@@ -1,12 +1,9 @@
 
 Router.configure({
-  layoutTemplate: 'layoutClassic',
-  loadingTemplate: 'loading',
-  yieldTemplates: {
-    'headerDefault': {to: 'header'},
-    'navMain': {to: 'nav'},
-    'footerDefault': {to: 'footer'}
+  layoutTemplate: function() {
+    return 'layout' + Theme.get().capitalize();
   },
+  loadingTemplate: 'loading',
   waitOn: function() {
     Meteor.subscribe("userStatus");
     Meteor.subscribe('profileView');

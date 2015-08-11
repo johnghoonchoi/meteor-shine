@@ -1,10 +1,18 @@
 
+html, body {
+  height: 100%;
+}
+
 body {
   width: 100%;
 }
 
 .layout-classic {
+  position: relative;
+
   width: 100%;
+  height: 100%;
+  overflow-y: scroll;
 }
 
 .layout-classic > header {
@@ -64,18 +72,20 @@ body {
 }
 
 .layout-classic > main#content {
-  position: fixed;
+  position: absolute;
   top: @header-height;
   bottom: @footer-height;
   left: 0;
   right: 0;
   overflow: auto;
   background: #fff;
-  overflow-y: scroll;
 }
 
 .layout-classic > aside {
-  position: fixed;
+  position: absolute;
+
+  top: @header-height;
+  bottom: @footer-height;
   z-index: @zindex-navbar-fixed;
   overflow-y: auto;
 
@@ -83,8 +93,6 @@ body {
 }
 
 .layout-classic > aside.left {
-  top: @header-height;
-  bottom: @footer-height;
   left: -@aside-left-width;
   width: @aside-left-width;
   padding: 5px;
@@ -101,45 +109,44 @@ body {
 }
 
 .layout-classic > aside.right {
-  top: @header-height;
-  bottom: @footer-height;
   right: -@aside-right-width;
   width: @aside-right-width;
 
   background: @aside-right-bg;
 }
 
-/* toggle asides */
 .layout-classic > main#content, .layout-classic > aside {
-  -webkit-transition: all @slide-transition-time ease-out;
-       -o-transition: all @slide-transition-time ease-out;
-          transition: all @slide-transition-time ease-out;
+  .transition(all @slide-transition-time ease-out);
+  .transition-transform(all @slide-transition-time ease-out);
+  .backface-visibility(~'hidden');
 }
 
-.layout-classic.aside-left-on > aside.left {
-  left: 0;
-  box-shadow: 1px 0 3px #666;
-}
-.layout-classic.aside-right-on > aside.right {
-  right: 0;
-  box-shadow: -1px 0 3px #666;
-}
 
-/*
-
-  // replaced with the javascript implementation.
-  // see '/client/lib/asides.js'
-
-.layout-classic.aside-left-on > main#content {
-  left: @aside-left-width;
-  right: -@aside-left-width;
+body {
+  overflow-x: hidden;
 }
+.layout-classic.aside-left-on {
+  > main#content {
+    .translate3d(@aside-left-width, 0, 0);
+  }
 
-.layout-classic.aside-right-on > main#content {
-  left: -@aside-right-width;
-  right: @aside-right-width;
+  > aside.left {
+    .translate3d(@aside-left-width, 0, 0);
+
+    box-shadow: 1px 0 3px #666;
+  }
 }
-*/
+.layout-classic.aside-right-on {
+  > main#content {
+    .translate3d(-@aside-right-width, 0, 0);
+  }
+
+  > aside.right {
+    .translate3d(-@aside-right-width, 0, 0);
+
+    box-shadow: -1px 0 3px #666;
+  }
+}
 
 .blackiconcolor {
   color: black;

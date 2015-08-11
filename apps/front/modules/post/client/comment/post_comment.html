@@ -41,12 +41,12 @@
   <li class="media">
     <div class="media-left">
       <a href="#" class="avatar-sm">
-        {{{writerPic user._id}}}
+	      {{{getPicture user._id}}}
       </a>
     </div>
     <div class="media-body">
 	    <span class="author">
-        <a href="{{pathFor 'accountView' _id=myLink}}">{{displayName}}</a>
+        <a href="{{pathFor 'accountView' _id=user._id}}">{{userDisplayName user._id}}</a>
       </span>
 	    <span class="date"><small>{{momentFromNow createdAt}}</small></span>
 	    <p>{{msg}}</p>

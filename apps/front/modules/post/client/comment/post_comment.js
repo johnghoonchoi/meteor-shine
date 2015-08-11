@@ -70,7 +70,9 @@ Template.postCommentsList.onDestroyed(function() {
 
 Template.postCommentsList.onRendered(function() {
   this.frame = $('.comments-list-frame');
-  this.frame.animate({ scrollTop: this.frame[0].scrollHeight }, "slow");
+  if (this.frame && this.frame[0]) {
+    this.frame.animate({ scrollTop: this.frame[0].scrollHeight }, "slow");
+  }
 });
 
 Template.postCommentsList.helpers({
@@ -98,29 +100,12 @@ Template.postCommentsList.events({
   }
 });
 
+Template.postCommentsListItem.onRendered(function() {
+
+});
 
 Template.postCommentsListItem.helpers({
   commenter: function() {
     return Meteor.users.findOne(this.user._id);
-  },
-
-  myLink: function() {
-    var user = Meteor.users.findOne(this.user._id);
-    if (!user) return '';
-    return user._id;
-  },
-
-  displayName: function() {
-    var user = Meteor.users.findOne(this.user._id);
-    if (!user) return '';
-
-    if (user.profile && user.profile.name)
-      return user.profile.name;
-    if (user.username)
-      return user.username;
-    if (user.emails && user.emails[0] && user.emails[0].address)
-      return user.emails[0].address;
-
-    return '';
   }
 });

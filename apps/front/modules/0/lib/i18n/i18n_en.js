@@ -33,7 +33,7 @@ I18n_data_en = {
   "command_cancel"                : "Cancel",
   "command_back"                  : "Back",
   "command_close"                 : "Close",
-
+  "command_load_more"             : "Load more",
 
   "label_title"                   : "Title",
   "label_content"                 : "Content",

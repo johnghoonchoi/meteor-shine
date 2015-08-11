@@ -57,6 +57,10 @@ Meteor.publish('categoriesList', function(query, options) {
     })
   }));
 
+  // check 'admin' role
+  if (! this.userId || ! Roles.userIsInRole(this.userId, [ 'ROLE_ADMIN' ]))
+    return [];
+
   Counts.publish(this, 'categoriesListCount', Categories.find(query),
     { noReady: true });
 

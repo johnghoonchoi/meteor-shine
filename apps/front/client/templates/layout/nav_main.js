@@ -7,7 +7,7 @@ Template.navMain.onCreated(function() {
   instance.rightPin = new ReactiveVar((localStorage.getItem('rightPin') === "true"));
 
   instance.autorun(function() {
-    Meteor.subscribe('userData');
+    Meteor.subscribe('myData');
   });
 
 });

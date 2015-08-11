@@ -1,6 +1,12 @@
+<template name="postViewMobile">
+  {{> Template.dynamic template=header}}
+
+  {{> postView}}
+</template>
+
 <template name="postView">
   {{#if Template.subscriptionsReady}}
-    <article class="page container-fluid shine-wrapper">
+    <article class="page post container-fluid shine-wrapper">
       <header>
       {{#if isEditable}}
         <div class="btn-toolbar pull-right">
