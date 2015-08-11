@@ -5,5 +5,3 @@ $(document).mouseup(function(e) {
 });
 
 
-Meteor.startup(function() {
-});
