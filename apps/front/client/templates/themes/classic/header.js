@@ -25,6 +25,10 @@ Template.headerClassic.events({
     e.preventDefault();
 
     $('#container').toggleClass('aside-left-on');
+
+    if (localStorage.getItem('leftPin') === "true") {
+      asideSlide();
+    }
   },
 
   'click [data-toggle=notifications]': function(e, instance) {

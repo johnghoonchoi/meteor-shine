@@ -6,6 +6,10 @@ Template.navMain.onCreated(function() {
   instance.leftPin = new ReactiveVar((localStorage.getItem('leftPin') === "true"));
   instance.rightPin = new ReactiveVar((localStorage.getItem('rightPin') === "true"));
 
+  // css class name
+  instance.pin_fix = "blackiconcolor";
+  instance.pin_notFix = "whiteiconcolor";
+
   instance.autorun(function() {
     Meteor.subscribe('myData');
   });
@@ -14,11 +18,13 @@ Template.navMain.onCreated(function() {
 
 Template.navMain.helpers({
   'leftPin': function () {
-    return Template.instance().leftPin.get() ? templateComment.pin_fix : templateComment.pin_notFix;
+    var instance = Template.instance();
+    return instance.leftPin.get() ? instance.pin_fix : instance.pin_notFix;
   },
 
   'rightPin': function () {
-    return Template.instance().rightPin.get() ? templateComment.pin_fix : templateComment.pin_notFix;
+    var instance = Template.instance();
+    return instance.rightPin.get() ? instance.pin_fix : instance.pin_notFix;
   }
 });
 
