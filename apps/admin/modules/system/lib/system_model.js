@@ -2,38 +2,38 @@ Systems = new Mongo.Collection('systems');
 
 Meteor.methods({
   systemUpsert: function(query) {
-    var saved = Systems.findOne({ _id: query._id });
+    var objects = query;
     var now = new Date();
     var user = Meteor.user();
 
-    if (! saved) {
-      var object = {
-        _id: query._id,
-        value: query.value,
-        workBy: {
-          _id: user._id,
-          username: user.username,
-          name: user.name
-        },
-        createdAt: now,
-        updatedAt: now
-      };
+    for (i = 0; i < objects.length; i++) {
+      var object = objects[i];
+      var saved = Systems.findOne({ _id: object._id });
 
-      object._id = Systems.insert(object);
+      if (! saved) {
+        object = _.extend(object, {
+          workBy: {
+            _id: user._id,
+            username: user.username,
+            name: user.name
+          },
+          createdAt: now,
+          updatedAt: now
+        });
 
-      return object._id;
-    } else {
-      var object = {
-        value: query.value,
-        workBy: {
-          _id: user._id,
-          username: user.username,
-          name: user.name
-        },
-        updatedAt: now
-      };
+        Systems.insert(object);
+      } else {
+        object = _.extend(object, {
+          workBy: {
+            _id: user._id,
+            username: user.username,
+            name: user.name
+          },
+          updatedAt: now
+        });
 
-      return Systems.update({ _id: query._id }, { $set: object });
+        Systems.update({ _id: query._id }, { $set: object });
+      }
     }
   }
 

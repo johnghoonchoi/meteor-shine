@@ -15,79 +15,33 @@ Accounts.config({
  * `meteor add service-configuration`
  */
 
-// Function: Create Service Configuration
-createServiceConfiguration = function(service, clientId, secret) {
-  ServiceConfiguration.configurations.remove({
-    service: service
-  });
+var setupFacebookLogin = function() {
+  var facebook = Systems.findOne({ _id: 'facebookLogin' });
 
-  // Note: Facebook and Twitter use different key names for their OAuth client ID
-  var config = {
-    generic: {
-      clientId: clientId,
-      secret: secret,
+  if (facebook) {
+    ServiceConfiguration.configurations.remove({ service: "facebook" });
+    ServiceConfiguration.configurations.insert({
+      service: "facebook",
+      appId: facebook.appId,
+      secret: facebook.secret,
       loginStyle: 'redirect'
-    },
-    facebook: {
-      appId: clientId,
-      secret: secret,
-      loginStyle: 'redirect'
-    },
-    twitter: {
-      consumerKey: clientId,
-      secret: secret,
-      loginStyle: 'redirect'
-    }
-    // loginStyle : redirect
-    // (ref: https://github.com/meteor/meteor/wiki/OAuth-for-mobile-Meteor-clients)
-    //
-    // The "redirect" style can be used in situations where a popup window can't be opened,
-    // such as in a mobile UIWebView. The "redirect" style however relies on
-    // session storage which isn't available in Safari private mode,
-    // so the "popup" style will be forced if session storage can't be used.
-    // - Inside UIWebViews (when your app is loaded inside a mobile app)
-    // - In Safari on iOS8 (window.close is not supported due to a bug)
-  };
-
-
-  switch(service) {
-    case 'facebook' :
-      ServiceConfiguration.configurations.upsert({ service: service }, { $set: config.facebook });
-      break;
-    case 'twitter' :
-      ServiceConfiguration.configurations.upsert({ service: service }, { $set: config.facebook });
-      break;
-    default :
-      ServiceConfiguration.configurations.upsert({ service: service }, { $set: config.generic });
+    });
   }
 };
 
-/**
- * Configure Third-Party Login Services
- * Note: We're passing the Service Name, Client Id, and Secret.
- */
+var setupMeetupLogin = function() {
+  var meetup = Systems.findOne({ _id: 'meetupLogin' });
 
-// Facebook
-createServiceConfiguration('facebook', Meteor.settings.facebook.appId, Meteor.settings.facebook.secret);
-// Meetup
-createServiceConfiguration('meetup', Meteor.settings.meetup.clientId, Meteor.settings.meetup.secret);
-// Google
-//createServiceConfiguration('google', 'Insert your clientId here.', 'Insert your secret here.');
-// Twitter
-//createServiceConfiguration('twitter', 'Insert your consumerKey here.', 'Insert your secret here.');
-// GitHub
-//createServiceConfiguration('github', 'Insert your clientId here.', 'Insert your secret here.');
-
-
-ServiceConfiguration.configurations.remove({
-  service: "meetup"
-});
-
-ServiceConfiguration.configurations.insert({
-  service: "meetup",
-  client_id: Meteor.settings.meetup.appId,
-  secret: Meteor.settings.meetup.secret
-});
+  if (meetup) {
+    ServiceConfiguration.configurations.remove({ service: "meetup" });
+    ServiceConfiguration.configurations.insert({
+      service: "meetup",
+      clientId: meetup.clientId,
+      secret: meetup.secret,
+      loginStyle: 'redirect'
+    });
+  }
+};
 
 
 /**
@@ -172,3 +126,7 @@ Accounts.validateLoginAttempt(function(info) {
 });
 
 
+Meteor.startup(function() {
+  setupFacebookLogin();
+  setupMeetupLogin();
+});
