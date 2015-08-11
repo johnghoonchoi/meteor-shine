@@ -38,6 +38,7 @@ var setupMeetupLogin = function() {
       service: "meetup",
       clientId: meetup.clientId,
       secret: meetup.secret,
+      apiKey: meetup.apiKey,
       loginStyle: 'redirect'
     });
   }
@@ -66,8 +67,10 @@ Accounts.onCreateUser(function(options, user) {
   }
 
   if (user.services.meetup) {
+    var meetup = Systems.findOne({ _id: 'meetupLogin' });
+
     var userMeetupId = user.services.meetup.id;
-    var apiKey = Meteor.settings.meetup.apiKey;
+    var apiKey = meetup.apiKey;
     var requestUrl = 'https://api.meetup.com/2/member/' + userMeetupId
       + '?key=' + apiKey + '&signed=true&fields=other_services';
     var response = HTTP.get(requestUrl, {

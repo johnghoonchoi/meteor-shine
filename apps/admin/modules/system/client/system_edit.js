@@ -49,7 +49,8 @@ Template.systemEdit.events({
       {
         _id: 'meetupLogin',
         clientId: instance.$('#meetup-id').val().trim(),
-        secret: instance.$('#meetup-secret').val().trim()
+        secret: instance.$('#meetup-secret').val().trim(),
+        apiKey: instance.$('#meetup-api-key').val().trim()
       }
     ];
 
