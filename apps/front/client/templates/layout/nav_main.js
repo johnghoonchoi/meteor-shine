@@ -1,4 +1,11 @@
 
+Template.navMain.onCreated(function() {
+  var instance = this;
+  instance.autorun(function() {
+    Meteor.subscribe('myData');
+  });
+});
+
 Template.navMain.events({
 
   'click [data-action=signIn]': function(e) {

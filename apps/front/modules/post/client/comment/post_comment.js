@@ -100,12 +100,11 @@ Template.postCommentsList.events({
   }
 });
 
+Template.postCommentsListItem.onRendered(function() {
+
+});
 
 Template.postCommentsListItem.helpers({
-  commenterPicture: function() {
-    var self = this;
-    //return _authorProfile(self);
-  },
   commenter: function() {
     return Meteor.users.findOne(this.user._id);
   }

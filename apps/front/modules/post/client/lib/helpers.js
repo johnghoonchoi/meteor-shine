@@ -1,4 +1,38 @@
 
+/**
+ *
+ * @param data context of related template
+ * @returns {string}
+ * @private
+ */
+getWriterPic = function(userId) {
+  if (userId) {
+    var writer = Meteor.users.findOne({ _id: userId });
+    if (! writer) return;
+
+    if (writer.profile && writer.profile.picture && writer.profile.picture.origin) {
+      var url = writer.profile.picture.origin.urlCropped;
+      return "<img src='"+url+"'alt='Profile image' class='img-circle'>";
+    }
+
+    if (writer.username) {
+      var initial = makeUppercase(writer.username);
+      return "<span class='avatar-initials'>"+initial+"</span>";
+    }
+
+    if (writer.services && writer.services.facebook) {
+      var id = writer.services.facebook.id;
+      var img = 'http://graph.facebook.com/' + id + '/picture?type=square&height=160&width=160';
+      return "<img src='"+img+"'alt='Profile image' class='img-circle'>";
+    }
+
+  }
+  return "";
+};
+
+Template.registerHelper('writerPic', getWriterPic);
+
+
 Template.registerHelper("linkify", function () {
   var view = this;
   var content = '';
