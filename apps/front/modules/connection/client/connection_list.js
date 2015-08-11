@@ -50,10 +50,16 @@ Template.connectionsList.helpers({
 });
 
 Template.connectionsList.events({
-  'click .expand a': function(e, instance) {
+  'click #connections-list > .panel-heading': function(e, instance) {
     e.preventDefault();
     e.stopPropagation();
 
     instance.expand.set(! instance.expand.get());
+  }
+});
+
+Template.connectionsListItem.helpers({
+  "isCurrentUser" : function () {
+    return this.user._id === Meteor.userId();
   }
 });
