@@ -23,6 +23,7 @@ createServiceConfiguration = function(service, clientId, secret) {
 
   // Note: Facebook and Twitter use different key names for their OAuth client ID
   var config = {
+    // google, meetup, github, meteor-developer ..
     generic: {
       clientId: clientId,
       secret: secret,
@@ -49,7 +50,6 @@ createServiceConfiguration = function(service, clientId, secret) {
     // - In Safari on iOS8 (window.close is not supported due to a bug)
   };
 
-
   switch(service) {
     case 'facebook' :
       ServiceConfiguration.configurations.upsert({ service: service }, { $set: config.facebook });
@@ -66,18 +66,16 @@ createServiceConfiguration = function(service, clientId, secret) {
  * Configure Third-Party Login Services
  * Note: We're passing the Service Name, Client Id, and Secret.
  */
+var services = [ 'facebook', 'meetup' ];
 
-// Facebook
-createServiceConfiguration('facebook', Meteor.settings.facebook.appId, Meteor.settings.facebook.secret);
-// Meetup
-createServiceConfiguration('meetup', Meteor.settings.meetup.clientId, Meteor.settings.meetup.secret);
-// Google
-//createServiceConfiguration('google', 'Insert your clientId here.', 'Insert your secret here.');
-// Twitter
-//createServiceConfiguration('twitter', 'Insert your consumerKey here.', 'Insert your secret here.');
-// GitHub
-//createServiceConfiguration('github', 'Insert your clientId here.', 'Insert your secret here.');
+for (var i = 0; i < services.length; i++) {
+  if (services[i] === 'facebook')
+    createServiceConfiguration(services[i], Meteor.settings.facebook.appId, Meteor.settings.facebook.secret);
+  if (services[i] === 'twitter')
+    createServiceConfiguration(services[i], Meteor.settings.facebook.consumerKey, Meteor.settings.facebook.secret);
 
+  createServiceConfiguration('meetup', Meteor.settings.meetup.clientId, Meteor.settings.meetup.secret);
+}
 
 
 /**
@@ -142,6 +140,12 @@ Accounts.onCreateUser(function(options, user) {
   }
 */
 });
+
+// Todo: github 버튼 넣어서 테스트해봐야함.. 8월 12일
+// https://github.com/splendido/meteor-accounts-meld
+// http://test-accounts-meld.meteor.com/
+// https://github.com/meteor-useraccounts/core
+// https://github.com/artwells/meteor-accounts-guest
 
 
 
