@@ -1,25 +1,21 @@
+
 <template name="connectionsList">
-  <div id="connections-list" class="panel panel-info">
-    <div class="panel-heading">
-      <i class="fa fa-users"></i> {{connectionsCount}}
-      <div class="expand">
-        <a><i class="fa fa-angle-down"></i></a>
-      </div>
-    </div>
-    <div class="panel-body {{expand}}">
-      {{#each connections}}
-        {{> connectionsListItem}}
-      {{/each}}
-    </div>
+  <div id="connections-sign-in">
+    <p>user count: {{connectionsCount}}</p>
+
+    {{#each connections}}
+      {{> connectionsListItem}}
+    {{/each}}
   </div>
 </template>
 
 <template name="connectionsListItem">
   <div>
-    {{#if user}}
-      {{user.username}} {{#if isCurrentUser}} (me) {{/if}}
-    {{else}}
-      {{ip}}
-    {{/if}}
+    <div id="user-status" class="well well-sm">
+      <a href="#" class="avatar-sm">
+        {{{getPicture user._id}}}
+        <span class="user-name">{{userDisplayName user._id}}</span>
+      </a>
+    </div>
   </div>
 </template>
