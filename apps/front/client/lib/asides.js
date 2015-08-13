@@ -8,38 +8,85 @@ var delta = function(width) {
   return (width > diff) ? width - diff + 20 : 0;
 };
 
-var asideFix = function () {
+Aside = {
+  _pinKey: function(position) {
+    return (position && position.toLowerCase() === 'right') ?
+      'aside-pin-right' : 'aside-pin-left';
+  },
 
-  // left priority
-  var leftPin = (localStorage.getItem("leftPin") === "true");
-  var rightPin = (localStorage.getItem("rightPin") === "true");
+  _pinClass: function(position) {
+    return (position && position.toLowerCase() === 'right') ?
+      'aside-right-fixed' : 'aside-left-fixed';
+  },
 
-  if (leftPin) {
-    return 'left';
-  } else if (rightPin) {
-    return 'right';
-  }
-};
+  isPined: function(position) {
+    return (localStorage.getItem(this._pinKey(position)) === '1');
+  },
 
-asideSlide = function(move) {
+  pin: function(position, state) {
+    var container = $('#container');
 
-  var container = $('#container');
+    if (state) {
+      localStorage.setItem(this._pinKey(position), '1');
 
-  if (!move) move = asideFix();
-
-  switch (move) {
-    case 'left':
+      container.removeClass('aside-left-on');
+      container.addClass(this._pinClass(position));
+    } else {
+      localStorage.setItem(this._pinKey(position), '0');
+      container.removeClass(this._pinClass(position));
       container.addClass('aside-left-on');
-      container.removeClass('aside-right-on');
-      break;
+    }
+  },
 
-    case 'right':
-      container.addClass('aside-right-on');
-      container.removeClass('aside-left-on');
-      break;
+  togglePin: function(position) {
+    this.pin(position, ! this.isPined(position));
+  },
 
-    default:
+  show: function(position) {
+    var container = $('#container');
+
+    if (! position) {
+      if (this.isPined('right'))
+        position = 'right';
+
+      if (this.isPined('left'))
+        position = 'left';
+    }
+
+    switch (position) {
+      case 'left':
+        container.removeClass('aside-right-on');
+        container.addClass('aside-left-fixed');
+        break;
+
+      case 'right':
+        container.removeClass('aside-left-on');
+        container.addClass('aside-right-fixed');
+        break;
+
+      default:
+        container.removeClass('aside-left-on');
+        container.removeClass('aside-right-on');
+    }
+  },
+
+  hide: function() {
+    var container = $('#container');
+    if (! Aside.isPined('left')) {
       container.removeClass('aside-left-on');
+    }
+
+    if (! Aside.isPined('right')) {
       container.removeClass('aside-right-on');
+    }
+  },
+
+  toggle: function(position) {
+    if (position === 'left' && ! Aside.isPined('left')) {
+      $('#container').toggleClass('aside-left-on');
+    } else if (position === 'right' && ! Aside.isPined('right')) {
+      $('#container').toggleClass('aside-right-on');
+    }
   }
 };
+

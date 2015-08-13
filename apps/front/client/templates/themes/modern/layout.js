@@ -8,7 +8,7 @@ var ANIMATION_DURATION = 300;
 
 Template.layoutModern.events({
   'click #content, click aside': function(e) {
-    asideSlide();
+    Aside.slide();
     hideBalloons();
   }
 });

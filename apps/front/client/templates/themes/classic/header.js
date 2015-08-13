@@ -7,7 +7,7 @@ Template.headerClassic.onCreated(function () {
 
   instance.siteName = function() {
     return Systems.findOne({ _id: 'siteName' });
-  }
+  };
 });
 
 Template.headerClassic.helpers({
@@ -21,14 +21,8 @@ Template.headerClassic.helpers({
 });
 
 Template.headerClassic.events({
-  'click [data-toggle=navigations]': function(e) {
-    e.preventDefault();
-
-    $('#container').toggleClass('aside-left-on');
-
-    if (localStorage.getItem('leftPin') === "true") {
-      asideSlide();
-    }
+  'click [data-toggle=navigations]': function() {
+    Aside.toggle('left');
   },
 
   'click [data-toggle=notifications]': function(e, instance) {
