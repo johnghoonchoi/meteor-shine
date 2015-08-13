@@ -57,3 +57,5 @@ accounts-meetup
 http
 raix:push
 splendido:accounts-meld
+splendido:accounts-emails-field
+davidsunny:accounts-meld-ui

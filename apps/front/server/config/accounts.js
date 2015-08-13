@@ -141,6 +141,16 @@ Accounts.onCreateUser(function(options, user) {
 */
 });
 
+
+Accounts.onLogin(function(info){
+  if (! info.user) return;
+
+  var user = Meteor.users.findOne(info.user._id);
+  //console.log('user ' + JSON.stringify(user, null, 2));
+  //console.log('로그인 성공!');
+
+});
+
 // Todo: github 버튼 넣어서 테스트해봐야함.. 8월 12일
 // https://github.com/splendido/meteor-accounts-meld
 // http://test-accounts-meld.meteor.com/
