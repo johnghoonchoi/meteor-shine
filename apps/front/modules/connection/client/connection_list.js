@@ -16,6 +16,7 @@ Template.connectionsList.onCreated(function() {
     instance.subscribe('connectionsSignInListCount');
 
     instance.subscribe('connectionsSignInList');
+
   });
 
 
@@ -36,13 +37,13 @@ Template.connectionsList.onDestroyed(function() {
   this.connections = null;
 });
 
-
 Template.connectionsList.helpers({
   connectionsCount: function() {
     return Template.instance().connectionsCount() - 1;
   },
 
   connections: function() {
+    //console.log('Template.instance().connections()', Template.instance().connections());
     return Template.instance().connections();
   },
 
@@ -60,6 +61,9 @@ Template.connectionsList.events({
     instance.expand.set(! instance.expand.get());
   }
   */
+  'click #user-status > a' : function (e) {
+    Blaze.renderWithData(Template.dockChatLayout, this, document.body);
+  }
 });
 
 Template.connectionsListItem.helpers({
