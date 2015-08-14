@@ -101,8 +101,8 @@ body {
   left: -@aside-left-width;
   width: @aside-left-width;
   padding: 5px;
-
   background: @aside-left-bg;
+  height: 100%;
 }
 
 .layout-classic > aside.right {
@@ -110,6 +110,7 @@ body {
   width: @aside-right-width;
 
   background: @aside-right-bg;
+  height: 100%;
 }
 
 .layout-classic > main#content, .layout-classic > aside {
@@ -168,10 +169,10 @@ body {
 }
 
 .layout-classic.aside-left-fixed {
-
   > main#content {
     left: @aside-left-width;
     right: 0;
+    height: 100%;
   }
 
   > aside.left {
@@ -184,6 +185,7 @@ body {
   > main#content {
     left: 0;
     right: @aside-right-width;
+    height: 100%;
   }
 
   > aside.right {
