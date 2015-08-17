@@ -62,7 +62,7 @@ Template.connectionsList.events({
   }
   */
   'click #user-status > a' : function (e) {
-    Blaze.renderWithData(Template.dockChatLayout, this, document.body);
+    Blaze.renderWithData(Template.chatView, this, document.body);
   }
 });
 
