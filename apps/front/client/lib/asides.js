@@ -2,12 +2,6 @@
  * slide the left and right aside templates
  */
 
-var delta = function(width) {
-  var diff = parseInt(($('main#content').width() - $('article.page').width()) / 2);
-
-  return (width > diff) ? width - diff + 20 : 0;
-};
-
 Aside = {
   _pinKey: function(position) {
     return (position && position.toLowerCase() === 'right') ?
@@ -24,16 +18,16 @@ Aside = {
   },
 
   pin: function(position, state) {
+    var self = this;
     var container = $('#container');
 
     if (state) {
-      localStorage.setItem(this._pinKey(position), '1');
-
+      localStorage.setItem(self._pinKey(position), '1');
       container.removeClass('aside-left-on');
-      container.addClass(this._pinClass(position));
+      container.addClass(self._pinClass(position));
     } else {
-      localStorage.setItem(this._pinKey(position), '0');
-      container.removeClass(this._pinClass(position));
+      localStorage.setItem(self._pinKey(position), '0');
+      container.removeClass(self._pinClass(position));
       container.addClass('aside-left-on');
     }
   },
