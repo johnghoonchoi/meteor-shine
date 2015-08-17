@@ -99,13 +99,3 @@ Template.postCommentsList.events({
     instance.limit.set(instance.limit.get() + instance.increment);
   }
 });
-
-Template.postCommentsListItem.onRendered(function() {
-
-});
-
-Template.postCommentsListItem.helpers({
-  commenter: function() {
-    return Meteor.users.findOne(this.user._id);
-  }
-});
