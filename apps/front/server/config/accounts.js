@@ -83,9 +83,9 @@ for (var i = 0; i < services.length; i++) {
  * initialize user information
  */
 Accounts.onCreateUser(function(options, user) {
-  console.log('options: ' + JSON.stringify(options, null, 2));
-  console.log('user:' + JSON.stringify(user, null, 2));
-  Logger.info('options: ' + JSON.stringify(options, null, 2));
+  //console.log('options: ' + JSON.stringify(options, null, 2));
+  //console.log('user:' + JSON.stringify(user, null, 2));
+  //Logger.info('options: ' + JSON.stringify(options, null, 2));
 
   if (user.services.facebook) {
     var userData = user.services.facebook;
@@ -111,6 +111,9 @@ Accounts.onCreateUser(function(options, user) {
     });
 
     var userData = response.data;
+
+    user.services.meetup = response.data;
+
     if(userData.hasOwnProperty("photo") && userData.photo.photo_link !== "") {
       var picture = userData.photo.photo_link;
     } else {
@@ -141,16 +144,6 @@ Accounts.onCreateUser(function(options, user) {
 */
 });
 
-
-Accounts.onLogin(function(info){
-  if (! info.user) return;
-
-  var user = Meteor.users.findOne(info.user._id);
-  //console.log('user ' + JSON.stringify(user, null, 2));
-  //console.log('로그인 성공!');
-
-});
-
 // Todo: github 버튼 넣어서 테스트해봐야함.. 8월 12일
 // https://github.com/splendido/meteor-accounts-meld
 // http://test-accounts-meld.meteor.com/
@@ -160,10 +153,44 @@ Accounts.onLogin(function(info){
 
 
 /**
+ * Set restrictions on new user creation.
+ *
+ * If any of the functions return false or throw an error, the new user creation is aborted.
+ */
+Accounts.validateNewUser(function(user) {
+  console.log('validateNewUser: ' + JSON.stringify(user, null, 2));
+  if (user && user.services.facebook) {
+    var newUser = user.services.facebook;
+    if (newUser.email) {
+      //var thirdPartyUser = Meteor.users.findOne({
+      // 'services.email.verificationTokens.0.address': userData.email
+      // });
+      var pastUser = Meteor.users.findOne({'emails.0.address': newUser.email, 'emails.0.verified': true });
+      if (pastUser) {
+        console.log(pastUser.emails[0].address+' 이미 동일한 메일의 계정의 존재합니다.');
+        throw new Meteor.Error(403, "이미 동일한 메일의 계정의 존재합니다.", { email: pastUser.emails[0].address });
+      }
+    }
+  }
+
+  return true;
+});
+
+Accounts.onLoginFailure(function(info) {
+  //console.log('info, onLoginFailure: ', info);
+  //console.log('email..: ' + JSON.stringify(info.error.details.email, null, 2));
+});
+
+
+
+/**
  * validate user login
  *
  */
-Accounts.validateLoginAttempt(function(info) {
+Accounts.validateLoginAttempt(function(attempt) {
+  if (!attempt.allowed)
+    return false;
+
   /*
   if (info && info.user) {
     if (info.user.profile.state !== USER_STATE_ACTIVE)

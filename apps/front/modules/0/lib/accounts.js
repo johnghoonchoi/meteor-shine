@@ -38,8 +38,7 @@ if (Meteor.isClient)
  * onlyTemp : pending state
  * @public
  */
-myPicState = function() {
-  var user= Meteor.user();
+myPicState = function(user) {
   if (!user) return '';
 
   if (user.profile && user.profile.picture) {
@@ -91,7 +90,6 @@ getPicture = function(userId) {
         return "<img src='"+user.oauths.meetup.picture+"'alt='Profile image' class='img-circle'>";
       }
     }
-
     if (user.username) {
       var initial = makeUppercase(user.username);
       return "<span class='avatar-initials'>"+initial+"</span>";
@@ -102,3 +100,19 @@ getPicture = function(userId) {
 
 if (Meteor.isClient)
   Template.registerHelper('getPicture', getPicture);
+
+
+Accounts.onLoginFailure(function(info) {
+  if (Meteor.isClient)
+    console.log('client onLoginFailure..');
+
+  if (info && info.error && info.error.details) {
+    console.log(typeof info.error.details.email);
+    console.log('email: ', info.error.details.email);
+    var email = info.error.details.email;
+    if (Meteor.isClient)
+      Alerts.dialog('alert', email+'로 이미 회원가입하셨습니다.');
+  }
+
+
+});
