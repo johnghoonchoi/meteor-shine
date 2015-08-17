@@ -2,8 +2,7 @@ Template.categoriesList.onCreated(function() {
   var instance = this;
 
   instance.autorun(function() {
-    instance.subscribe('categoriesList', { state: 'ON' },
-      { sort: { seq: 1 }});
+    instance.subscribe('releasedCategoriesList');
   });
 
   instance.categoriesCount = function() {

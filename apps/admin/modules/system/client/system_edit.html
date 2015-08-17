@@ -1,15 +1,53 @@
 <template name="systemEdit">
   <article class="page">
     <header>
-      <h3>System Edit</h3>
+      <h3>{{_ 'title_system_edit'}}</h3>
     </header>
 
     <div class="body">
       <form id="formSystemEdit">
-        <section class="form-group">
-          <label>{{_ 'label_site_name'}}</label>
-          <input type="text" id="siteName" name="siteName" value="{{siteName.value}}" >
-        </section>
+        <fieldset>
+          <legend>{{_ 'label_site_name'}} :</legend>
+          <section class="form-group">
+            <label>{{_ 'label_name'}}</label>
+            <input type="text" id="siteName" class="form-control"
+                   name="siteName" value="{{siteName.value}}" >
+          </section>
+        </fieldset>
+
+        <fieldset>
+          <legend>{{_ 'label_facebook_login'}} :</legend>
+          <section class="form-group">
+            <label>appId</label>
+            <input type="text" id="facebook-id" class="form-control"
+                   name="facebook-id" value="{{facebookLogin.appId}}" >
+          </section>
+
+          <section class="form-group">
+            <label>secret</label>
+            <input type="text" id="facebook-secret" class="form-control"
+                   name="facebook-secret" value="{{facebookLogin.secret}}" >
+          </section>
+        </fieldset>
+
+        <fieldset>
+          <legend>{{_ 'label_meetup_login'}} :</legend>
+          <section class="form-group">
+            <label>clientId</label>
+            <input type="text" id="meetup-id" class="form-control"
+                   name="meetup-id" value="{{meetupLogin.clientId}}" >
+          </section>
+          <section class="form-group">
+            <label>secret</label>
+            <input type="text" id="meetup-secret" class="form-control"
+                   name="meetup-secret" value="{{meetupLogin.secret}}" >
+          </section>
+          <section class="form-group">
+            <label>api Key</label>
+            <input type="text" id="meetup-api-key" class="form-control"
+                   name="meetup-api-key" value="{{meetupLogin.apiKey}}" >
+          </section>
+        </fieldset>
 
         <section class="form-group">
           <button type="submit" class="btn btn-primary">{{_ 'command_save'}}</button>

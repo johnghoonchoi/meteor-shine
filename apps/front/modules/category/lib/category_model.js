@@ -20,7 +20,7 @@ categoryPermitted = function(category, user, action) {
   };
 
   // check 'admin' role
-  if (Roles.userIsInRole(user._id, [ 'ROLE_ADMIN' ]))
+  if (user && Roles.userIsInRole(user._id, [ 'ROLE_ADMIN' ]))
     return true;
 
   if (! category || ! category.permission) {

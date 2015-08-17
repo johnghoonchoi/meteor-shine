@@ -1,25 +1,62 @@
 
 //
-//  Account info box in the left aside
+//  Aside pin
 //--------------------------------------------------------------
-.account {
-  margin-bottom: 5px;
-  padding: 5px;
-  border-bottom: solid 1px #666;
-  background: transparent;
+.aside-pin {
+  display: inline;
 
-  .clearfix();
+  &.active {
+    color: #000;
+  }
+}
 
-  //Account Name in Sidebar
-  p {
-    margin: 0;
-    //color: #ccc;
-    line-height: 32px;
+@media (max-width: @screen-xs-max) {
+  .aside-pin {
+    display: none;
+  }
+}
+
+/*
+@media (max-width: @screen-sm-min) {
+}
+@media (min-width: @screen-md-min) {
+}
+@media (min-width: @screen-lg-min) {
+}
+*/
+
+
+//
+//  Navigation module
+//--------------------------------------------------------------
+#nav-main {
+  min-height: 100%;
+
+  header {
+    position: relative;
+
+    padding-right: 30px;
+
+    .clearfix();
+
+
+  }
+
+  .list-group {
+    margin-bottom: 5px;
   }
 }
 
 //
 //  Account info box in the left aside
+//--------------------------------------------------------------
+.account-info {
+
+}
+
+
+//
+//  Notifications
 //--------------------------------------------------------------
 article.notifications {
   padding: 10px;
@@ -119,6 +156,19 @@ article.notifications {
   margin-bottom: 5px;
 }
 
+#connections-sign-in {
+  position: absolute;
+
+  top: @header-height;
+  right: 0;
+  width: 60px;
+  height: 100%;
+
+  z-index: @zindex-navbar-fixed + 1;
+  overflow-y: scroll;
+
+  background: #ddffdd;
+}
 
 //
 //
@@ -135,4 +185,37 @@ article.notifications {
 .content-editable {
   min-height: 100px;
   padding: 2px;
+}
+
+
+//
+//
+//--------------------------------------------------------------
+
+.chat-view {
+  position : absolute;
+  height: 285px;
+  width : 300px;
+  bottom : 0;
+  z-index: 3000;
+  background-color : bisque;
+
+  > .chat-messages {
+    height: 100%;
+    overflow-y: scroll;
+  }
+
+  > .chat-footer {
+    position: absolute;
+    bottom: 0;
+    > .chat-textarea {
+      display: block;
+      width : 100%;
+      bottom: 0;
+      height: 0;
+      min-height:16px;
+      resize: none;
+
+    }
+  }
 }

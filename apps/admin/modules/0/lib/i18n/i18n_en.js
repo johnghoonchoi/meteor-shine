@@ -20,6 +20,7 @@ I18n_data_en = {
   "title_verify_email"            : "Email Title here",
   "title_user_list"               : "User List",
   "title_new_message"             : "New Message",
+  "title_system_edit"             : "System Setup",
 
 
   "command_sign_in"               : "Sign in",

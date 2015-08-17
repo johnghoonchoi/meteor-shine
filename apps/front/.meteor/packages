@@ -54,6 +54,10 @@ davidsunny:cropperjs
 react
 accounts-facebook
 accounts-meetup
+
+percolate:velocityjs
+leesangwon:overlay
+
 http
 raix:push
 davidsunny:accounts-meld-ui

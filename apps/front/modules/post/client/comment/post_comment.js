@@ -70,7 +70,9 @@ Template.postCommentsList.onDestroyed(function() {
 
 Template.postCommentsList.onRendered(function() {
   this.frame = $('.comments-list-frame');
-  this.frame.animate({ scrollTop: this.frame[0].scrollHeight }, "slow");
+  if (this.frame && this.frame[0]) {
+    this.frame.animate({ scrollTop: this.frame[0].scrollHeight }, "slow");
+  }
 });
 
 Template.postCommentsList.helpers({

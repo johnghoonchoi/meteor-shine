@@ -39,18 +39,20 @@ if (Meteor.isClient)
  * @public
  */
 myPicState = function(user) {
+  //var user= Meteor.user();
+
   if (!user) return '';
 
   if (user.profile && user.profile.picture) {
     if (user.profile.picture.origin) {
       if(user.profile.picture.temp) {
-        return 'both'
+        return 'both';
       }
-      return 'onlyOrigin'
+      return 'onlyOrigin';
     }
-    return 'onlyTemp'
+    return 'onlyTemp';
   }
-  return 'default'
+  return 'default';
 };
 
 /**
@@ -82,6 +84,7 @@ getPicture = function(userId) {
         return "<img src='"+url+"'alt='Profile image' class='img-circle'>";
       }
     }
+
     if (user.oauths) {
       if (user.oauths.facebook && user.oauths.facebook.picture) {
         return "<img src='"+user.oauths.facebook.picture+"'alt='Profile image' class='img-circle'>";
@@ -90,6 +93,7 @@ getPicture = function(userId) {
         return "<img src='"+user.oauths.meetup.picture+"'alt='Profile image' class='img-circle'>";
       }
     }
+
     if (user.username) {
       var initial = makeUppercase(user.username);
       return "<span class='avatar-initials'>"+initial+"</span>";

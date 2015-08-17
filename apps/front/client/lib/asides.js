@@ -2,41 +2,85 @@
  * slide the left and right aside templates
  */
 
-var delta = function(width) {
-  var diff = parseInt(($('main#content').width() - $('article.page').width()) / 2);
+Aside = {
+  _pinKey: function(position) {
+    return (position && position.toLowerCase() === 'right') ?
+      'aside-pin-right' : 'aside-pin-left';
+  },
 
-  return (width > diff) ? width - diff + 20 : 0;
-};
+  _pinClass: function(position) {
+    return (position && position.toLowerCase() === 'right') ?
+      'aside-right-fixed' : 'aside-left-fixed';
+  },
 
-asideSlide = function(move) {
-  var container = $('#container');
-  var content = $('main#content');
+  isPined: function(position) {
+    return (localStorage.getItem(this._pinKey(position)) === '1');
+  },
 
-  switch (move) {
-    case 'left':
+  pin: function(position, state) {
+    var self = this;
+    var container = $('#container');
+
+    if (state) {
+      localStorage.setItem(self._pinKey(position), '1');
+      container.removeClass('aside-left-on');
+      container.addClass(self._pinClass(position));
+    } else {
+      localStorage.setItem(self._pinKey(position), '0');
+      container.removeClass(self._pinClass(position));
       container.addClass('aside-left-on');
-      container.removeClass('aside-right-on');
+    }
+  },
 
-      var diff = delta($('aside.left').width());
+  togglePin: function(position) {
+    this.pin(position, ! this.isPined(position));
+  },
 
-      content.css('left', diff + 'px');
-      content.css('right', -diff + 'px');
-      break;
+  show: function(position) {
+    var container = $('#container');
 
-    case 'right':
-      container.addClass('aside-right-on');
+    if (! position) {
+      if (this.isPined('right'))
+        position = 'right';
+
+      if (this.isPined('left'))
+        position = 'left';
+    }
+
+    switch (position) {
+      case 'left':
+        container.removeClass('aside-right-on');
+        container.addClass('aside-left-fixed');
+        break;
+
+      case 'right':
+        container.removeClass('aside-left-on');
+        container.addClass('aside-right-fixed');
+        break;
+
+      default:
+        container.removeClass('aside-left-on');
+        container.removeClass('aside-right-on');
+    }
+  },
+
+  hide: function() {
+    var container = $('#container');
+    if (! Aside.isPined('left')) {
       container.removeClass('aside-left-on');
+    }
 
-      var diff = delta($('aside.right').width());
-
-      content.css('left', -diff + 'px');
-      content.css('right', diff + 'px');
-      break;
-
-    default:
-      container.removeClass('aside-left-on');
+    if (! Aside.isPined('right')) {
       container.removeClass('aside-right-on');
-      content.css('left', 0);
-      content.css('right', 0);
+    }
+  },
+
+  toggle: function(position) {
+    if (position === 'left' && ! Aside.isPined('left')) {
+      $('#container').toggleClass('aside-left-on');
+    } else if (position === 'right' && ! Aside.isPined('right')) {
+      $('#container').toggleClass('aside-right-on');
+    }
   }
 };
+

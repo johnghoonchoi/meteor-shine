@@ -1,21 +1,7 @@
 <template name="navMain">
   <div id="nav-main">
-    {{#if currentUser}}
-      <div id="user-status" class="well well-sm">
-        <a href="{{pathFor 'profileView'}}" class="avatar-sm">
-          {{{getPicture currentUser._id}}}
-          <span class="user-name">{{userDisplayName currentUser._id}}</span>
-        </a>
-        <button class="btn btn-default btn-link pull-right" data-action="signOut">
-          <i class="fa fa-sign-out" title="Logout"></i>
-        </button>
-      </div>
-    {{else}}
-      <button id="sign-in" class="btn btn-info btn-block" data-action="signIn">{{_ 'command_sign_in'}}</button>
-    {{/if}}
+    {{> accountInfo}}
 
     {{> treeMenu}}
-
-    {{> connectionsList}}
   </div>
  </template>

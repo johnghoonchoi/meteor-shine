@@ -13,16 +13,19 @@ Template.connectionsList.onCreated(function() {
     var limit = instance.limit.get();
     var sort = { createdAt: -1 };
 
-    instance.subscribe('connectionsList', { limit: limit, sort: sort });
+    instance.subscribe('connectionsSignInListCount');
+
+    instance.subscribe('connectionsSignInList');
+
   });
 
 
   instance.connectionsCount = function() {
-    return Counts.get('connectionsListCount');
+    return Counts.get('connectionsSignInListCount');
   };
 
   instance.connections = function() {
-    return Connection.collection.find({},
+    return Connection.collection.find({ user: { $exists: true }},
       { limit: instance.loadead.get(), sort: { createdAt: -1 }});
   };
 
@@ -34,13 +37,13 @@ Template.connectionsList.onDestroyed(function() {
   this.connections = null;
 });
 
-
 Template.connectionsList.helpers({
   connectionsCount: function() {
-    return Template.instance().connectionsCount();
+    return Template.instance().connectionsCount() - 1;
   },
 
   connections: function() {
+    //console.log('Template.instance().connections()', Template.instance().connections());
     return Template.instance().connections();
   },
 
@@ -50,10 +53,21 @@ Template.connectionsList.helpers({
 });
 
 Template.connectionsList.events({
-  'click .expand a': function(e, instance) {
+  /*
+  'click #connections-list > .panel-heading': function(e, instance) {
     e.preventDefault();
     e.stopPropagation();
 
     instance.expand.set(! instance.expand.get());
+  }
+  */
+  'click #user-status > a' : function (e) {
+    Blaze.renderWithData(Template.chatView, this, document.body);
+  }
+});
+
+Template.connectionsListItem.helpers({
+  isCurrentUser : function () {
+    return this.user._id === Meteor.userId();
   }
 });
