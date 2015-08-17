@@ -171,6 +171,8 @@ Template.signInOtherService.events({
       options.forceApprovalPrompt = Accounts.ui._options.forceApprovalPrompt[serviceName];
 
     loginWithService(options, function (error) {
+      console.log('error: ', error);
+
       if (! error) {
         Accounts.ui.dialog.hide();
       } else if (error instanceof Accounts.LoginCancelledError) {
@@ -179,10 +181,25 @@ Template.signInOtherService.events({
         //Alerts.notifyModal('error', '')
       } else {
         var msg = error.reason || "error_unknown";
-        Alerts.notifyModal('error', "accounts-ui:" + msg);
-      }
+        var email = error.details.email;
 
+        if (email) {
+          Alerts.dialog('confirm', email + msg + '해당 Email 주소로 로그인하시겠습니까?', function(result) {
+            if (result) {
+              $('#login-username-or-email').val(email);
+              $('#login-password').focus();
+              return;
+            }
+            Accounts.ui.dialog.hide();
+          });
+        } else Alerts.notifyModal('error', "accounts-ui:" + msg);
+      }
     });
+
+    //Accounts.onLoginFailure(function() {
+    //  Alerts.dialog('alert', '이미 회원가입하셨습니다.');
+    //});
+
   }
 
 

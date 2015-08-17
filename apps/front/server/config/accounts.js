@@ -27,12 +27,12 @@ createServiceConfiguration = function(service, clientId, secret) {
     generic: {
       clientId: clientId,
       secret: secret,
-      loginStyle: 'redirect'
+      loginStyle: 'popup'
     },
     facebook: {
       appId: clientId,
       secret: secret,
-      loginStyle: 'redirect'
+      loginStyle: 'popup'
     },
     twitter: {
       consumerKey: clientId,
@@ -71,10 +71,10 @@ var services = [ 'facebook', 'meetup' ];
 for (var i = 0; i < services.length; i++) {
   if (services[i] === 'facebook')
     createServiceConfiguration(services[i], Meteor.settings.facebook.appId, Meteor.settings.facebook.secret);
-  if (services[i] === 'twitter')
-    createServiceConfiguration(services[i], Meteor.settings.facebook.consumerKey, Meteor.settings.facebook.secret);
-
-  createServiceConfiguration('meetup', Meteor.settings.meetup.clientId, Meteor.settings.meetup.secret);
+  if (services[i] === 'meetup')
+    createServiceConfiguration(services[i], Meteor.settings.meetup.clientId, Meteor.settings.meetup.secret);
+  //if (services[i] === 'twitter')
+  //  createServiceConfiguration(services[i], Meteor.settings.twitter.consumerKey, Meteor.settings.twitter.secret);
 }
 
 
@@ -168,7 +168,7 @@ Accounts.validateNewUser(function(user) {
       var pastUser = Meteor.users.findOne({'emails.0.address': newUser.email, 'emails.0.verified': true });
       if (pastUser) {
         console.log(pastUser.emails[0].address+' 이미 동일한 메일의 계정의 존재합니다.');
-        throw new Meteor.Error(403, "이미 동일한 메일의 계정의 존재합니다.", { email: pastUser.emails[0].address });
+        throw new Meteor.Error(403, "주소로 이미 회원가입하셨습니다.", { email: pastUser.emails[0].address });
       }
     }
   }

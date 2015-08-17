@@ -101,18 +101,3 @@ getPicture = function(userId) {
 if (Meteor.isClient)
   Template.registerHelper('getPicture', getPicture);
 
-
-Accounts.onLoginFailure(function(info) {
-  if (Meteor.isClient)
-    console.log('client onLoginFailure..');
-
-  if (info && info.error && info.error.details) {
-    console.log(typeof info.error.details.email);
-    console.log('email: ', info.error.details.email);
-    var email = info.error.details.email;
-    if (Meteor.isClient)
-      Alerts.dialog('alert', email+'로 이미 회원가입하셨습니다.');
-  }
-
-
-});
