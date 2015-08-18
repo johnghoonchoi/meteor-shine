@@ -9,3 +9,5 @@ Meteor.publish('chatmessages', function (receiveId) {
 
   return chatMessages.find({ $or: [ senderQuery, receiverQuery ]});
 });
+
+

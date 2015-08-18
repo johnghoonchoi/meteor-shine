@@ -192,30 +192,73 @@ article.notifications {
 //
 //--------------------------------------------------------------
 
-.chat-view {
+.chat-layout {
   position : absolute;
-  height: 285px;
+  
   width : 300px;
   bottom : 0;
   z-index: 3000;
-  background-color : bisque;
+  background-color : #EEEEEE;
+}
 
-  > .chat-messages {
-    height: 100%;
+.chat-view {
+  position : relative;
+  max-height: 304px;
+
+  > .chat-header {
+    position: relative;
+    top: 0;
+    height: 28px;
+    background-color : @header-bg;
+    line-height: 28px;
+  }
+
+  > .chat-main {
+    position: relative;
     overflow-y: scroll;
+    height: 250px;
   }
 
   > .chat-footer {
-    position: absolute;
-    bottom: 0;
+    position: relative;
+    height: 28px;
+
+
     > .chat-textarea {
       display: block;
       width : 100%;
-      bottom: 0;
-      height: 0;
-      min-height:16px;
       resize: none;
-
+      ime-mode: active;
+      -ms-ime-mode: active;
+      min-height: 28px;
+      height: 28px;
     }
   }
+}
+
+a.chat-minimize, a.chat-exit {
+  color: @chat-background;
+}
+
+a.chat-minimize:hover, a.chat-exit:hover {
+  color: @chat-background-hover;
+  text-decoration: none;
+}
+
+.text-left .chat-partner {
+  overflow-x: auto;
+  margin-left: 40px;
+
+}
+.chat-message-list {
+  line-height: 1.28;
+  margin: 0 4px;
+  overflow: hidden;
+  padding: 5px 0;
+  text-align: left;
+
+  > a {
+    float: left;
+  }
+
 }
