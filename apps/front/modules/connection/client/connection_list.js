@@ -9,6 +9,8 @@ Template.connectionsList.onCreated(function() {
   instance.loadead = new ReactiveVar(0);
   instance.expand = new ReactiveVar(false);
 
+  instance.chatTemplate = null;
+
   instance.autorun(function() {
     var limit = instance.limit.get();
     var sort = { createdAt: -1 };
@@ -35,6 +37,8 @@ Template.connectionsList.onDestroyed(function() {
   this.limit = null;
   this.loadead = null;
   this.connections = null;
+  this.chatTemplate = null;
+
 });
 
 Template.connectionsList.helpers({
@@ -53,21 +57,12 @@ Template.connectionsList.helpers({
 });
 
 Template.connectionsList.events({
-  /*
-  'click #connections-list > .panel-heading': function(e, instance) {
-    e.preventDefault();
-    e.stopPropagation();
 
-    instance.expand.set(! instance.expand.get());
-  }
-  */
-  'click #user-status > a' : function (e) {
-    Blaze.renderWithData(Template.chatView, this, document.body);
-  }
-});
+  'click #user-status > a' : function (e, instance) {
 
-Template.connectionsListItem.helpers({
-  isCurrentUser : function () {
-    return this.user._id === Meteor.userId();
+    if (instance.chatTemplate) Blaze.remove(instance.chatTemplate);
+
+    this.chatTemplate = Blaze.renderWithData(Template.chatLayout, this, document.body);
+    instance.chatTemplate = this.chatTemplate;
   }
 });
