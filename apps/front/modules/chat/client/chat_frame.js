@@ -16,29 +16,27 @@ Template.chatFrame.onCreated(function () {
     instance.subscribe('chatMessages', receiveId);
   });
 
-  instance.beginEntered = new ReactiveVar(false);
+  instance.latelyDate = function () {
+    return ChatMessages.findOne({ "type": "date" }, { sort: { createdAt: -1 }});
+  };
+
 });
 
 Template.chatFrame.onDestroyed(function () {
-  this.data.chatTemplate = null;
+  this.data.chatView = null;
+  this.isStatus = false;
+  if (this.status_id) delete this.status_id;
 });
 
 Template.chatFrame.helpers({
   chatMessagesList: function () {
-    return ChatMessages.find();
-  },
-
-  beingEntered: function () {
-    return Template.instance().beginEntered.get();
+    return ChatMessages.find({}, { sort : { createdAt: 1 } });
   }
 });
 
 Template.chatFrame.events({
   // header events
   'click a.chat-minimize': function (e, instance) {
-
-    var data = instance.data;
-
     e.preventDefault();
 
   },
@@ -48,41 +46,60 @@ Template.chatFrame.events({
     e.preventDefault();
     var data = instance.data;
 
-    Blaze.remove(data.chatTemplate);
+    Blaze.remove(data.chatView);
   },
 
   // footer events
 
   'focus .chat-textarea': function (e) {
-    console.log('focus');
     var thisElement = $(e.currentTarget)[0];
     thisElement.style.background = "yellow";
   },
 
   'focusout .chat-textarea': function (e) {
-    console.log('focusout');
     $(e.currentTarget).removeAttr('style');
   },
 
   'keyup .chat-textarea': function (e, instance) {
-    console.log('keydown');
+
     var thisElement = $(e.currentTarget)[0];
     var content = thisElement.value;
 
     // remove line breaks from string
     content = content.replace(/(\r\n|\n|\r)/gm,"");
 
-    console.log('content', content);
-    console.log('content.length', content.length);
+    var receivedId = this.user._id;
+    var data = {};
 
-    if (content.length ===0 || content === "" || content === null) {
-      instance.beginEntered.set(false);
+    // input text
+    if (content.length === 0 || content === "" || content === null) {
+      console.log('remove.status_id', instance.status_id);
+      if(instance.isStatus) {
+        instance.isStatus = !instance.isStatus;
+
+        Meteor.call('chatMessageRemove', instance.status_id);
+        delete instance.status_id;
+      }
       return;
+    } else {
+      data = {
+        receiveId: receivedId,
+        type: "status"
+      };
+
+      if (!instance.isStatus) {
+        instance.isStatus = !instance.isStatus;
+
+        Meteor.call('chatMessageInsert', data, function (err, result) {
+          if (err) console.error('err', err);
+
+          instance.status_id = result;
+          console.log('insert.status_id', instance.status_id);
+        });
+      }
     }
 
-    instance.beginEntered.set(true);
-
-    // pressed enter
+    // input enter
     if (e.which === 13) {
 
       e.stopPropagation();
@@ -91,19 +108,37 @@ Template.chatFrame.events({
       // clear textarea
       thisElement.value = "";
 
-      instance.beginEntered.set(false);
+      // lately date to less than 2 minutes date.
+      var latelyDate = instance.latelyDate();
 
-      var receivedId = this.user._id;
+      if (latelyDate) {
+        var diffSecond = Math.abs(new Date() - latelyDate.createdAt) / 1000;
+        var diffMinute = diffSecond / 60;
+        var diffHours = diffMinute / 60;
+        var diffDays = diffHours / 24;
+      }
+
+      if (!latelyDate || diffMinute > 2) {
+        // insert message (type=date)
+        data = {
+          receiveId: receivedId,
+          type: "date"
+        };
+        Meteor.call('chatMessageInsert', data);
+      }
+
       if (content.length ===0 || content === "" || content === null) return;
 
       var data = {
-        receiveId: receivedId,
-        content: content
+        content: content,
+        type: "msg"
       };
 
-      // insert message
-      Meteor.call('chatMessageInsert', data);
+      // update message (type=msg)
+      Meteor.call('chatMessageUpdate', instance.status_id, data);
 
+      instance.isStatus = false;
+      delete instance.status_id;
     }
   }
 });
@@ -120,14 +155,15 @@ Template.chatMessageListItem.onRendered(function () {
 });
 
 Template.chatMessageListItem.helpers({
-  isUserMessage: function (from_id) {
+  isFromMessage: function (from_id) {
     return Meteor.userId() === from_id ? true : false;
+  },
+
+  isDate: function (type) {
+    return type === "date";
+  },
+
+  isStatus: function (type) {
+    return type === "status";
   }
-});
-
-Template.chatBeingEnteredTheMessage.onRendered(function () {
-
-  // scroll to bottom of div
-  var mainDiv = $('.chat-view > main')[0];
-  mainDiv.scrollTop = mainDiv.scrollHeight;
 });

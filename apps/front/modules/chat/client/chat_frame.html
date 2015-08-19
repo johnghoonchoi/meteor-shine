@@ -15,9 +15,6 @@
         {{#each chatMessagesList}}
           {{> chatMessageListItem}}
         {{/each}}
-        <!--{{#if beingEntered}}-->
-          <!--{{> chatBeingEnteredTheMessage}}-->
-        <!--{{/if}}-->
       </main>
 
       <footer>
@@ -28,24 +25,33 @@
 </template>
 
 <template name="chatMessageListItem">
-  <div class="chat-message-list">
-    {{#unless isUserMessage from._id}}
-      <a href="#" class="avatar-sm">
-        {{{getPicture from._id}}}
-      </a>
-      <div class="text-left chat-partner">
-        {{content}}
-      </div>
-    {{else}}
-      <div class="text-right chat-self">
-        {{content}}
-      </div>
-    {{/unless}}
-  </div>
-</template>
+  {{#if isDate type}}
+    <hr/>
+    {{createdAt}}
+    <hr/>
+  {{else}}
 
-<template name="chatBeingEnteredTheMessage">
-  <div class="chat-message-list">
-    입력중입니다......
-  </div>
+    {{#if isStatus type}}
+      {{#unless isFromMessage from._id}}
+        <div class="text-left chat-partner">
+          입력중입니다......
+        </div>
+      {{/unless}}
+    {{else}}
+      <div class="chat-message-list">
+        {{#unless isFromMessage from._id}}
+          <a href="#" class="avatar-sm">
+            {{{getPicture from._id}}}
+          </a>
+          <div class="text-left chat-partner">
+            {{content}}
+          </div>
+        {{else}}
+          <div class="text-right chat-self">
+            {{content}}
+          </div>
+        {{/unless}}
+      </div>
+    {{/if}}
+  {{/if}}
 </template>
