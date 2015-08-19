@@ -1,10 +1,7 @@
 /**
  * Created by ProgrammingPearls on 15. 8. 7..
  */
-<<<<<<< HEAD:apps/front/client/templates/themes/modern/aside.js
-=======
 
->>>>>>> master:apps/front/client/lib/asides.js
 Aside = {
   _pinKey: function(position) {
     return (position && position.toLowerCase() === 'right') ?
