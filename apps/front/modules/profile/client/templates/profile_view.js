@@ -1,4 +1,10 @@
 Template.profileView.onCreated(function() {
+  var instance = this;
+  
+  instance.autorun(function() {
+    instance.subscribe('profileView');  
+  });
+  
   this._profilePictureView = Blaze.render(Template.profilePicture, document.body);
 });
 

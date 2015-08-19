@@ -3,13 +3,7 @@ Router.configure({
   layoutTemplate: function() {
     return 'layout' + Theme.get().capitalize();
   },
-  loadingTemplate: 'loading',
-  waitOn: function() {
-    Meteor.subscribe("userStatus");
-    Meteor.subscribe('profileView');
-
-    return (Meteor.userId()) ? [ Meteor.subscribe('notificationsList') ] : [];
-  }
+  loadingTemplate: 'loading'
 });
 
 var accessControl = function() {
@@ -40,11 +34,9 @@ var closeAsideMobile = function () {
 Router.onBeforeAction(closeAsideMobile);
 
 Router.onBeforeAction(accessControl, { only: [
-  'myBlogsList',
-  'myBlogOne',
-  'blogNew',
-  'blogEdit',
-  'postWrite'
+  'myworks',
+  'postWrite',
+  'postEdit'
 ]});
 
 Router.route('/', function() {

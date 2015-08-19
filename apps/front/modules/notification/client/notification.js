@@ -1,3 +1,12 @@
+Template.notificationsList.onCreated(function() {
+  var instance = this;
+
+  instance.autorun(function() {
+    if (Meteor.userId()) {
+      Meteor.subscribe('notificationsList');
+    }
+  });
+});
 
 Template.notificationsList.helpers({
   isEmpty: function() {
