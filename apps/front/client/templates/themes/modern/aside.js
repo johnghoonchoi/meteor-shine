@@ -1,6 +1,10 @@
 /**
  * Created by ProgrammingPearls on 15. 8. 7..
  */
+<<<<<<< HEAD:apps/front/client/templates/themes/modern/aside.js
+=======
+
+>>>>>>> master:apps/front/client/lib/asides.js
 Aside = {
   _pinKey: function(position) {
     return (position && position.toLowerCase() === 'right') ?
@@ -17,15 +21,16 @@ Aside = {
   },
 
   pin: function(position, state) {
+    var self = this;
     var container = $('#container');
 
     if (state) {
-      localStorage.setItem(this._pinKey(position), '1');
+      localStorage.setItem(self._pinKey(position), '1');
       container.removeClass('aside-left-on');
-      container.addClass(this._pinClass(position));
+      container.addClass(self._pinClass(position));
     } else {
-      localStorage.setItem(this._pinKey(position), '0');
-      container.removeClass(this._pinClass(position));
+      localStorage.setItem(self._pinKey(position), '0');
+      container.removeClass(self._pinClass(position));
       container.addClass('aside-left-on');
     }
   },
