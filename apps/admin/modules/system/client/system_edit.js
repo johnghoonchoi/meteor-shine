@@ -1,4 +1,6 @@
 Template.systemEdit.onCreated(function() {
+  Navigations.path.set('systemEdit');
+
   var instance = this;
 
   instance.autorun(function() {

@@ -40,18 +40,19 @@ if (Meteor.isClient)
  */
 myPicState = function(user) {
   //var user= Meteor.user();
+
   if (!user) return '';
 
   if (user.profile && user.profile.picture) {
     if (user.profile.picture.origin) {
       if(user.profile.picture.temp) {
-        return 'both'
+        return 'both';
       }
-      return 'onlyOrigin'
+      return 'onlyOrigin';
     }
-    return 'onlyTemp'
+    return 'onlyTemp';
   }
-  return 'default'
+  return 'default';
 };
 
 /**
@@ -103,3 +104,4 @@ getPicture = function(userId) {
 
 if (Meteor.isClient)
   Template.registerHelper('getPicture', getPicture);
+

@@ -20,22 +20,3 @@
     {{> notificationsFrame}}
   {{/if}}
 </template>
-
-<template name="headerStack">
-  <header>
-    <div class="header-left">
-      <button type="button" class="btn btn-black btn-header" data-toggle="back"><i class="fa fa-2x fa-chevron-left"></i></button>
-    </div>
-
-    <div class="header-right">
-      {{#if currentUser}}
-        <button type="button" id="btnNotification" class="btn .btn-info-custom btn-header" data-toggle="notifications"><i class="fa fa-2x fa-bell"></i>
-          {{#if notificationsCount}}<span class="badge">{{notificationsCount}}</span>{{/if}}
-        </button>
-      {{/if}}
-    </div>
-  </header>
-  {{#if currentUser}}
-    {{> notificationsFrame}}
-  {{/if}}
-</template>

@@ -35,4 +35,11 @@ $.fn.cropper.setDefaults({
 
 Accounts.ui.config({
   passwordSignupFields: 'USERNAME_AND_EMAIL'
+  //requestPermissions: {
+  //  facebook: ['user_likes'],
+  //  github: ['user', 'repo']
+  //},
+  //requestOfflineToken: {
+  //  google: true
+  //}
 });

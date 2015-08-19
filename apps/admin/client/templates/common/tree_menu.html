@@ -1,0 +1,33 @@
+<template name="treeMenu">
+  <div class="list-group">
+    <!-- Connections List -->
+    <a id="home" class="list-group-item {{active 'connectionsList'}}"
+       href="{{pathFor 'connectionsList'}}" >
+      <i class="fa fa-list"> </i> {{_ 'title_connections_list'}}
+    </a>
+
+    <!-- Accounts List -->
+    <a id="accountsList" class="list-group-item {{active 'accountsList'}}"
+       href="{{pathFor 'accountsList'}}">
+        <i class="fa fa-list"></i> {{_ 'title_accounts_list'}}
+    </a>
+
+    <!-- Category List -->
+    <a id="categoriesList" class="list-group-item {{active 'categoriesList'}}"
+       href="{{pathFor 'categoriesList'}}">
+        <i class="fa fa-list"></i> {{_ 'title_categories_list'}}
+    </a>
+
+    <!-- Post List -->
+    <a id="postsList" class="list-group-item {{active 'postsList'}}"
+       href="{{pathFor 'postsList'}}">
+        <i class="fa fa-list"></i> {{_ 'title_posts_list'}}
+    </a>
+
+    <!-- System -->
+    <a id="systemEdit" class="list-group-item {{active 'systemEdit'}}"
+       href="{{pathFor 'systemEdit'}}">
+        <i class="fa fa-list"></i> {{_ 'title_system_edit'}}
+    </a>
+  </div>
+</template>

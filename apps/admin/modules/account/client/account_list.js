@@ -1,5 +1,7 @@
 
 Template.accountsList.onCreated(function() {
+  Navigations.path.set('accountsList');
+
   var instance = this;
 
   instance.increment = 10;
