@@ -2,8 +2,9 @@
 //@bootstrap-path-normalized: "/packages/leesangwon_bootstrap-less/3.3.4";
 @bootstrap-path: "/packages/meteor-bootstrap-less";
 
-//@layout-path: "/client/templates/layouts/classic";
-@layout-path: "/client/templates/layout";
+@theme: "classic";
+
+@theme-path: "/client/templates/themes/@{theme}";
 
 // Bootstrap 3.3.4
 @import "@{bootstrap-path}/bootstrap.import.less";
@@ -11,19 +12,15 @@
 // Custom style
 @import "variables.import.less";
 @import "mixins.import.less";
-@import "@{layout-path}/layout.import.less";
-@import "@{layout-path}/header.import.less";
-@import "@{layout-path}/tree-menu.import.less";
-@import "@{layout-path}/footer.import.less";
+@import "@{theme-path}/layout.import.less";
+//@import "@{layout-path}/header.import.less";
+//@import "@{layout-path}/tree-menu.import.less";
+//@import "@{layout-path}/footer.import.less";
 @import "page.import.less";
 @import "form.import.less";
 @import "modules.import.less";
 @import "fontface.import.less";
-
-// Theme custom
-//@import "/client/style/base/theme_custom/default.import.less";
-//@import "/client/style/base/theme_custom/darkly.import.less";
-//@import "/client/style/base/theme_custom/paper.import.less";
+@import "list-view.import.less";
 
 // Editor components
 @import "editor.import.less";
@@ -31,10 +28,24 @@
 // User list Modal
 @import "user-modal.import.less";
 
-// Home
-@import "/modules/home/client/home.import.less";
+// Posts
+@import "post.import.less";
 
 // Profile
 @import "/modules/profile/client/styles/profile_picture.import.less";
 @import "/modules/profile/client/styles/profile_view.import.less";
-@import "/modules/profile/client/styles/profile_edit.import.less";
+
+// Balloon
+@import "balloon.import.less";
+
+// Theme custom
+//@import "/client/style/base/theme_custom/default.import.less";
+//@import "/client/style/base/theme_custom/darkly.import.less";
+//@import "/client/style/base/theme_custom/paper.import.less";
+
+// Blogs
+//@import "/modules/blog/client/styles/blogs.import.less";
+
+// Blog Editor
+//@import "/modules/editor/client/less/inlineEditor-toolbar.import.less";
+//@import "/modules/editor/client/less/inlineEditor-draftModal.import.less";

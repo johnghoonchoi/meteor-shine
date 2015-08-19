@@ -28,6 +28,8 @@ Template.postsList.onCreated(function() {
       instance.subscribe('postsList', {}, { limit: limit, sort: sort },
         function() { instance.loaded.set(limit); });
     }
+
+    Navigations.path.set('postsList');
   });
 
   instance.category = function() {

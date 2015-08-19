@@ -12,6 +12,8 @@
 // });
 
 Template.home.onCreated(function() {
+  Navigations.path.set('home');
+
   var instance = this;
 
   //var data = Template.currentData();
