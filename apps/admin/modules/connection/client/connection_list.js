@@ -2,6 +2,8 @@
 UserStatus = new Mongo.Collection('user_status_sessions');
 
 Template.connectionsList.onCreated(function() {
+  Navigations.path.set('connectionsList');
+
   var instance = this;
 
   instance.increment = 10;

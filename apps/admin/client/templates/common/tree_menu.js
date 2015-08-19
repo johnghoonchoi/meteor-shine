@@ -2,6 +2,12 @@
  * controls menu navigation UI
  */
 
+Template.treeMenu.helpers({
+  active: function(path) {
+    return (Navigations.check(path)) ? "active" : "";
+  }
+});
+
 Template.treeMenu.events({
   'click .menu-item-c': function(e) {
     e.preventDefault();

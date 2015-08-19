@@ -1,4 +1,6 @@
 Template.categoriesList.onCreated(function() {
+  Navigations.path.set('categoriesList');
+
   var instance = this;
 
   instance.autorun(function() {

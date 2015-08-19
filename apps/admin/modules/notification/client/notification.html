@@ -1,29 +1,29 @@
-<template name="notificationsList">
-  <!-- <article class="notification-frame">
-    <header>
-      <h4>{{_ 'title_notifications'}}</h4>
-    </header>
-
-    <section>
-      {{#each notifications}}
-        {{> notificationsListItem}}
-      {{/each}}
-    </section>
-
-    <footer>
-      <button id="close" class="btn btn-sm pull-right">{{_ 'command_close'}}</button>
-    </footer>
-  </article> -->
-  <div class="aside-right">
-    <div class="row-fluid">
-      <h4>{{_ 'title_notifications'}}</h4>
-      {{#each notifications}}
-        {{> notificationsListItem}}
-      {{/each}}
-    </div>
+<template name="notificationsFrame">
+  <div id="notifications" class="balloon bottom">
+    <div class="arrow"></div>
+    {{> notificationsList}}
   </div>
 </template>
 
+<template name="notificationsList">
+  <article class="notifications">
+    <div class="body">
+      {{#if isEmpty}}
+        <p>{{_ 'text_notifications_empty'}}</p>
+      {{else}}
+        {{#each notifications}}
+          {{> notificationsListItem}}
+        {{/each}}
+      {{/if}}
+    </div>
+
+    <footer>
+
+    </footer>
+  </article>
+
+</template>
+
 <template name="notificationsListItem">
-  <li>{{msg.content}}</li>
+  <p>{{msg.content}}</p>
 </template>
