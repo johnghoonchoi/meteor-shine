@@ -192,9 +192,9 @@ article.notifications {
 //
 //--------------------------------------------------------------
 
-.chat-layout {
+.chat-frame.opened {
   position : absolute;
-  
+
   width : 300px;
   bottom : 0;
   z-index: 3000;
@@ -205,21 +205,25 @@ article.notifications {
   position : relative;
   max-height: 304px;
 
-  > .chat-header {
+  > header {
     position: relative;
     top: 0;
     height: 28px;
     background-color : @header-bg;
     line-height: 28px;
+
+    .partner-name {
+      color: @chat-background;
+    }
   }
 
-  > .chat-main {
+  > main {
     position: relative;
     overflow-y: scroll;
     height: 250px;
   }
 
-  > .chat-footer {
+  > footer {
     position: relative;
     height: 28px;
 
@@ -261,4 +265,8 @@ a.chat-minimize:hover, a.chat-exit:hover {
     float: left;
   }
 
+}
+
+.chat-frame.closed {
+  display: none;
 }

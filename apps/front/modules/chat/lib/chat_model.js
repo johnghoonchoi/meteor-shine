@@ -2,7 +2,7 @@
  * Created by ProgrammingPearls on 15. 8. 13..
  */
 
-chatMessages = new Mongo.Collection('chatMessages');
+ChatMessages = new Mongo.Collection('chatMessages');
 
 Meteor.methods({
   chatMessageInsert : function (data) {
@@ -22,12 +22,12 @@ Meteor.methods({
         username: userDisplayName(data.receiveId)
       },
       content: data.content,
-      createdAt: Date.now()
+      createdAt: new Date()
     };
 
     // insert and return _id
     try {
-      chatMessage._id = chatMessages.insert(chatMessage);
+      chatMessage._id = ChatMessages.insert(chatMessage);
 
       return chatMessage._id;
 

@@ -1,0 +1,51 @@
+<template name="chatFrame">
+  <div class="chat-frame opened focusedTab">
+    <div class="chat-view">
+      <header>
+        <div class="col-md-6 text-left partner-name">
+          {{user.username}}
+        </div>
+        <div class="col-md-6 text-right menu">
+          <a class="button chat-minimize fa fa-minus-circle" data-hover="tooltip" title="탭 최소화"></a>
+          <a class="button chat-exit fa fa-times-circle" data-hover="tooltip" title="탭 닫기"></a>
+        </div>
+      </header>
+
+      <main>
+        {{#each chatMessagesList}}
+          {{> chatMessageListItem}}
+        {{/each}}
+        <!--{{#if beingEntered}}-->
+          <!--{{> chatBeingEnteredTheMessage}}-->
+        <!--{{/if}}-->
+      </main>
+
+      <footer>
+        <textarea class="chat-textarea"></textarea>
+      </footer>
+    </div>
+  </div>
+</template>
+
+<template name="chatMessageListItem">
+  <div class="chat-message-list">
+    {{#unless isUserMessage from._id}}
+      <a href="#" class="avatar-sm">
+        {{{getPicture from._id}}}
+      </a>
+      <div class="text-left chat-partner">
+        {{content}}
+      </div>
+    {{else}}
+      <div class="text-right chat-self">
+        {{content}}
+      </div>
+    {{/unless}}
+  </div>
+</template>
+
+<template name="chatBeingEnteredTheMessage">
+  <div class="chat-message-list">
+    입력중입니다......
+  </div>
+</template>
