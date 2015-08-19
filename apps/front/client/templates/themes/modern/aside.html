@@ -1,5 +1,24 @@
-<template name="asideModern">
+<template name="asideLeftModern">
   <aside class="left">
-    {{> navMain}}
+    <header>
+      <button class="btn btn-link btn-xs aside-pin {{active}}"
+              data-toggle="button" aria-pressed="false" autocomplete="off">
+        <i class="fa fa-thumb-tack"></i>
+      </button>
+    </header>
+
+    <div class="body">
+      <div id="nav-main">
+        {{> accountInfo}}
+
+        {{> treeMenu}}
+      </div>
+    </div>
+  </aside>
+</template>
+
+<template name="asideRightModern">
+  <aside class="right">
+    {{> notificationsList}}
   </aside>
 </template>

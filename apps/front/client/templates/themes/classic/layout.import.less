@@ -120,6 +120,8 @@ body {
 }
 
 .layout-classic.aside-left-on {
+<<<<<<< HEAD
+=======
   > main#content {
     left: @aside-left-width;
     right: -@aside-left-width;
@@ -132,6 +134,7 @@ body {
 }
 
 .layout-classic.aside-left-fixed {
+>>>>>>> master
   > main#content {
     left: @aside-left-width;
     right: 0;
@@ -152,6 +155,18 @@ body {
   > aside.right {
     right: 0;
     box-shadow: -1px 0 3px #666;
+  }
+}
+
+.layout-classic.aside-left-fixed {
+  > main#content {
+    left: @aside-left-width;
+    right: 0;
+  }
+
+  > aside.left {
+    left: 0;
+    box-shadow: 1px 0 3px #666;
   }
 }
 

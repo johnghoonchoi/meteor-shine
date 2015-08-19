@@ -1,7 +1,10 @@
 /**
- * slide the left and right aside templates
+ * Created by ProgrammingPearls on 15. 8. 7..
  */
+<<<<<<< HEAD:apps/front/client/templates/themes/modern/aside.js
+=======
 
+>>>>>>> master:apps/front/client/lib/asides.js
 Aside = {
   _pinKey: function(position) {
     return (position && position.toLowerCase() === 'right') ?
@@ -84,3 +87,22 @@ Aside = {
   }
 };
 
+Template.asideLeftModern.onRendered(function () {
+  Aside.show();
+});
+
+Template.asideLeftModern.helpers({
+  active: function() {
+    return Aside.isPined('left') ? "active" : "";
+  }
+});
+
+Template.asideLeftModern.events({
+  'click .aside-pin': function(e, instance) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    instance.$('.aside-pin').toggleClass('active');
+    Aside.togglePin('left');
+  }
+});
