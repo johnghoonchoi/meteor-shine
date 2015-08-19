@@ -1,13 +1,6 @@
 /**
- * slide the left and right aside templates
+ * Created by ProgrammingPearls on 15. 8. 7..
  */
-
-var delta = function(width) {
-  var diff = parseInt(($('main#content').width() - $('article.page').width()) / 2);
-
-  return (width > diff) ? width - diff + 20 : 0;
-};
-
 Aside = {
   _pinKey: function(position) {
     return (position && position.toLowerCase() === 'right') ?
@@ -28,7 +21,6 @@ Aside = {
 
     if (state) {
       localStorage.setItem(this._pinKey(position), '1');
-
       container.removeClass('aside-left-on');
       container.addClass(this._pinClass(position));
     } else {
@@ -90,3 +82,22 @@ Aside = {
   }
 };
 
+Template.asideLeftModern.onRendered(function () {
+  Aside.show();
+});
+
+Template.asideLeftModern.helpers({
+  active: function() {
+    return Aside.isPined('left') ? "active" : "";
+  }
+});
+
+Template.asideLeftModern.events({
+  'click .aside-pin': function(e, instance) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    instance.$('.aside-pin').toggleClass('active');
+    Aside.togglePin('left');
+  }
+});
