@@ -8,16 +8,15 @@
       {{#if noPosts}}
         {{_ 'text_no_blogs'}}
       {{else}}
-        <div class="row-fluid">
-          Posts count: {{! postsCount --}} {{getPublishedCount 'postsListCount'}}
-          <nav class="wrap-nav clearfix">
-            <ul class="list-unstyled">
-              <!-- Post Write Button -->
-              {{#if currentUser}}
-                <a class="btn btn-primary" href="{{pathFor 'postWrite'}}">{{_ 'command_register'}}</a>
-              {{/if}}
-            </ul>
-          </nav>
+        <div class="page-actions">
+          <div class="pull-left">
+            <p class="message">Posts count: {{! postsCount --}} {{getPublishedCount 'postsListCount'}}</p>
+          </div>
+          <div class="pull-right">
+            {{#if currentUser}}
+              <a class="btn btn-primary" href="{{pathFor 'postWrite'}}">{{_ 'command_register'}}</a>
+            {{/if}}
+          </div>
         </div>
 
         <table class="table table-bordered table-striped">
