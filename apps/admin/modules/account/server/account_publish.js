@@ -10,6 +10,10 @@ Meteor.publish('accountsList', function(options) {
   Counts.publish(this, 'accountsListCount', Meteor.users.find({}),
     { noReady: true });
 
+  options = _.extend(options, {
+    fields: { services: 0 }
+  });
+
   var accounts = Meteor.users.find({}, options);
 
   return accounts;
