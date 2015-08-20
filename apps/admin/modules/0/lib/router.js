@@ -17,5 +17,5 @@ Router.onBeforeAction(function() {
 });
 
 Router.route('/', function() {
-  this.redirect('/home');
+  this.redirect('/dashboard');
 });

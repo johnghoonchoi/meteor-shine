@@ -9,17 +9,31 @@
         <p>Access: {{connectionsCount}}</p>
       </div>
 
-      <div class="list">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>{{_ 'label_name'}}</th>
+            <th>{{_ 'label_ip_address'}}</th>
+            <th>{{_ 'label_connected_at'}}</th>
+          </tr>
+        </thead>
+
+        <tbody>
         {{#each connections}}
           {{> connectionsListItem}}
         {{/each}}
-      </div>
+        </tbody>
+      </table>
     </div>
   </article>
 </template>
 
 <template name="connectionsListItem">
-  <div>
-    {{_id}}, {{ip}}, {{user.username}}
-  </div>
+  <tr>
+    <td>{{_id}}</td>
+    <td>{{user.username}}</td>
+    <td>{{ip}}</td>
+    <td>{{momentFormat createdAt 'YYYY-MM-DD HH:mm:ss'}}</td>
+  </tr>
 </template>
