@@ -38,30 +38,49 @@ Meteor.methods({
       return null;
     }
 
-  },
+  }
+});
 
-  chatMessageUpdate: function (message_id, data) {
+ChatStatus = new Mongo.Collection('chatStatus');
+
+Meteor.methods({
+  chatStatusInsert : function (data) {
+
     // check validation
     check(data, Object);
+
     // check permission
 
-    // build update object
+    // build insert object
     var chatMessage = {
-      content: data.content,
-      createdAt: new Date(),
-      type: data.type
+      from: {
+        _id: Meteor.userId()
+      },
+      to: {
+        _id: data.receiveId
+      },
+      status : "input"
     };
 
-    return ChatMessages.update({_id: message_id}, {$set: chatMessage} );
+    // insert and return _id
+    try {
+      chatMessage._id = ChatStatus.insert(chatMessage);
+
+      return chatMessage._id;
+
+    } catch (ex) {
+      console.error('err', ex);
+      return null;
+    }
 
   },
 
-  chatMessageRemove: function (message_id) {
+  chatStatusRemove: function (status) {
     // check validation
-    check(message_id, String);
+
     // check permission
 
     // build remove object
-    return ChatMessages.remove({_id: message_id});
+    return ChatStatus.remove({ "from._id": Meteor.userId(), "status": status});
   }
 });

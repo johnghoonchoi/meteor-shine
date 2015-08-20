@@ -15,8 +15,12 @@
         {{#each chatMessagesList}}
           {{> chatMessageListItem}}
         {{/each}}
-      </main>
 
+        {{#each chatStatusList}}
+          {{> chatStatusListItem}}
+        {{/each}}
+
+      </main>
       <footer>
         <textarea class="chat-textarea"></textarea>
       </footer>
@@ -27,31 +31,30 @@
 <template name="chatMessageListItem">
   {{#if isDate type}}
     <hr/>
-    {{createdAt}}
+      {{momentKoreanDate createdAt 5}}
     <hr/>
   {{else}}
-
-    {{#if isStatus type}}
+    <div class="chat-message-list">
       {{#unless isFromMessage from._id}}
+        <a href="#" class="avatar-sm">
+          {{{getPicture from._id}}}
+        </a>
         <div class="text-left chat-partner">
-          입력중입니다......
+          {{content}}
+        </div>
+      {{else}}
+        <div class="text-right chat-self">
+          {{content}}
         </div>
       {{/unless}}
-    {{else}}
-      <div class="chat-message-list">
-        {{#unless isFromMessage from._id}}
-          <a href="#" class="avatar-sm">
-            {{{getPicture from._id}}}
-          </a>
-          <div class="text-left chat-partner">
-            {{content}}
-          </div>
-        {{else}}
-          <div class="text-right chat-self">
-            {{content}}
-          </div>
-        {{/unless}}
-      </div>
-    {{/if}}
+    </div>
   {{/if}}
+</template>
+
+<template name="chatStatusListItem">
+  {{#unless isFromMessage from._id}}
+    <div class="text-left chat-partner">
+      입력중입니다......
+    </div>
+  {{/unless}}
 </template>
