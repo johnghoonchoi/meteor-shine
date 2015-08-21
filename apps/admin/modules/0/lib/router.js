@@ -16,6 +16,8 @@ Router.onBeforeAction(function() {
   }
 });
 
+Router.plugin('dataNotFound', { notFoundTemplate: 'notFound' });
+
 Router.route('/', function() {
   this.redirect('/dashboard');
 });

@@ -1,6 +1,13 @@
 Template.postView.onCreated(function() {
   var instance = this;
-  var data = Template.currentData();
+  var data;
+
+  instance.autorun(function() {
+    data = Template.currentData();
+
+    instance.subscribe('postView', this.params._id);
+    instance.subscribe('postLikeView', this.params._id);
+  });
 
   instance.editMode = new ReactiveVar(false);
   instance.setEditMode = function(edit) {

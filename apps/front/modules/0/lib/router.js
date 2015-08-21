@@ -23,6 +23,8 @@ Router.onBeforeAction(accessControl, { only: [
   'postEdit'
 ]});
 
+Router.plugin('dataNotFound', { notFoundTemplate: 'notFound' });
+
 Router.route('/', function() {
   this.redirect('/home');
 });

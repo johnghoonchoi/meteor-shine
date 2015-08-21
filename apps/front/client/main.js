@@ -4,4 +4,4 @@ $(document).mouseup(function(e) {
   }
 });
 
-
+Meteor.subscribe('userData');

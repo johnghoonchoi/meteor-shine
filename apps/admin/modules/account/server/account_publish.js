@@ -3,6 +3,17 @@
  * which have to be used for Admin only
  */
 
+Meteor.publish("userData", function () {
+  if (this.userId) {
+    return Meteor.users.find(
+      { _id: this.userId },
+      { fields: { oauths: 1 }}
+    );
+  } else {
+    this.ready();
+  }
+});
+
 Meteor.publish('accountsList', function(options) {
   check(options, Match.ObjectIncluding({
     "limit": Match.Optional(Number),

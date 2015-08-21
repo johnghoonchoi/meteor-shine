@@ -4,6 +4,7 @@ $(document).mouseup(function(e) {
   }
 });
 
+Meteor.subscribe('userData');
 
 Meteor.startup(function() {
   // Todo 추후 테마적용 보완

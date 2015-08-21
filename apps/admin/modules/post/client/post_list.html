@@ -32,7 +32,9 @@
           <tbody>
           {{#if Template.subscriptionsReady}}
             {{#each posts}}
-              {{> postsListItem}}
+              {{#with postWithUser}}
+                {{> postsListItem}}
+              {{/with}}
             {{/each}}
           {{else}}
             {{> listLoading}}
@@ -53,7 +55,7 @@
 <template name="postsListItem">
   <tr>
     <td><a href="{{pathFor 'postView'}}" class="title-link">{{title}}</a></td>
-    <td><a href="">{{userDisplayName author._id}}</a></td>
+    <td><a href="">{{userDisplayName author}}</a></td>
     <td>{{momentFormat createdAt 'YYYY-MM-DD HH:mm'}}</td>
     <td>
       <div class="append-info">
