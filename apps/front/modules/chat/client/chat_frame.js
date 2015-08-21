@@ -11,63 +11,49 @@ Template.chatFrame.onCreated(function () {
   // initialize
   var instance = this;
   var data = Template.currentData();
-  var receiveId = data.user._id;
+  var toId = data.user._id;
 
+  // other side input message
   instance.status = "input";
   instance.isInput = false;
+  Meteor.call('chatStatusRemove', instance.status);
 
   // subscribe
   instance.autorun(function () {
 
-    instance.subscribe('chatMessages', receiveId);
+    instance.subscribe('chatMessages', toId);
 
-    instance.subscribe('chatStatus', receiveId, instance.status);
+    instance.subscribe('chatStatus', toId, instance.status);
 
   });
 
-
-  // collection
   instance.latelyDate = function () {
-    return ChatMessages.findOne({ "type": "date" }, { sort: { createdAt: -1 }});
+    return ChatMessages.findOne({}, { sort: { createdAt: -1 }});
   };
 
-  instance.chatStatusList = function () {
-   return ChatStatus.find({});
-  };
-
-  instance.chatMessagesList = function () {
-    return ChatMessages.find({}, { sort : { createdAt: 1 }});
-  };
-
-  Meteor.call('chatStatusRemove', instance.status);
 });
 
 Template.chatFrame.onDestroyed(function () {
-
   this.data.chatTemplate = null;
 
-  //this.isInput = false;
-  //Meteor.call('chatStatusRemove', this.status);
+  // other side input message
+  this.isInput = false;
+  Meteor.call('chatStatusRemove', this.status);
 });
 
 Template.chatFrame.helpers({
   chatMessagesList: function () {
-    return Template.instance().chatMessagesList();
-  },
-
-  chatStatusList: function () {
-    return Template.instance().chatStatusList();
+    return ChatMessages.find({}, { sort : { createdAt: 1 } });
   }
 });
 
 Template.chatFrame.events({
 
   // header events
-  'click a.chat-minimize': function (e, instance) {
-    e.preventDefault();
-    e.stopPropagation();
-
-  },
+  //'click a.chat-minimize': function (e, instance) {
+  //  e.preventDefault();
+  //  e.stopPropagation();
+  //},
 
   'click a.chat-exit': function (e, instance) {
 
@@ -96,9 +82,9 @@ Template.chatFrame.events({
     // remove line breaks from string
     content = content.replace(/(\r\n|\n|\r)/gm,"");
 
-    var receiveId = this.user._id;
+    var toId = this.user._id;
     var data = {
-      receiveId: receiveId
+      toId: toId
     };
 
     // input text
@@ -129,29 +115,25 @@ Template.chatFrame.events({
       // clear textarea
       thisElement.value = "";
 
-      // lately date to less than 2 minutes date.
-      var latelyDate = instance.latelyDate();
+      // lately date to less than 5 minutes date.
+      var latelyDate = instance.latelyDate() || new Date();
 
-      if (latelyDate) {
-        var diffSecond = Math.abs(new Date() - latelyDate.createdAt) / 1000;
-        var diffMinute = diffSecond / 60;
-        var diffHours = diffMinute / 60;
-        var diffDays = diffHours / 24;
-      }
+      var inputDate = new Date();
 
-      if (!latelyDate || diffMinute > 2) {
+      var diffMinutes = Math.abs(moment(latelyDate.createdAt).diff(inputDate, "minutes"));
+      var timeScope = 10;
+
+      if (!latelyDate || diffMinutes >= timeScope) {
         // insert message (type=date)
         data = {
-          receiveId: receiveId,
+          toId: toId,
           type: "date"
         };
         Meteor.call('chatMessageInsert', data);
       }
 
-      //if (content.length ===0 || content === "" || content === null) return;
-
       var data = {
-        receiveId: receiveId,
+        toId: toId,
         content: content,
         type: "msg"
       };
@@ -161,13 +143,11 @@ Template.chatFrame.events({
 
       // remove input status
       Meteor.call('chatStatusRemove', instance.status);
-
       instance.isInput = false;
     }
   }
 });
 
-//
 //
 // chatMessageListItem
 Template.chatMessageListItem.onRendered(function () {
@@ -181,25 +161,24 @@ Template.chatMessageListItem.helpers({
     return type === "date";
   },
 
-  isFromMessage: function (from_id) {
+  isUserMessage: function (from_id) {
     return Meteor.userId() === from_id ? true : false;
   }
 });
 
-
-//
 //
 // chatStatusListItem
-Template.chatStatusListItem.onRendered(function () {
+Template.chatStatusInput.onRendered(function () {
   // scroll to bottom of main div
   var selector = '.chat-view > main';
   ScrollToBottom(selector);
 });
 
-Template.chatStatusListItem.helpers({
+Template.chatStatusInput.helpers({
 
-  isFromMessage: function (from_id) {
-    return Meteor.userId() === from_id ? true : false;
+  onTyping: function () {
+    var result = ChatStatus.find({ "to._id": Meteor.userId() }).count();
+    return result > 0 ? true : false;
   }
 
 });

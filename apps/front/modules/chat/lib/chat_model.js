@@ -11,16 +11,21 @@ Meteor.methods({
     check(data, Object);
 
     // check permission
+    if (! Meteor.userId) {
+      throw new Meteor.Error(ERROR_CODE_SECURITY, "error_access_denied");
+    }
 
     // build insert object
+    var toUser = Meteor.users.findOne({ _id: data.toId });
+
     var chatMessage = {
       from: {
         _id: Meteor.userId(),
         username: Meteor.user().username
       },
       to: {
-        _id: data.receiveId,
-        username: userDisplayName(data.receiveId)
+        _id: data.toId,
+        username: userDisplayName(toUser)
       },
       content: data.content,
       createdAt: new Date(),
@@ -57,7 +62,7 @@ Meteor.methods({
         _id: Meteor.userId()
       },
       to: {
-        _id: data.receiveId
+        _id: data.toId
       },
       status : "input"
     };

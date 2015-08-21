@@ -16,9 +16,7 @@
           {{> chatMessageListItem}}
         {{/each}}
 
-        {{#each chatStatusList}}
-          {{> chatStatusListItem}}
-        {{/each}}
+        {{> chatStatusInput}}
 
       </main>
       <footer>
@@ -35,7 +33,7 @@
     <hr/>
   {{else}}
     <div class="chat-message-list">
-      {{#unless isFromMessage from._id}}
+      {{#unless isUserMessage from._id}}
         <a href="#" class="avatar-sm">
           {{{getPicture from._id}}}
         </a>
@@ -51,10 +49,10 @@
   {{/if}}
 </template>
 
-<template name="chatStatusListItem">
-  {{#unless isFromMessage from._id}}
+<template name="chatStatusInput">
+  {{#if onTyping}}
     <div class="text-left chat-partner">
       입력중입니다......
     </div>
-  {{/unless}}
+  {{/if}}
 </template>
