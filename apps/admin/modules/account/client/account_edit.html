@@ -1,7 +1,7 @@
 <template name="accountEdit">
   <article class="page">
     <header>
-      <h3>{{_ 'title_account_edit'}}</h3>
+      <h3>{{_ 'title_accounts'}} <small>{{_ 'title_edit'}}</small></h3>
     </header>
 
     <div class="body">
@@ -34,8 +34,13 @@
         </section>
 
         <section class="form-group">
+          <label>loginAt</label>
+          <p>{{momentFormat account.loginAt 'YYYY-MM-DD HH:mm'}}</p>
+        </section>
+
+        <section class="form-group">
           <label>createdAt</label>
-          <p>{{account.createdAt}}</p>
+          <p>{{momentFormat account.createdAt 'YYYY-MM-DD HH:mm'}}</p>
         </section>
       </form>
     </div>

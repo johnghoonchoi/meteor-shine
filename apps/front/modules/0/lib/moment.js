@@ -1,5 +1,5 @@
 momentFormat = function(time, format) {
-  return moment(time).format(format);
+  return (time) ? moment(time).format(format) : "";
 };
 
 if (Meteor.isClient)
