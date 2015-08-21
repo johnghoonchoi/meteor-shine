@@ -1,6 +1,15 @@
 Template.accountEdit.onCreated(function() {
+  Navigations.path.set('accountsList');
+
   var instance = this;
-  var data = Template.currentData();
+  var data;
+
+  instance.autorun(function() {
+    data = Template.currentData();
+    instance.subscribe('accountView', data.accountId, function() {
+      data.account = Meteor.users.findOne({ _id: data.accountId });
+    });
+  });
 
   instance.account = function() {
     return Meteor.users.findOne({ _id: data.accountId });
@@ -17,7 +26,8 @@ Template.accountEdit.helpers({
   },
 
   rolesToString: function() {
-    return (Template.instance().account().roles) ?
+    var account = Template.instance().account();
+    return (account && account.roles) ?
       Template.instance().account().roles.toString() : "";
   }
 });

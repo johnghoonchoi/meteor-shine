@@ -32,7 +32,9 @@
         <div class="row-fluid">
           <ul class="block-list">
             {{#each posts}}
-              {{> postsListItem}}
+              {{#with postWithUser}}
+                {{> postsListItem}}
+              {{/with}}
             {{/each}}
           </ul>
         </div>
@@ -60,7 +62,7 @@
     </p>
     <div class="info">
       <span class="author">
-        <i>by </i><a href="{{pathFor 'accountView' username=author.username}}">{{author.username}}</a>
+        <i>by </i><a href="{{pathFor 'accountView' username=author.username}}">{{userDisplayName author}}</a>
       </span>
       <span class="counts">
         <span class="count"><i class="fa fa-heart-o"></i> {{count.likes}}</span>

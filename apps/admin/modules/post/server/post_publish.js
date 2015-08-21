@@ -1,4 +1,4 @@
-Meteor.publish('postsList', function(query, options) {
+Meteor.publishComposite('postsList', function(query, options) {
   check(query, Match.ObjectIncluding({
     "category": Match.Optional(String)
   }));
@@ -11,13 +11,27 @@ Meteor.publish('postsList', function(query, options) {
     })
   }));
 
-  Counts.publish(this, 'postsListCount', Posts.find(query), { noReady: true });
-
-  var posts = Posts.find(query, options);
-
-  return posts;
+  return {
+    find: function() {
+      return Posts.find(query, options);
+    },
+    children: [
+      {
+        find: function(post) {
+          return Meteor.users.find({ _id: post.author._id});
+        }
+      }
+    ]
+  };
 });
 
+Meteor.publish('postsListCount', function(query) {
+  check(query, Match.ObjectIncluding({
+    "category": Match.Optional(String)
+  }));
+
+  Counts.publish(this, 'postsListCount', Posts.find(query));
+});
 
 Meteor.publish('postView', function(postId) {
   check(postId, String);

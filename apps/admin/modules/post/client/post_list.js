@@ -15,30 +15,31 @@ Template.postsList.onCreated(function() {
     }
   };
 
+  instance.subscribe('categoriesList', {}, { sort: { seq: 1 }});
+
   instance.autorun(function() {
     data = Template.currentData();
+
     var limit = instance.limit.get();
     var sort = instance.sortBy(data.sortBy);
-
-    instance.subscribe('categoriesList', {}, { sort: { seq: 1 }});
 
     var query = (instance.categoryId.get()) ?
       { categoryId: instance.categoryId.get() } : {};
 
+    instance.subscribe('postsListCount', query);
+
     instance.subscribe('postsList', query, { limit: limit, sort: sort },
       function() {
         instance.loaded.set(limit);
-        instance.totalCount.set(Counts.get('postListsCount'));
       }
     );
 
     Navigations.path.set('postsList');
   });
 
+
   instance.postsCount = function() {
-    //var count = Counts.get('postListsCount');
-    //console.log('count = ' + count);
-    return instance.totalCount.get();
+    return Counts.get('postListsCount');
   };
 
   instance.posts = function() {
@@ -73,6 +74,12 @@ Template.postsList.helpers({
     return Template.instance().posts();
   },
 
+  postWithUser: function() {
+    var post = this;
+    var author = Meteor.users.findOne(post.author._id);
+    return _.extend(post, { author: author });
+  },
+
   hasMore: function() {
     var instance = Template.instance();
     return (instance.postsCount() > instance.loaded.get());
@@ -85,3 +92,5 @@ Template.postsList.events({
     instance.limit.set(instance.limit.get() + instance.increment);
   }
 });
+
+
