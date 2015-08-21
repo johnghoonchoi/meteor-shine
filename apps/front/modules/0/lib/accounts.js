@@ -79,8 +79,8 @@ if (Meteor.isClient)
  *
  * @returns {string}
  */
-getPicture = function(userId) {
-  var user = Meteor.users.findOne({ _id: userId });
+getPicture = function(user) {
+  //var user = Meteor.users.findOne({ _id: userId });
   if (!user) return '';
 
   if (user) {

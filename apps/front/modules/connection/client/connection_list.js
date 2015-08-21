@@ -67,6 +67,7 @@ Template.connectionsList.events({
       Blaze.remove(instance.chatTemplate);
     }
 
+    console.log('this', this);
     this.chatTemplate = Blaze.renderWithData(Template.chatFrame, this, document.body);
     instance.chatTemplate = this.chatTemplate;
 

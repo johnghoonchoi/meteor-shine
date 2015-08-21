@@ -1,7 +1,7 @@
 <template name="chatFrame">
   <div class="chat-frame opened focusedTab">
     <div class="chat-view">
-      <header>
+      <header class="chat-header">
         <div class="col-md-6 text-left partner-name">
           {{user.username}}
         </div>
@@ -11,16 +11,20 @@
         </div>
       </header>
 
-      <main>
-        {{#each chatMessagesList}}
-          {{> chatMessageListItem}}
-        {{/each}}
-
-        {{> chatStatusInput}}
-
+      <main class="chat-main">
+        <div class="chat-message-lists">
+          {{#each chatMessagesList}}
+            {{> chatMessageListItem this}}
+          {{/each}}
+          {{#if onTyping}}
+            {{>chatStatusInput}}
+          {{/if}}
+        </div>
       </main>
-      <footer>
-        <textarea class="chat-textarea"></textarea>
+      <footer class="chat-footer">
+        <div class="chat-message-box">
+          <textarea class="chat-textarea"></textarea>
+        </div>
       </footer>
     </div>
   </div>
@@ -33,9 +37,9 @@
     <hr/>
   {{else}}
     <div class="chat-message-list">
-      {{#unless isUserMessage from._id}}
+      {{#unless isUserMessage from}}
         <a href="#" class="avatar-sm">
-          {{{getPicture from._id}}}
+          {{{getPartnerPictures}}}
         </a>
         <div class="text-left chat-partner">
           {{content}}
@@ -50,9 +54,7 @@
 </template>
 
 <template name="chatStatusInput">
-  {{#if onTyping}}
-    <div class="text-left chat-partner">
-      입력중입니다......
-    </div>
-  {{/if}}
+  <div class="text-left chat-partner">
+    입력중입니다......
+  </div>
 </template>
