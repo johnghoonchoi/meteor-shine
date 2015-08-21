@@ -5,7 +5,7 @@ I18n_data_ko = {
   "title_dashboard"               : "대시보드",
   "title_home"                    : "홈",
   "title_connections_list"        : "접속",
-  "title_accounts_list"           : "계정",
+  "title_accounts"                : "계정",
   "title_categories_list"         : "카테고리",
   "title_posts_list"              : "글 목록",
   "title_blogs"                   : "블로그 목록",
@@ -22,6 +22,8 @@ I18n_data_ko = {
   "title_user_list"               : "유저목록",
   "title_new_message"             : "새 메시지",
   "title_system_edit"             : "시스템 설정",
+  "title_list"                    : "목록",
+  "title_edit"                    : "수정",
 
 
   "command_sign_in"               : "로그인",
