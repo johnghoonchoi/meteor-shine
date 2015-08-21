@@ -15,22 +15,16 @@ Template.chatFrame.onCreated(function () {
 
   instance.status = "input";
   instance.isInput = false;
-  instance.limit = 5;
-  instance.increment = new ReactiveVar(1);
-
 
   // subscribe
   instance.autorun(function () {
-    var limit = instance.limit.get();
-    var increment = instance.increment.get();
+
     instance.subscribe('chatMessages', receiveId);
 
     instance.subscribe('chatStatus', receiveId, instance.status);
 
-    instance.chatMessagesList = function () {
-      return ChatMessages.find({}, { sort : { createdAt: 1 }, limit : limit * increment });
-    };
   });
+
 
   // collection
   instance.latelyDate = function () {
@@ -41,14 +35,19 @@ Template.chatFrame.onCreated(function () {
    return ChatStatus.find({});
   };
 
+  instance.chatMessagesList = function () {
+    return ChatMessages.find({}, { sort : { createdAt: 1 }});
+  };
+
   Meteor.call('chatStatusRemove', instance.status);
 });
 
 Template.chatFrame.onDestroyed(function () {
-  // initialize
+
   this.data.chatTemplate = null;
-  this.isInput = false;
-  Meteor.call('chatStatusRemove', this.status);
+
+  //this.isInput = false;
+  //Meteor.call('chatStatusRemove', this.status);
 });
 
 Template.chatFrame.helpers({
@@ -77,15 +76,9 @@ Template.chatFrame.events({
     var data = instance.data;
 
     Blaze.remove(data.chatTemplate);
-
-    //if (instance.isInput) {
-    //  instance.isInput = !instance.isInput;
-    //  Meteor.call('chatStatusRemove', instance.status);
-    //}
   },
 
   // footer events
-
   'focus .chat-textarea': function (e) {
     var thisElement = $(e.currentTarget)[0];
     thisElement.style.background = "yellow";
@@ -176,13 +169,11 @@ Template.chatFrame.events({
 
 //
 //
-// chatMessageList
+// chatMessageListItem
 Template.chatMessageListItem.onRendered(function () {
-
   // scroll to bottom of main div
   var selector = '.chat-view > main';
   ScrollToBottom(selector);
-
 });
 
 Template.chatMessageListItem.helpers({
@@ -198,7 +189,7 @@ Template.chatMessageListItem.helpers({
 
 //
 //
-// chatStatusList
+// chatStatusListItem
 Template.chatStatusListItem.onRendered(function () {
   // scroll to bottom of main div
   var selector = '.chat-view > main';

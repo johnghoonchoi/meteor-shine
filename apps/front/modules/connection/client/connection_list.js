@@ -10,9 +10,9 @@ Template.connectionsList.onCreated(function() {
   instance.expand = new ReactiveVar(false);
 
   //instance.activeChat = null;
-  instance.chatList = [];
+  //instance.chatList = [];
 
-  instance.hasChatId = null;
+  //instance.hasChatId = null;
   instance.chatTemplate = null;
 
   instance.autorun(function() {
