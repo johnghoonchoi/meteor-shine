@@ -24,8 +24,10 @@
           <tr>
             <th>{{_ 'label_title'}}</th>
             <th>{{_ 'label_author'}}</th>
+            <th>{{_ 'label_like'}}</th>
+            <th>{{_ 'label_comment'}}</th>
+            <th>{{_ 'label_updatedAt'}}</th>
             <th>{{_ 'label_createdAt'}}</th>
-            <th></th>
           </tr>
           </thead>
 
@@ -56,13 +58,9 @@
   <tr>
     <td><a href="{{pathFor 'postView'}}" class="title-link">{{title}}</a></td>
     <td><a href="">{{userDisplayName author}}</a></td>
+    <td><a href="">{{count.likes}}</a></td>
+    <td><a href="">{{count.comments}}</a></td>
+    <td>{{momentFormat updatedAt 'YYYY-MM-DD HH:mm'}}</td>
     <td>{{momentFormat createdAt 'YYYY-MM-DD HH:mm'}}</td>
-    <td>
-      <div class="append-info">
-        <span class="hit-count"><i class="fa fa-eye"></i> {{count.hits}}</span>
-        <span class="comment-count"><i class="fa fa-heart-o"></i> {{count.likes}}</span>
-        <span class="like-count"><i class="fa fa-comment-o"></i> {{count.comments}}</span>
-      </div>
-    </td>
   </tr>
 </template>
