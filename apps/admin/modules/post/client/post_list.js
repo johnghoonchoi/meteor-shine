@@ -3,7 +3,7 @@ Template.postsList.onCreated(function() {
   var data;
 
   instance.categoryId = new ReactiveVar();;
-  instance.increment = 5;
+  instance.increment = 10;
   instance.limit = new ReactiveVar(instance.increment);
   instance.loaded = new ReactiveVar(0);
   instance.totalCount = new ReactiveVar(0);
