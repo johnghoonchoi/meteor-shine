@@ -2,6 +2,7 @@ I18n_data_en = {
   "brand"                         : "METEOR SHINE ADMIN",
 
 
+  "title_dashboard"               : "Dashboard",
   "title_home"                    : "Home",
   "title_connections_list"        : "Connections",
   "title_accounts_list"           : "Accounts",

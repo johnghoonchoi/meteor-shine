@@ -2,9 +2,11 @@ Template.postsList.onCreated(function() {
   var instance = this;
   var data;
 
-  instance.increment = 20;
+  instance.categoryId = new ReactiveVar();;
+  instance.increment = 5;
   instance.limit = new ReactiveVar(instance.increment);
   instance.loaded = new ReactiveVar(0);
+  instance.totalCount = new ReactiveVar(0);
   instance.sortBy = function(value) {
     if (value === 'like') {
       return { 'count.likes': -1 };
@@ -18,36 +20,34 @@ Template.postsList.onCreated(function() {
     var limit = instance.limit.get();
     var sort = instance.sortBy(data.sortBy);
 
-    if (data.categoryId) {
-      instance.subscribe('categoryView', data.categoryId);
+    instance.subscribe('categoriesList', {}, { sort: { seq: 1 }});
 
-      instance.subscribe('postsList',
-        { categoryId: data.categoryId }, { limit: limit, sort: sort },
-        function() { instance.loaded.set(limit); });
-    } else {
-      instance.subscribe('postsList', {}, { limit: limit, sort: sort },
-        function() { instance.loaded.set(limit); });
-    }
+    var query = (instance.categoryId.get()) ?
+      { categoryId: instance.categoryId.get() } : {};
+
+    instance.subscribe('postsList', query, { limit: limit, sort: sort },
+      function() {
+        instance.loaded.set(limit);
+        instance.totalCount.set(Counts.get('postListsCount'));
+      }
+    );
 
     Navigations.path.set('postsList');
   });
 
-  instance.category = function() {
-    return (data.categoryId) ?
-      Categories.findOne({ _id: data.categoryId }) : null;
-  };
-
   instance.postsCount = function() {
-    return Counts.get('postListsCount');
+    //var count = Counts.get('postListsCount');
+    //console.log('count = ' + count);
+    return instance.totalCount.get();
   };
 
   instance.posts = function() {
-    var query = (data.categoryId) ? { categoryId: data.categoryId } : {};
+    var categoryId = instance.categoryId.get();
+    var query = (categoryId) ? { categoryId: categoryId } : {};
     return Posts.find(query, {
       limit: instance.loaded.get(), sort: { publishedAt: 1 }
     });
   };
-
 });
 
 
@@ -60,18 +60,22 @@ Template.postsList.onDestroyed(function() {
 });
 
 
-
 Template.postsList.helpers({
   category: function() {
     return Template.instance().category();
   },
 
   postsCount: function() {
-    return Counts.get('postsListCount');
+    return Template.instance().postsCount();
   },
 
   posts: function() {
     return Template.instance().posts();
+  },
+
+  hasMore: function() {
+    var instance = Template.instance();
+    return (instance.postsCount() > instance.loaded.get());
   }
 });
 

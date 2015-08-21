@@ -11,13 +11,13 @@ Meteor.publish('postsList', function(query, options) {
     })
   }));
 
-  Counts.publish(this, 'postsListCount', Posts.find(query),
-    { noReady: true });
+  Counts.publish(this, 'postsListCount', Posts.find(query), { noReady: true });
 
   var posts = Posts.find(query, options);
 
   return posts;
 });
+
 
 Meteor.publish('postView', function(postId) {
   check(postId, String);

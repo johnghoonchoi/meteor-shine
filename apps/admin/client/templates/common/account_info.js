@@ -13,7 +13,7 @@ Template.accountInfo.events({
     e.stopPropagation();
 
     Meteor.logout();
-    Router.go('home');
+    Router.go('/');
   }
 });
 

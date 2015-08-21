@@ -2,6 +2,7 @@ I18n_data_ko = {
   "brand"                         : "METEOR SHINE ADMIN",
 
 
+  "title_dashboard"               : "대시보드",
   "title_home"                    : "홈",
   "title_connections_list"        : "접속",
   "title_accounts_list"           : "계정",

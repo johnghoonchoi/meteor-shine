@@ -5,30 +5,44 @@
     </header>
 
     <div class="body">
-      <div class="btn-toolbar">
+      <div class="page-actions">
         <div class="pull-left">
-          Category count: {{categoriesCount}}
+          <p class="message">Category count: {{categoriesCount}}</p>
         </div>
         <div class="pull-right">
           <a class="btn btn-primary"
              href="{{pathFor 'categoryNew'}}">{{_ 'command_new'}}</a>
         </div>
       </div>
-      <div class="categories">
+
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>{{_ 'label_name'}}</th>
+          <th>{{_ 'label_action'}}</th>
+        </tr>
+        </thead>
+
+        <tbody class="sortable">
         {{#each categories}}
           {{> categoriesListItem}}
         {{/each}}
-      </div>
+        </tbody>
+      </table>
     </div>
   </article>
 </template>
 
 <template name="categoriesListItem">
-  <div>
-    <a href="{{pathFor 'categoryEdit'}}">{{_id}} : {{title}}</a> :
-    {{> bootstrapToggle name='categoryState' state=isOn}}
-    <button type="button" class="btn btn-danger btn-xs">
-      <i class="fa fa-trash"></i></button>
-  </div>
+  <tr>
+    <td>{{_id}}</td>
+    <td><a href="{{pathFor 'categoryEdit'}}">{{title}}</a></td>
+    <td>
+      {{> bootstrapToggle name='categoryState' state=isOn}}
+      <button type="button" class="btn btn-danger btn-xs">
+        <i class="fa fa-trash"></i></button>
+    </td>
+  </tr>
 </template>
 
