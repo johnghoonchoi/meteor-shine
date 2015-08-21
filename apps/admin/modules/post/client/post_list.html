@@ -10,7 +10,7 @@
       {{else}}
         <div class="page-actions">
           <div class="pull-left">
-            <p class="message">Posts count: {{! postsCount --}} {{getPublishedCount 'postsListCount'}}</p>
+            <p class="message">{{_ 'label_total_count'}}: {{postsCount}} {{!getPublishedCount 'postsListCount'}}</p>
           </div>
           <div class="pull-right">
             {{#if currentUser}}

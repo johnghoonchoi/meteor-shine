@@ -29,6 +29,7 @@ Template.postsList.onCreated(function() {
       function() {
         instance.loaded.set(limit);
         instance.totalCount.set(Counts.get('postListsCount'));
+//        data.totalCount = Counts.get('postListsCount');
       }
     );
 
@@ -67,6 +68,7 @@ Template.postsList.helpers({
 
   postsCount: function() {
     return Template.instance().postsCount();
+//    return this.totalCount;
   },
 
   posts: function() {
