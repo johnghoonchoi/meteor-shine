@@ -5,7 +5,7 @@ I18n_data_en = {
   "title_dashboard"               : "Dashboard",
   "title_home"                    : "Home",
   "title_connections_list"        : "Connections",
-  "title_accounts_list"           : "Accounts",
+  "title_accounts"                : "Accounts",
   "title_categories_list"         : "Categories",
   "title_posts_list"              : "Posts",
   "title_blogs"                   : "Blogs",
@@ -22,6 +22,8 @@ I18n_data_en = {
   "title_user_list"               : "User List",
   "title_new_message"             : "New Message",
   "title_system_edit"             : "System Setup",
+  "title_list"                    : "List",
+  "title_edit"                    : "Edit",
 
 
   "command_sign_in"               : "Sign in",
