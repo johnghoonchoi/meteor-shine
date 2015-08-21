@@ -9,6 +9,10 @@ Template.connectionsList.onCreated(function() {
   instance.loadead = new ReactiveVar(0);
   instance.expand = new ReactiveVar(false);
 
+  //instance.activeChat = null;
+  //instance.chatList = [];
+
+  //instance.hasChatId = null;
   instance.chatTemplate = null;
 
   instance.autorun(function() {
@@ -37,8 +41,7 @@ Template.connectionsList.onDestroyed(function() {
   this.limit = null;
   this.loadead = null;
   this.connections = null;
-  this.chatTemplate = null;
-
+  //this.chatTemplate = null;
 });
 
 Template.connectionsList.helpers({
@@ -60,9 +63,13 @@ Template.connectionsList.events({
 
   'click #user-status > a' : function (e, instance) {
 
-    if (instance.chatTemplate) Blaze.remove(instance.chatTemplate);
+    if (instance.chatTemplate) {
+      Blaze.remove(instance.chatTemplate);
+    }
 
-    this.chatTemplate = Blaze.renderWithData(Template.chatLayout, this, document.body);
+    this.chatTemplate = Blaze.renderWithData(Template.chatFrame, this, document.body);
     instance.chatTemplate = this.chatTemplate;
+
+
   }
 });
