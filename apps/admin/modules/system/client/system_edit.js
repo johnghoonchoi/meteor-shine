@@ -16,6 +16,30 @@ Template.systemEdit.onCreated(function() {
   instance.meetupLogin = function() {
     return Systems.findOne({ _id: 'meetupLogin' });
   };
+
+  instance.googleLogin = function() {
+    return Systems.findOne({ _id: 'googleLogin' });
+  };
+
+  instance.githubLogin = function() {
+    return Systems.findOne({ _id: 'githubLogin' });
+  };
+
+  instance.twitterLogin = function() {
+    return Systems.findOne({ _id: 'twitterLogin' });
+  };
+
+  instance.meteorLogin = function() {
+    return Systems.findOne({ _id: 'meteorLogin' });
+  };
+
+  instance.naverLogin = function() {
+    return Systems.findOne({ _id: 'naverLogin' });
+  };
+
+  instance.kakaoLogin = function() {
+    return Systems.findOne({ _id: 'kakaoLogin' });
+  };
 });
 
 Template.systemEdit.helpers({
@@ -29,6 +53,30 @@ Template.systemEdit.helpers({
 
   meetupLogin: function() {
     return Template.instance().meetupLogin();
+  },
+
+  googleLogin: function() {
+    return Template.instance().googleLogin();
+  },
+
+  githubLogin: function() {
+    return Template.instance().githubLogin();
+  },
+
+  twitterLogin: function() {
+    return Template.instance().twitterLogin();
+  },
+
+  meteorLogin: function() {
+    return Template.instance().meteorLogin();
+  },
+
+  naverLogin: function() {
+    return Template.instance().naverLogin();
+  },
+
+  kakaoLogin: function() {
+    return Template.instance().kakaoLogin();
   }
 });
 
@@ -51,6 +99,35 @@ Template.systemEdit.events({
         clientId: instance.$('#meetup-id').val().trim(),
         secret: instance.$('#meetup-secret').val().trim(),
         apiKey: instance.$('#meetup-api-key').val().trim()
+      },
+      {
+        _id: 'googleLogin',
+        clientId: instance.$('#google-id').val().trim(),
+        secret: instance.$('#google-secret').val().trim()
+      },
+      {
+        _id: 'githubLogin',
+        clientId: instance.$('#github-id').val().trim(),
+        secret: instance.$('#github-secret').val().trim()
+      },
+      {
+        _id: 'twitterLogin',
+        consumerKey: instance.$('#twitter-id').val().trim(),
+        secret: instance.$('#twitter-secret').val().trim()
+      },
+      {
+        _id: 'meteorLogin',
+        clientId: instance.$('#meteor-id').val().trim(),
+        secret: instance.$('#meteor-secret').val().trim()
+      },
+      {
+        _id: 'naverLogin',
+        clientId: instance.$('#naver-id').val().trim(),
+        secret: instance.$('#naver-secret').val().trim()
+      },
+      {
+        _id: 'kakaoLogin',
+        clientId: instance.$('#kakao-id').val().trim()
       }
     ];
 
