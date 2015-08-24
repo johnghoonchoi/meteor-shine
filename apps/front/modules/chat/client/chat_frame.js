@@ -1,9 +1,6 @@
 /**
  * Created by ProgrammingPearls on 15. 8. 13..
  */
-
-
-
 //
 //
 // chatView
@@ -50,23 +47,21 @@ Template.chatFrame.onDestroyed(function () {
 
 Template.chatFrame.helpers({
   chatMessagesList: function () {
-    var result = ChatMessages.find({}, { sort : { createdAt: 1 } });
-    return result;
+    return ChatMessages.find({}, { sort : { createdAt: 1 } });
   },
 
   onTyping: function () {
-    var result = Counts.get('chatStatusCount');
-    return result > 0 ? true : false;
+    return Counts.get('chatStatusCount') > 0 ? true : false;
   }
 });
 
 Template.chatFrame.events({
 
-  // header events
-  'click a.chat-minimize': function (e, instance) {
-    e.preventDefault();
-    e.stopPropagation();
-  },
+  //// header events
+  //'click a.chat-minimize': function (e, instance) {
+  //  e.preventDefault();
+  //  e.stopPropagation();
+  //},
 
   'click a.chat-exit': function (e, instance) {
 
@@ -164,6 +159,8 @@ Template.chatFrame.events({
 // chatMessageListItem
 Template.chatMessageListItem.onCreated(function () {
   var instance = this;
+
+  // add Blaze.TemplateInstance.prototype.parentInstance (find parenInstance of TemplateName)
   var parentData = this.parentInstance("chatFrame");
 
   instance.partnerPicture = parentData.partnerPicture;
