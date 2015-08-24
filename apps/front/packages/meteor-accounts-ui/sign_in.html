@@ -54,7 +54,7 @@
 
 <template name="signInOtherService">
   <section class="form-group">
-    <button class="btn btn-color-{{name}} btn-block {{#unless configured}}configure-button{{/unless}}">
+    <button data-action="sign-in" class="btn btn-color-{{name}} btn-block {{#unless configured}}configure-button{{/unless}}">
       <i class="fa fa-{{name}}"></i>&nbsp;
       {{#if configured}}
         <span class="text-besides-image sign-in-text-{{name}}">

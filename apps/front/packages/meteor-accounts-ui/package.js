@@ -57,7 +57,9 @@ Package.onUse(function(api) {
 
     'style/style.less',
 
-    'login_buttons_session.js'
+    'login_buttons_session.js',
+
+    'global.js'
     ], 'client');
 
   api.addFiles([
@@ -68,6 +70,10 @@ Package.onUse(function(api) {
   api.addFiles([
     'startup.js'
   ], ['client', 'server']);
+
+  api.export([
+    'loginOtherServices'
+  ], ['client']);
 
 });
 

@@ -11,10 +11,20 @@ Accounts.config({
 });
 
 /**
- * First, add the service configuration package :
+ * First, have to add the configuration package for a various of external login services:
  * `meteor add service-configuration`
  */
 
+/**
+ * Second, have to add an external login service you need to want to use
+ * `meteor add accounts-facebook`
+ * `meteor add accounts-google`
+ * `meteor add accounts-twitter`
+ * `meteor add accounts-meetup`
+ * `meteor add accounts-github`
+ * `meteor add accounts-meteor-developer`
+ *  ...
+ */
 var setupFacebookLogin = function() {
   var facebook = Systems.findOne({ _id: 'facebookLogin' });
 
@@ -25,6 +35,32 @@ var setupFacebookLogin = function() {
       appId: facebook.appId,
       secret: facebook.secret
     });
+  }
+};
+
+var setupGoogleLogin = function() {
+  var google = Systems.findOne({ _id: 'googleLogin' });
+
+  if (google) {
+    ServiceConfiguration.configurations.remove({ service: "google" });
+    ServiceConfiguration.configurations.insert({
+      service: "google",
+      clientId: google.clientId,
+      secret: google.secret
+    });
+  }
+};
+
+var setupTwitterLogin = function() {
+  var twitter = Systems.findOne({ _id: 'twitterLogin' });
+
+  if (twitter) {
+    ServiceConfiguration.configurations.remove({ service: "twitter" });
+    ServiceConfiguration.configurations.insert({
+      service: "twitter",
+      consumerKey: twitter.consumerKey,
+      secret: twitter.secret
+    })
   }
 };
 
@@ -42,6 +78,76 @@ var setupMeetupLogin = function() {
   }
 };
 
+var setupGithubLogin = function() {
+  var github = Systems.findOne({ _id: 'githubLogin' });
+
+  if (github) {
+    ServiceConfiguration.configurations.remove({ service: "github" });
+    ServiceConfiguration.configurations.insert({
+      service: "github",
+      clientId: github.clientId,
+      secret: github.secret
+    })
+  }
+};
+
+var setupMeteorLogin = function() {
+  var meteor = Systems.findOne({ _id: 'meteorLogin' });
+
+  if (meteor) {
+    ServiceConfiguration.configurations.remove({ service: "meteor-developer" });
+    ServiceConfiguration.configurations.insert({
+      service: "meteor-developer",
+      clientId: meteor.clientId,
+      secret: meteor.secret
+    })
+  }
+};
+
+//var setupLinkedInLogin = function() {
+//  var linkedIn = Systems.findOne({ _id: 'linkedInLogin' });
+//
+//  if (!linkedIn) {
+//    ServiceConfiguration.configurations.remove({ service: "linkedIn" });
+//    ServiceConfiguration.configurations.insert({
+//      service: "linkedIn",
+//      clientId: Meteor.settings.linkedIn.clientId,
+//      secret: Meteor.settings.linkedIn.secret
+//    })
+//  }
+//};
+
+/**
+ *  have to add an external login services for Korean
+ * `meteor add accounts-naver`
+ * `meteor add accounts-kakao`
+ */
+var setupNaverLogin = function() {
+  var naver = Systems.findOne({ _id: 'naverLogin' });
+
+  if (naver) {
+    ServiceConfiguration.configurations.remove({ service: "naver" });
+    ServiceConfiguration.configurations.insert({
+      service: "naver",
+      clientId: naver.clientId,
+      secret: naver.secret,
+      loginStyle: 'popup'
+    });
+  }
+};
+
+var setupKakaoLogin = function() {
+  var kakao = Systems.findOne({ _id: 'kakaoLogin' });
+
+  if (kakao) {
+    ServiceConfiguration.configurations.remove({ service: "kakao" });
+    ServiceConfiguration.configurations.insert({
+      service: "kakao",
+      clientId: kakao.clientId,
+      loginStyle: 'popup'
+    });
+  }
+};
 
 
 /**
@@ -58,9 +164,51 @@ Accounts.onCreateUser(function(options, user) {
     var picture = 'http://graph.facebook.com/' + userData.id + '/picture?type=square&height=160&width=160';
 
     options.profile = {
-      'facebook': {
-        'name': userData.name,
-        'picture': picture
+      facebook: {
+        name: userData.name,
+        picture: picture
+      }
+    };
+  }
+
+  if (user.services.google) {
+    var userData = user.services.google;
+    options.profile = {
+      google: {
+        name: userData.name,
+        picture: userData.picture
+      }
+    };
+  }
+
+  if (user.services.twitter) {
+    var userData = user.services.twitter;
+    var name = options.profile.name;
+    options.profile = {
+      twitter: {
+        name: name,
+        picture: userData.profile_image_url_https
+      }
+    };
+  }
+
+  if (user.services.github) {
+    console.log('options.profile: ', options.profile);
+    var name = options.profile.name;
+    options.profile = {
+      github: {
+        name: name,
+        picture: '/default_avatar.png'
+      }
+    };
+  }
+
+  if (user.services['meteor-developer']) {
+    var name = options.profile.name;
+    options.profile = {
+      'meteor-developer': {
+        name: name,
+        picture: '/default_avatar.png'
       }
     };
   }
@@ -71,7 +219,7 @@ Accounts.onCreateUser(function(options, user) {
     var userMeetupId = user.services.meetup.id;
     var apiKey = meetup.apiKey;
     var requestUrl = 'https://api.meetup.com/2/member/' + userMeetupId
-      + '?key=' + apiKey + '&signed=true&fields=other_services';
+      + '?key=' + apiKey + '&signed=true&fields=email';
     var response = HTTP.get(requestUrl, {
       params: {
         format: 'json'
@@ -82,7 +230,7 @@ Accounts.onCreateUser(function(options, user) {
 
     user.services.meetup = response.data;
 
-    if(userData.hasOwnProperty("photo") && userData.photo.photo_link !== "") {
+    if(userData.photo && userData.photo.photo_link) {
       var picture = userData.photo.photo_link;
     } else {
       var picture = "/default-avatar.png";
@@ -96,12 +244,35 @@ Accounts.onCreateUser(function(options, user) {
     };
   }
 
+  if (user.services.naver) {
+    var userData = user.services.naver;
+    userData = _.extend(userData, options.profile);
+    options.profile = {
+      naver: {
+        name: userData.name,
+        picture: userData.profile_image
+      }
+    }
+  }
+
+  if (user.services.kakao) {
+    var userData = user.services.kakao;
+    userData = _.extend(userData, options.profile);
+    options.profile = {
+      kakao: {
+        name: userData.name,
+        picture: userData.profile_image
+      }
+    }
+  }
+
+
   if (options.profile) {
     user.oauths = {};
     user.oauths = options.profile;
   }
 
-  Logger.info('user:' + JSON.stringify(user, null, 2));
+  Logger.info('1 new user created.. ' + JSON.stringify(user, null, 2));
   return user;
 /*
   var validation = AccountValidator.validateInsert(options);
@@ -112,13 +283,6 @@ Accounts.onCreateUser(function(options, user) {
 */
 });
 
-// Todo: github 버튼 넣어서 테스트해봐야함.. 8월 12일
-// https://github.com/splendido/meteor-accounts-meld
-// http://test-accounts-meld.meteor.com/
-// https://github.com/meteor-useraccounts/core
-// https://github.com/artwells/meteor-accounts-guest
-
-
 
 /**
  * Set restrictions on new user creation.
@@ -126,23 +290,24 @@ Accounts.onCreateUser(function(options, user) {
  * If any of the functions return false or throw an error, the new user creation is aborted.
  */
 Accounts.validateNewUser(function(user) {
-  console.log('validateNewUser: ' + JSON.stringify(user, null, 2));
-  if (user && user.services.facebook) {
-    var newUser = user.services.facebook;
-    if (newUser.email) {
-      //var thirdPartyUser = Meteor.users.findOne({
-      // 'services.email.verificationTokens.0.address': userData.email
-      // });
-      var pastUser = Meteor.users.findOne({'emails.0.address': newUser.email, 'emails.0.verified': true });
-      if (pastUser) {
-        console.log(pastUser.emails[0].address+' 이미 동일한 메일의 계정의 존재합니다.');
-        throw new Meteor.Error(403, "주소로 이미 회원가입하셨습니다.", { email: pastUser.emails[0].address });
-      }
-    }
-  }
+  console.log('validateNewUser..');
+  //if (user && user.services.facebook) {
+  //  var newUser = user.services.facebook;
+  //  if (newUser.email) {
+  //    //var thirdPartyUser = Meteor.users.findOne({
+  //    // 'services.email.verificationTokens.0.address': userData.email
+  //    // });
+  //    var pastUser = Meteor.users.findOne({'emails.0.address': newUser.email, 'emails.0.verified': true });
+  //    if (pastUser) {
+  //      console.log(pastUser.emails[0].address+' 이미 동일한 메일의 계정의 존재합니다.');
+  //      throw new Meteor.Error(403, "주소로 이미 회원가입하셨습니다.", { email: pastUser.emails[0].address });
+  //    }
+  //  }
+  //}
 
   return true;
 });
+
 
 Accounts.onLogin(function(info) {
   Meteor.users.update({ _id: info.user._id },
@@ -153,8 +318,6 @@ Accounts.onLoginFailure(function(info) {
   //console.log('info, onLoginFailure: ', info);
   //console.log('email..: ' + JSON.stringify(info.error.details.email, null, 2));
 });
-
-
 
 /**
  * validate user login
@@ -175,8 +338,25 @@ Accounts.validateLoginAttempt(function(attempt) {
   return true;
 });
 
+Accounts.onLogin(function(info) {
+  //console.log('info, onLoginFailure: ', info);
+  //console.log('email..: ' + JSON.stringify(info.error.details.email, null, 2));
+});
+
+Accounts.onLoginFailure(function(info) {
+  //console.log('info, onLoginFailure: ', info);
+  //console.log('email..: ' + JSON.stringify(info.error.details.email, null, 2));
+});
 
 Meteor.startup(function() {
   setupFacebookLogin();
+  setupGoogleLogin();
+  setupMeteorLogin();
+  setupGithubLogin();
   setupMeetupLogin();
+  setupTwitterLogin();
+  //setupLinkedInLogin();
+
+  setupNaverLogin();
+  setupKakaoLogin();
 });

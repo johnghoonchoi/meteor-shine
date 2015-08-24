@@ -373,7 +373,8 @@ AccountsMeld.configure({
 
 The package accounts-meld exports a collection called `MeldActions` which is used for client-server communication in case [`askBeforeMeld`](#askBeforeMeld) was set to `true`.
 
-The collection content referencing to the currently signed in user is published under the name `pendingMeldActions`. So, to be able to access it, the client should subscribe with:
+The collection content referencing to the currently signed in user is published under the name `pendingMeldActions`. 
+So, to be able to access it, the client should subscribe with:
 
 ```javascript
 Meteor.subscribe("pendingMeldActions");

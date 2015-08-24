@@ -153,56 +153,9 @@ Template.signInOtherService.helpers({
 });
 
 Template.signInOtherService.events({
-  'click button': function () {
-    var serviceName = this.name;
-
-    // XXX Service providers should be able to specify their
-    // `Meteor.loginWithX` method name.
-    var loginWithService = Meteor["loginWith" +
-      (serviceName === 'meteor-developer' ?
-        'MeteorDeveloperAccount' : capitalize(serviceName))];
-
-    var options = {}; // use default scope unless specified
-    if (Accounts.ui._options.requestPermissions[serviceName])
-      options.requestPermissions = Accounts.ui._options.requestPermissions[serviceName];
-    if (Accounts.ui._options.requestOfflineToken[serviceName])
-      options.requestOfflineToken = Accounts.ui._options.requestOfflineToken[serviceName];
-    if (Accounts.ui._options.forceApprovalPrompt[serviceName])
-      options.forceApprovalPrompt = Accounts.ui._options.forceApprovalPrompt[serviceName];
-
-    loginWithService(options, function (error) {
-      console.log('error: ', error);
-
-      if (! error) {
-        Accounts.ui.dialog.hide();
-      } else if (error instanceof Accounts.LoginCancelledError) {
-        // do nothing
-      } else if (error instanceof ServiceConfiguration.ConfigError) {
-        //Alerts.notifyModal('error', '')
-      } else {
-        var msg = error.reason || "error_unknown";
-        var email = error.details.email;
-
-        if (email) {
-          Alerts.dialog('confirm', email + msg + '해당 Email 주소로 로그인하시겠습니까?', function(result) {
-            if (result) {
-              $('#login-username-or-email').val(email);
-              $('#login-password').focus();
-              return;
-            }
-            Accounts.ui.dialog.hide();
-          });
-        } else Alerts.notifyModal('error', "accounts-ui:" + msg);
-      }
-    });
-
-    //Accounts.onLoginFailure(function() {
-    //  Alerts.dialog('alert', '이미 회원가입하셨습니다.');
-    //});
-
+  'click [data-action=sign-in]': function () {
+    loginOtherServices(this.name);
   }
-
-
 
 });
 
