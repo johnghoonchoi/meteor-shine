@@ -1,13 +1,13 @@
 <template name="systemEdit">
   <article class="page">
     <header>
-      <h3>{{_ 'title_system_edit'}}</h3>
+      <h3>{{_ 'title_system'}} <small>{{_ 'title_edit'}}</small></h3>
     </header>
 
     <div class="body">
-      <form id="formSystemEdit">
+      <form id="formSystemEdit" class="form-admin">
         <fieldset>
-          <legend>{{_ 'label_site_name'}} :</legend>
+          <legend>{{_ 'label_site'}}</legend>
           <section class="form-group">
             <label>{{_ 'label_name'}}</label>
             <input type="text" id="siteName" class="form-control"
@@ -16,7 +16,7 @@
         </fieldset>
 
         <fieldset>
-          <legend>{{_ 'label_facebook_login'}} :</legend>
+          <legend>{{_ 'label_facebook_login'}}</legend>
           <section class="form-group">
             <label>appId</label>
             <input type="text" id="facebook-id" class="form-control"
@@ -31,7 +31,7 @@
         </fieldset>
 
         <fieldset>
-          <legend>{{_ 'label_meetup_login'}} :</legend>
+          <legend>{{_ 'label_meetup_login'}}</legend>
           <section class="form-group">
             <label>clientId</label>
             <input type="text" id="meetup-id" class="form-control"
@@ -49,8 +49,10 @@
           </section>
         </fieldset>
 
-        <section class="form-group">
-          <button type="submit" class="btn btn-primary">{{_ 'command_save'}}</button>
+        <section class="form-actions">
+          <div class="btn-toolbar pull-right">
+            <button type="submit" class="btn btn-primary">{{_ 'command_save'}}</button>
+          </div>
         </section>
       </form>
     </div>

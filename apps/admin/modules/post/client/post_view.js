@@ -5,8 +5,8 @@ Template.postView.onCreated(function() {
   instance.autorun(function() {
     data = Template.currentData();
 
-    instance.subscribe('postView', this.params._id);
-    instance.subscribe('postLikeView', this.params._id);
+    instance.subscribe('postView', data.postId);
+    instance.subscribe('postLikeView', data.postId);
   });
 
   instance.editMode = new ReactiveVar(false);

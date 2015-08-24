@@ -116,6 +116,69 @@ article.notifications {
 }
 
 //
+// custom form
+//--------------------------------------------------------------
+
+.form-admin {
+
+  fieldset {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: solid 1px @input-border;
+    border-radius: @border-radius-base;
+
+    legend {
+      width: auto;
+      padding: 0 5px;
+      border: none;
+
+      font-size: 1.2em;
+    }
+  }
+
+  .form-group {
+    position: relative;
+    padding-left: 120px;
+    display: block;
+
+    > label {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 120px;
+
+      line-height: 34px;
+      color: @gray;
+    }
+
+    > label.radio-inline {
+      position: static;
+      display: inline;
+
+      input {
+        top: 6px;
+      }
+    }
+  }
+
+  .form-actions {
+    padding: 10px;
+    border-radius: @border-radius-base;
+    background: #f5f5f5;
+
+    .clearfix();
+
+    > .btn {
+      float: left;
+    }
+
+    .btn + .btn {
+      margin-left: 5px;
+    }
+  }
+}
+
+//
 // connections list
 //--------------------------------------------------------------
 
@@ -194,7 +257,7 @@ article.notifications {
 
 .chat-layout {
   position : absolute;
-  
+
   width : 300px;
   bottom : 0;
   z-index: 3000;

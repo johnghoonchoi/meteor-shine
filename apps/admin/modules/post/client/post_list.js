@@ -2,11 +2,10 @@ Template.postsList.onCreated(function() {
   var instance = this;
   var data;
 
-  instance.categoryId = new ReactiveVar();;
   instance.increment = 10;
+  instance.categories = new ReactiveVar();;
   instance.limit = new ReactiveVar(instance.increment);
   instance.loaded = new ReactiveVar(0);
-  instance.totalCount = new ReactiveVar(0);
   instance.sortBy = function(value) {
     if (value === 'like') {
       return { 'count.likes': -1 };
@@ -17,14 +16,16 @@ Template.postsList.onCreated(function() {
 
   instance.subscribe('categoriesList', {}, { sort: { seq: 1 }});
 
+  var query;
+
   instance.autorun(function() {
     data = Template.currentData();
 
+    query = (instance.categories.get()) ?
+      { $in: { categoryId: instance.categoryId.get() }} : {};
+
     var limit = instance.limit.get();
     var sort = instance.sortBy(data.sortBy);
-
-    var query = (instance.categoryId.get()) ?
-      { categoryId: instance.categoryId.get() } : {};
 
     instance.subscribe('postsListCount', query);
 
@@ -43,7 +44,7 @@ Template.postsList.onCreated(function() {
   };
 
   instance.posts = function() {
-    var categoryId = instance.categoryId.get();
+    var categoryId = instance.categoryId ? instance.categoryId.get() : null;
     var query = (categoryId) ? { categoryId: categoryId } : {};
     return Posts.find(query, {
       limit: instance.loaded.get(), sort: { publishedAt: 1 }
@@ -53,9 +54,10 @@ Template.postsList.onCreated(function() {
 
 
 Template.postsList.onDestroyed(function() {
+  this.categoryId = null;
   this.limit = null;
   this.loaded = null;
-  this.category = null;
+  this.sortBy = null;
   this.postsCount = null;
   this.posts = null;
 });

@@ -26,28 +26,27 @@
             <th>{{_ 'label_author'}}</th>
             <th>{{_ 'label_like'}}</th>
             <th>{{_ 'label_comment'}}</th>
-            <th>{{_ 'label_updatedAt'}}</th>
-            <th>{{_ 'label_createdAt'}}</th>
+            <th>{{_ 'label_updated_at'}}</th>
+            <th>{{_ 'label_created_at'}}</th>
           </tr>
           </thead>
 
           <tbody>
-          {{#if Template.subscriptionsReady}}
-            {{#each posts}}
-              {{#with postWithUser}}
-                {{> postsListItem}}
-              {{/with}}
-            {{/each}}
-          {{else}}
-            {{> listLoading}}
-          {{/if}}
+          {{#each posts}}
+            {{#with postWithUser}}
+              {{> postsListItem}}
+            {{/with}}
+          {{/each}}
           </tbody>
         </table>
 
-        {{#if hasMore}}
-          <button id="load-more" class="btn btn-default btn-block">{{_ 'command_load_more'}}</button>
+        {{#if Template.subscriptionsReady}}
+          {{#if hasMore}}
+            <button id="load-more" class="btn btn-default btn-block">{{_ 'command_load_more'}}</button>
+          {{/if}}
+        {{else}}
+          {{> listLoading}}
         {{/if}}
-
       {{/if}}
     </div>
   </article>
