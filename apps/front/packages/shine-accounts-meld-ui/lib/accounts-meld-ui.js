@@ -4,13 +4,6 @@
 Meteor.subscribe("pendingMeldActions");
 MeldActions = new Meteor.Collection('meldActions');
 
-Template.accountsMeld.onRendered(function() {
-  this.autorun(function() {
-    console.log('autorun..');
-    var action = MeldActions.findOne({meld: "done"});
-    console.log('action: ', action);
-  });
-});
 
 Template.accountsMeld.helpers({
   completed: function() {

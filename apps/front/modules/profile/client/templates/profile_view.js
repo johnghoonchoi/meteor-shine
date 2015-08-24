@@ -24,15 +24,6 @@ Template.profileView.onDestroyed(function() {
 });
 
 
-Template.profileView.onRendered(function() {
-  var instance = this;
-  instance.autorun(function() {
-    console.log('ready? ', instance.isReady());
-  });
-
-
-});
-
 /**
  * Display user information
  *    - picture

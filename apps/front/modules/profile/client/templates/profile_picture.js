@@ -38,7 +38,7 @@ var _removeTempPic = function() {
 };
 
 var _stopCropper = function () {
-  console.log('_stopCropper: ');
+  //console.log('_stopCropper: ');
   $('#avatarModal').find('form').get(0).reset();
   $('.avatar-wrapper').find('img').cropper('destroy');
   $('.avatar-wrapper').find('img').remove();
@@ -54,7 +54,7 @@ var _drawCropper = function() {
 
   if (flag === 'default') {
     $avatarView.empty().html(_userInitial());
-    console.log('default');
+    //console.log('default');
 
     return;
   }
@@ -94,8 +94,7 @@ var _drawCropper = function() {
     $img.cropper();
   }
 
-  console.log('autorun');
-
+  //console.log('autorun');
 };
 
 Template.profilePicture.helpers({

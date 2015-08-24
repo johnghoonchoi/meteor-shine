@@ -55,8 +55,6 @@ Accounts.updateOrCreateUserFromExternalService =
 Accounts.onLogin(function(attempt) {
   var services = oauthServicesList();
 
-  console.log('등록된 services: ', services);
-
   //console.log('attempt: ' + JSON.stringify(attempt, null, 2));
 
   // Reload user object which was possibly modified
@@ -65,8 +63,6 @@ Accounts.onLogin(function(attempt) {
 	//       se there's no way to get the modified user object from the
 	//       *attempt* one...
 	var user = Meteor.users.findOne(attempt.user._id);
-  console.log('로그인 시도 유저: ' + JSON.stringify(user, null, 2));
-
 
   // 통합 가능한 계정이 있는지 확인 하는 checkForMelds 메서드 호출
 	// Checks for possible meld actions to be created
