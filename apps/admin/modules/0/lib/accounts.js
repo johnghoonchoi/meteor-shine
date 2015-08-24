@@ -8,27 +8,20 @@
 // helpers
 //
 
-userDisplayName = function (user) {
-  if (! user)
-    return "";
+userDisplayName = function (userId) {
+  var user = Meteor.users.findOne({ _id: userId });
+  if (!user) return '';
 
   if (user.profile && user.profile.name)
     return user.profile.name;
-
-  if (user.oauths) {
-    if (user.oauths.facebook)
-      return user.oauths.facebook.name;
-
-    if (user.oauths.meetup)
-      return user.oauths.meetup.name;
-  }
-
   if (user.username)
     return user.username;
-
   if (user.emails && user.emails[0] && user.emails[0].address)
     return user.emails[0].address;
-
+  if (user.oauths) {
+    if (user.oauths.facebook) return user.oauths.facebook.name;
+    if (user.oauths.meetup) return user.oauths.meetup.name;
+  }
   return '';
 };
 

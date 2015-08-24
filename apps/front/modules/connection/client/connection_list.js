@@ -4,15 +4,13 @@ UserStatus = new Mongo.Collection('user_status_sessions');
 Template.connectionsList.onCreated(function() {
   var instance = this;
 
+  var data = Template.currentData();
+
   instance.increment = 10;
   instance.limit = new ReactiveVar(instance.increment);
   instance.loadead = new ReactiveVar(0);
   instance.expand = new ReactiveVar(false);
 
-  //instance.activeChat = null;
-  //instance.chatList = [];
-
-  //instance.hasChatId = null;
   instance.chatTemplate = null;
 
   instance.autorun(function() {
@@ -38,6 +36,8 @@ Template.connectionsList.onCreated(function() {
 });
 
 Template.connectionsList.onDestroyed(function() {
+  console.log('connectionsList_onDestroyed_this', this);
+  console.log('------------------------------------');
   this.limit = null;
   this.loadead = null;
   this.connections = null;
@@ -50,7 +50,6 @@ Template.connectionsList.helpers({
   },
 
   connections: function() {
-    //console.log('Template.instance().connections()', Template.instance().connections());
     return Template.instance().connections();
   },
 
@@ -63,13 +62,14 @@ Template.connectionsList.events({
 
   'click #user-status > a' : function (e, instance) {
 
+    // singleton instance
     if (instance.chatTemplate) {
       Blaze.remove(instance.chatTemplate);
     }
 
+    console.log('this', this);
     this.chatTemplate = Blaze.renderWithData(Template.chatFrame, this, document.body);
     instance.chatTemplate = this.chatTemplate;
-
 
   }
 });
