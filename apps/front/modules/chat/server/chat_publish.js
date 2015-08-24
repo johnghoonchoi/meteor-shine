@@ -2,10 +2,39 @@
  * Created by ProgrammingPearls on 15. 8. 13..
  */
 
-Meteor.publish('chatmessages', function (receiveId) {
+Meteor.publishComposite('chatMessages', function (toId, limit) {
+  return {
+    find: function () {
+      var query = { _id: this.userId };
+      limit = limit || 0;
 
-  var senderQuery = { "from._id" : this.userId, "to._id": receiveId };
-  var receiverQuery = { "from._id" : receiveId, "to._id": this.userId };
+      return Meteor.users.find(query, { fields: { services: 0 } });
 
-  return chatMessages.find({ $or: [ senderQuery, receiverQuery ]});
+    },
+    children: [{
+      find: function (from_user) {
+        var senderQuery = {"from._id": from_user._id, "to._id": toId};
+        var receiverQuery = {"from._id": toId, "to._id": from_user._id};
+
+        var query = {$or: [ senderQuery, receiverQuery]};
+
+        return ChatMessages.find(query, { limit: limit, sort : { createdAt : -1 }});
+      }
+    }]
+  }
 });
+
+Meteor.publish('chatStatus', function (toId, status) {
+
+  var senderQuery = {"from._id": this.userId, "to._id": toId, "status": status};
+  var receiverQuery = {"from._id": toId, "to._id": this.userId, "status": status};
+
+  var query = {$or: [senderQuery, receiverQuery]};
+
+  Counts.publish(this, 'chatStatusCount',
+    ChatStatus.find({"to._id": this.userId})
+  );
+  return ChatStatus.find(query);
+});
+
+// how to remove Duplicate source?

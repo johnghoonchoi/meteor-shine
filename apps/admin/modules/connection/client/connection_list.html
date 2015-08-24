@@ -1,25 +1,41 @@
 <template name="connectionsList">
   <article class="page">
     <header>
-      <h3>{{_ 'title_connections_list'}}</h3>
+      <h3>{{_ 'title_connection'}} <small>{{_ 'title_list'}}</small></h3>
     </header>
 
     <div class="body">
-      <div class="btn-toolbar">
-        <p>Access: {{connectionsCount}}</p>
+      <div class="page-actions">
+        <p class="message">{{_ 'label_total_count'}}: {{connectionsCount}}</p>
       </div>
 
-      <div class="list">
-        {{#each connections}}
-          {{> connectionsListItem}}
-        {{/each}}
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>{{_ 'label_account'}}</th>
+            <th>{{_ 'label_ip_address'}}</th>
+            <th>{{_ 'label_connected_at'}}</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          {{#each connections}}
+            {{> connectionsListItem}}
+          {{/each}}
+          </tbody>
+        </table>
       </div>
     </div>
   </article>
 </template>
 
 <template name="connectionsListItem">
-  <div>
-    {{_id}}, {{ip}}, {{user.username}}
-  </div>
+  <tr>
+    <td>{{_id}}</td>
+    <td>{{user.username}}</td>
+    <td>{{ip}}</td>
+    <td>{{momentFormat createdAt 'YYYY-MM-DD HH:mm:ss'}}</td>
+  </tr>
 </template>

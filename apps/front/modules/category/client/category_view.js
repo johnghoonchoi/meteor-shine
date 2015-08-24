@@ -74,6 +74,17 @@ Template.categoryView.helpers({
     return Template.instance().posts();
   },
 
+  postWithUser: function() {
+    var post = this;
+    var author = Meteor.users.findOne(post.author._id);
+    return _.extend(post, { author: author });
+  },
+
+  hasMore: function() {
+    var instance = Template.instance();
+    return (instance.postsCount() > instance.loaded.get());
+  },
+
   permissionRead: function() {
     return categoryPermitted(Template.instance().category(),
       Meteor.user(), 'read');

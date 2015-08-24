@@ -1,25 +1,51 @@
 <template name="accountsList">
   <article class="page">
     <header>
-      <h3>{{_ 'title_accounts_list'}}</h3>
+      <h3>{{_ 'title_account'}} <small>{{_ 'title_list'}}</small></h3>
     </header>
 
     <div class="body">
-      <div class="btn-toolbar">
-        List Count: {{accountsCount}}
+      <div class="page-actions">
+        <p class="message">{{_ 'label_total_count'}}: {{accountsCount}}</p>
       </div>
 
       <div class="list">
-        {{#each accounts}}
-          {{> accountsListItem}}
-        {{/each}}
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>{{_ 'label_account'}}</th>
+              <th>{{_ 'label_oauth_account'}}</th>
+              <th>{{_ 'label_email'}}</th>
+              <th>{{_ 'label_last_login_at'}}</th>
+              <th>{{_ 'label_created_at'}}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {{#each accounts}}
+              {{> accountsListItem}}
+            {{/each}}
+          </tbody>
+        </table>
+
+        {{#if Template.subscriptionsReady}}
+          {{#if hasMore}}
+            <button id="load-more" class="btn btn-default btn-block">{{_ 'command_load_more'}}</button>
+          {{/if}}
+        {{else}}
+          {{> listLoading}}
+        {{/if}}
       </div>
     </div>
   </article>
 </template>
 
 <template name="accountsListItem">
-  <div>
-    <a href="{{pathFor 'accountEdit'}}">{{username}}</a>, {{createdAt}}
-  </div>
+  <tr>
+    <td><a href="{{pathFor 'accountEdit'}}">{{username}}</a></td>
+    <td>{{oauthName}}</td>
+    <td>{{email}}</td>
+    <td>{{momentFormat loginAt 'YYYY-MM-DD HH:mm'}}</td>
+    <td>{{momentFormat createdAt 'YYYY-MM-DD HH:mm'}}</td>
+  </tr>
 </template>

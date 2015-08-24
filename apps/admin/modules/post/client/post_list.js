@@ -2,7 +2,8 @@ Template.postsList.onCreated(function() {
   var instance = this;
   var data;
 
-  instance.increment = 20;
+  instance.increment = 10;
+  instance.categories = new ReactiveVar();;
   instance.limit = new ReactiveVar(instance.increment);
   instance.loaded = new ReactiveVar(0);
   instance.sortBy = function(value) {
@@ -13,50 +14,53 @@ Template.postsList.onCreated(function() {
     }
   };
 
+  instance.subscribe('categoriesList', {}, { sort: { seq: 1 }});
+
+  var query;
+
   instance.autorun(function() {
     data = Template.currentData();
+
+    query = (instance.categories.get()) ?
+      { $in: { categoryId: instance.categoryId.get() }} : {};
+
     var limit = instance.limit.get();
     var sort = instance.sortBy(data.sortBy);
 
-    if (data.categoryId) {
-      instance.subscribe('categoryView', data.categoryId);
+    instance.subscribe('postsListCount', query);
 
-      instance.subscribe('postsList',
-        { categoryId: data.categoryId }, { limit: limit, sort: sort },
-        function() { instance.loaded.set(limit); });
-    } else {
-      instance.subscribe('postsList', {}, { limit: limit, sort: sort },
-        function() { instance.loaded.set(limit); });
-    }
+    instance.subscribe('postsList', query, { limit: limit, sort: sort },
+      function() {
+        instance.loaded.set(limit);
+      }
+    );
+
+    Navigations.path.set('postsList');
   });
 
-  instance.category = function() {
-    return (data.categoryId) ?
-      Categories.findOne({ _id: data.categoryId }) : null;
-  };
 
   instance.postsCount = function() {
     return Counts.get('postListsCount');
   };
 
   instance.posts = function() {
-    var query = (data.categoryId) ? { categoryId: data.categoryId } : {};
+    var categoryId = instance.categoryId ? instance.categoryId.get() : null;
+    var query = (categoryId) ? { categoryId: categoryId } : {};
     return Posts.find(query, {
       limit: instance.loaded.get(), sort: { publishedAt: 1 }
     });
   };
-
 });
 
 
 Template.postsList.onDestroyed(function() {
+  this.categoryId = null;
   this.limit = null;
   this.loaded = null;
-  this.category = null;
+  this.sortBy = null;
   this.postsCount = null;
   this.posts = null;
 });
-
 
 
 Template.postsList.helpers({
@@ -65,11 +69,22 @@ Template.postsList.helpers({
   },
 
   postsCount: function() {
-    return Counts.get('postsListCount');
+    return Template.instance().postsCount();
   },
 
   posts: function() {
     return Template.instance().posts();
+  },
+
+  postWithUser: function() {
+    var post = this;
+    var author = Meteor.users.findOne(post.author._id);
+    return _.extend(post, { author: author });
+  },
+
+  hasMore: function() {
+    var instance = Template.instance();
+    return (instance.postsCount() > instance.loaded.get());
   }
 });
 
@@ -79,3 +94,5 @@ Template.postsList.events({
     instance.limit.set(instance.limit.get() + instance.increment);
   }
 });
+
+

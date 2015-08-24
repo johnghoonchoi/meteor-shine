@@ -1,4 +1,6 @@
 Template.categoriesList.onCreated(function() {
+  Navigations.path.set('categoriesList');
+
   var instance = this;
 
   instance.autorun(function() {
@@ -21,7 +23,7 @@ Template.categoriesList.onDestroyed(function() {
 });
 
 Template.categoriesList.onRendered(function() {
-  this.$('.categories').sortable({
+  this.$('.sortable').sortable({
     stop: function(e, ui) {
       // get the dragged html element and the one before
       //   and after it
@@ -69,17 +71,6 @@ Template.categoriesList.helpers({
   }
 });
 
-/*
-Template.categoriesListItem.onRendered(function() {
-  var data = Template.currentData();
-
-  this.$('input[name=categoryState]').on('switchChange.bootstrapSwitch',
-    function(e, state) {
-      alert('state: ' + state);
-    }
-  );
-});
-*/
 Template.categoriesListItem.helpers({
   isOn: function() {
     return this.state === 'ON';

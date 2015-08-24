@@ -1,30 +1,30 @@
 <template name="accountEdit">
   <article class="page">
     <header>
-      <h3>{{_ 'title_account_edit'}}</h3>
+      <h3>{{_ 'title_account'}} <small>{{_ 'title_edit'}}</small></h3>
     </header>
 
     <div class="body">
-      <form id="formAccountEdit">
+      <form id="formAccountEdit" class="form-admin">
         <section class="form-group">
-          <label>id</label>
-          <p>{{account._id}}</p>
+          <label>ID</label>
+          <p class="form-control-static">{{account._id}}</p>
         </section>
 
         <section class="form-group">
-          <label>username</label>
-          <input type="text" class="form-control" name="username" value="{{account.username}}">
+          <label>{{_ 'label_username'}}</label>
+          <p class="form-control-static">{{account.username}}</p>
         </section>
 
         <section class="form-group">
-          <label>emails</label>
+          <label>{{_ 'label_email'}}</label>
           {{#each account.emails}}
             <input type="email" class="form-control" name="email" value="{{address}}">
           {{/each}}
         </section>
 
         <section class="form-group">
-          <label>password</label>
+          <label>{{_ 'label_password'}}</label>
           <input type="password" class="form-control" name="password" value="">
         </section>
 
@@ -34,8 +34,20 @@
         </section>
 
         <section class="form-group">
-          <label>createdAt</label>
-          <p>{{account.createdAt}}</p>
+          <label>{{_ 'label_last_login_at'}}</label>
+          <p class="form-control-static">{{momentFormat account.loginAt 'YYYY-MM-DD HH:mm'}}</p>
+        </section>
+
+        <section class="form-group">
+          <label>{{_ 'label_created_at'}}</label>
+          <p class="form-control-static">{{momentFormat account.createdAt 'YYYY-MM-DD HH:mm'}}</p>
+        </section>
+
+        <section class="form-actions">
+          <div class="toolbar pull-right">
+            <button type="button" class="btn btn-default">{{_ 'command_cancel'}}</button>
+            <button type="submit" class="btn btn-primary">{{_ 'command_save'}}</button>
+          </div>
         </section>
       </form>
     </div>

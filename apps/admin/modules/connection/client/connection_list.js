@@ -2,6 +2,8 @@
 UserStatus = new Mongo.Collection('user_status_sessions');
 
 Template.connectionsList.onCreated(function() {
+  Navigations.path.set('connectionsList');
+
   var instance = this;
 
   instance.increment = 10;
@@ -17,7 +19,8 @@ Template.connectionsList.onCreated(function() {
 
 
   instance.connectionsCount = function() {
-    return Counts.get('connectionsListCount');
+    var count = Counts.get('connectionsListCount');
+    return (count > 0) ? count : 0;
   };
 
   instance.connections = function() {

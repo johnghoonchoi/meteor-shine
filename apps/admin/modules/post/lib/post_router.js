@@ -1,21 +1,15 @@
 
-Router.route('/posts/:categoryId?',
-  function() {
-    var sortBy = (this.params && this.params.query) ?
-      this.params.query.sortBy : 'time';
+Router.route('/posts', {
+  name: 'postsList',
+  data: function() {
+    return {
+      sortBy: (this.params && this.params.query) ? this.params.query.sortBy : ''
+    };
+  }
+});
 
-    this.render('postsList', {
-      data: { category: this.params.categoryId, sortBy: sortBy }
-    });
-  },
-  { name: 'postsList' }
-);
-
-Router.route('/post/:_id', { name: 'postView',
-  waitOn: function() {
-    Meteor.subscribe('postView', this.params._id);
-    Meteor.subscribe('postLikeView', this.params._id);
-  },
+Router.route('/post/:_id', {
+  name: 'postView',
   data: function() {
     return {
       postId: this.params._id

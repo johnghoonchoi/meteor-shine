@@ -308,6 +308,17 @@ Accounts.validateNewUser(function(user) {
   return true;
 });
 
+
+Accounts.onLogin(function(info) {
+  Meteor.users.update({ _id: info.user._id },
+    { $set: { loginAt: new Date() }});
+});
+
+Accounts.onLoginFailure(function(info) {
+  //console.log('info, onLoginFailure: ', info);
+  //console.log('email..: ' + JSON.stringify(info.error.details.email, null, 2));
+});
+
 /**
  * validate user login
  *

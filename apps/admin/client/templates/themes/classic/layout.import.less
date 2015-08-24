@@ -1,0 +1,169 @@
+
+html, body {
+  height: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.layout-classic {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.layout-classic > header {
+  position: relative;
+  width: 100%;
+  height: @header-height;
+  z-index: @zindex-navbar-fixed;
+  overflow: hidden;
+
+  background: @header-bg;
+  box-shadow: 0 1px 3px #666;
+
+  .logo {
+    width: @logo-width;
+    height: @logo-height;
+    margin: (@header-height - @logo-height)/2 auto;
+
+    text-align: center;
+    line-height: @logo-height;
+
+    a {
+      color: #fff;
+      font-size: @logo-font-size;
+      font-weight: 200;
+      text-decoration: none;
+      letter-spacing: 3px;
+    }
+  }
+
+  .header-left {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+  }
+
+  .header-right {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  .btn-header {
+    width: 30px;
+    padding: 0;
+  }
+
+}
+
+.layout-classic > footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: @footer-height;
+  z-index: @zindex-navbar-fixed;
+
+  background: #006687;
+}
+
+.layout-classic > main#content {
+  position: absolute;
+  top: @header-height;
+  bottom: @footer-height;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  background: #fff;
+}
+
+.layout-classic > aside {
+  position: absolute;
+
+  top: @header-height;
+  bottom: @footer-height;
+  z-index: @zindex-navbar-fixed;
+  overflow-y: auto;
+
+  box-shadow: none;
+
+  header {
+    text-align: right;
+  }
+}
+
+.layout-classic > aside.left {
+  left: -@aside-left-width;
+  width: @aside-left-width;
+  padding: 5px;
+  background: @aside-left-bg;
+  height: 100%;
+}
+
+.layout-classic > aside.right {
+  right: -@aside-right-width;
+  width: @aside-right-width;
+
+  background: @aside-right-bg;
+  height: 100%;
+}
+
+.layout-classic > main#content, .layout-classic > aside {
+  .transition(all @slide-transition-time ease-out);
+  .transition-transform(all @slide-transition-time ease-out);
+  //.backface-visibility(~'hidden');
+}
+
+.layout-classic.aside-left-on {
+  > main#content {
+    left: @aside-left-width;
+    right: -@aside-left-width;
+  }
+
+  > aside.left {
+    left: 0;
+    box-shadow: 1px 0 3px #666;
+  }
+}
+
+.layout-classic.aside-left-fixed {
+  > main#content {
+    left: @aside-left-width;
+    right: 0;
+  }
+
+  > aside.left {
+    left: 0;
+    box-shadow: 1px 0 3px #666;
+  }
+}
+
+.layout-classic.aside-right-on {
+  > main#content {
+    left: -@aside-right-width;
+    right: @aside-right-width;
+  }
+
+  > aside.right {
+    right: 0;
+    box-shadow: -1px 0 3px #666;
+  }
+}
+
+.layout-classic.aside-right-fixed {
+  > main#content {
+    left: 0;
+    right: @aside-right-width;
+  }
+
+  > aside.right {
+    right: 0;
+    box-shadow: -1px 0 3px #666;
+  }
+}
+

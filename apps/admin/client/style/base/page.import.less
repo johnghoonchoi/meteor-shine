@@ -1,47 +1,62 @@
-//
-//.page>h3{
-//  text-align: center;
-//}
-//
-//.bottom-padding10{
-//  margin-right: 0.3em;
-//  margin-left: 0.3em;
-//  padding-bottom: 2em;
-//}
+/*
+@media (min-width: @screen-xs-max) {
+  article.page {
+    width: @screen-xs - 10px;
+  }
+}
 
-// .ss-path {
-//   padding: 10px;
-// }
+@media (min-width: @screen-sm-min) {
+  article.page {
+    width: @screen-sm - 10px;
+  }
+}
 
-// article {
-//   margin: 10px;
-//   padding: 10px;
-//   border: solid 1px @input-border;
-//   background: #fff;
-//   //box-shadow: 1px 1px 0 0 #aaa;
-//   -webkit-transition: width @page-transition-time linear @page-transition-time; //ease-in;
-//        -o-transition: width @page-transition-time linear @page-transition-time; //ease-in;
-//           transition: width @page-transition-time linear @page-transition-time; //ease-in;
-// }
+@media (min-width: @screen-md-min) {
+  article.page {
+    width: @screen-md - 10px;
+  }
+}
 
-// .page > header {
-//   //border: solid 1px #eee;
-//   //background: #eee;
+@media (min-width: @screen-lg-min) {
+  article.page {
+    width: @screen-lg - 10px;
+  }
+}
+*/
 
-//   h1, h2, h3, h4, h5, h6 {
-//     margin: 0;
-//     padding: 0;
-//     line-height: 1.6em;
-//     color: darken(@brand-primary, 20%);
-//   }
-// }
+article.page {
+  position: relative;
 
-// .page {
-//   .ss-list-frame {
-//     margin-top: 10px;
-//   }
-//   .ss-list-frame > .list {
-//     margin-top: 10px;
-//     border: solid 1px @input-border;
-//   }
-// }
+  height: 100%;
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 10px;
+  //border: solid 1px #999;
+  //border-radius: @border-radius-base;
+  //box-shadow: 1px 0 3px #666;
+  //overflow: auto;
+
+  background: #fff;
+}
+
+article.page > header {
+  margin: 10px 0 10px 30px;
+  overflow: auto;
+
+  h1, h2, h3, h4, h5, h6 {
+    margin: 5px 0;
+  }
+}
+
+article.page .page-actions {
+  margin-bottom: 10px;
+  padding: 0;
+
+  p.message {
+    margin: 0;
+    padding: 0;
+    line-height: 34px;      // same as normal button height
+  }
+
+  .clearfix();
+}

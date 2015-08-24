@@ -34,7 +34,16 @@ Meteor.publishComposite('releasedCategoryView', function(categoryId, options) {
         find: function() {
           var query = { categoryId: categoryId, state: 'PUBLISHED' };
           return Posts.find(query, options);
-        }
+        },
+        children: [
+          {
+            find: function(post) {
+              return Meteor.users.find({ _id: post.author._id }, {
+                fields: { username: 1, profile: 1, oauths: 1 }
+              });
+            }
+          }
+        ]
       }
     ]
   };
