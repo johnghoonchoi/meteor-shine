@@ -1,26 +1,25 @@
 
-UserStatus = new Mongo.Collection('user_status_sessions');
-
 Template.connectionsList.onCreated(function() {
   var instance = this;
 
-  var data = Template.currentData();
-
-  instance.increment = 10;
+  instance.increment = 30;
   instance.limit = new ReactiveVar(instance.increment);
-  instance.loadead = new ReactiveVar(0);
-  instance.expand = new ReactiveVar(false);
+  instance.loaded = new ReactiveVar(0);
 
   instance.chatTemplate = null;
 
   instance.autorun(function() {
     var limit = instance.limit.get();
-    var sort = { createdAt: -1 };
+    var options = {
+      limit: limit,
+      sort: { createdAt: -1 }
+    };
 
     instance.subscribe('connectionsSignInListCount');
 
-    instance.subscribe('connectionsSignInList');
-
+    instance.subscribe('connectionsSignInList', options, function() {
+      instance.loaded.set(limit);
+    });
   });
 
 
@@ -29,47 +28,50 @@ Template.connectionsList.onCreated(function() {
   };
 
   instance.connections = function() {
-    return Connection.collection.find({ user: { $exists: true }},
-      { limit: instance.loadead.get(), sort: { createdAt: -1 }});
+    return Connection.collection.find(
+      { user: { $exists: true }, 'user._id': { $ne: Meteor.userId() }},
+      { limit: instance.loaded.get(), sort: { createdAt: -1 }}
+    );
   };
-
 });
 
 Template.connectionsList.onDestroyed(function() {
-  console.log('connectionsList_onDestroyed_this', this);
-  console.log('------------------------------------');
   this.limit = null;
-  this.loadead = null;
+  this.loaded = null;
   this.connections = null;
-  //this.chatTemplate = null;
 });
 
 Template.connectionsList.helpers({
   connectionsCount: function() {
-    return Template.instance().connectionsCount() - 1;
+    return Template.instance().connectionsCount();
   },
 
   connections: function() {
     return Template.instance().connections();
-  },
-
-  expand: function() {
-    return Template.instance().expand.get() ? "show" : "hide";
   }
 });
 
 Template.connectionsList.events({
+  'click header': function(e, instance) {
+    e.preventDefault();
+    e.stopPropagation();
 
-  'click #user-status > a' : function (e, instance) {
+    instance.$('.connections-frame').toggleClass('minimized');
+  }
+});
+
+Template.connectionsListItem.events({
+  'click a' : function (e, instance) {
+    e.preventDefault();
 
     // singleton instance
     if (instance.chatTemplate) {
       Blaze.remove(instance.chatTemplate);
     }
 
-    console.log('this', this);
-    this.chatTemplate = Blaze.renderWithData(Template.chatFrame, this, document.body);
-    instance.chatTemplate = this.chatTemplate;
+    this.chatTemplate = Blaze.renderWithData(Template.chatFrame,
+      this, document.body);
 
+    instance.chatTemplate = this.chatTemplate;
   }
 });

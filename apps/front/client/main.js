@@ -5,3 +5,9 @@ $(document).mouseup(function(e) {
 });
 
 Meteor.subscribe('userData');
+
+/*
+Meteor.startup(function() {
+  Meteor.call('connectionInit');
+});
+*/

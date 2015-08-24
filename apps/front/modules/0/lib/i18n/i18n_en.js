@@ -64,6 +64,7 @@ I18n_data_en = {
   "text_draft_removed"            : "Draft removed",
   "text_post_draft_success"       : "Post draft saved",
   "text_notifications_empty"      : "There's no notification.",
+  "text_user_count"               : "User count: {0}",
 
 
   "error_access_denied"           : "Access denied",

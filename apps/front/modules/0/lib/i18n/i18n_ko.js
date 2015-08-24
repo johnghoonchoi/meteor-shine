@@ -66,6 +66,7 @@ I18n_data_ko = {
   "text_draft_removed"            : "Draft 삭제",
   "text_post_draft_success"       : "Post draft 저장",
   "text_notifications_empty"      : "새로운 알림이 없습니다.",
+  "text_user_count"               : "접속자 수: {0}",
 
 
   "error_access_denied"           : "접근 권한이 없습니다.",

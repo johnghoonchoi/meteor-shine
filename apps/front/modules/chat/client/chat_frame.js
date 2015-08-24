@@ -17,6 +17,7 @@ Template.chatFrame.onCreated(function () {
   // other side input message
   instance.status = "input";
   instance.isInput = false;
+
   Meteor.call('chatStatusRemove', instance.status);
 
   // subscribe
@@ -63,33 +64,14 @@ Template.chatFrame.helpers({
 Template.chatFrame.events({
 
   // header events
-  'click a.chat-minimize': function (e, instance) {
-    e.preventDefault();
-    e.stopPropagation();
-  },
-
-  'click a.chat-exit': function (e, instance) {
-
-    e.stopPropagation();
-    e.preventDefault();
-    var data = instance.data;
-
-    Blaze.remove(data.chatTemplate);
+  'click a.close': function (e, instance) {
+    Blaze.remove(instance.data.chatTemplate);
   },
 
   // footer events
-  'focus .chat-textarea': function (e) {
-    var thisElement = $(e.currentTarget)[0];
-    thisElement.style.background = "yellow";
-  },
+  'keyup textarea': function (e, instance) {
 
-  'focusout .chat-textarea': function (e) {
-    $(e.currentTarget).removeAttr('style');
-  },
-
-  'keyup .chat-textarea': function (e, instance) {
-
-    var thisElement = instance.find(".chat-textarea");
+    var thisElement = instance.find("textarea");
     var content = thisElement.value;
 
     // remove line breaks from string
@@ -196,3 +178,11 @@ Template.chatStatusInput.onRendered(function () {
   var selector = '.chat-message-lists';
   ScrollToBottom(selector);
 });
+
+Template.chatStatusInput.helpers({
+  getPartnerPictures: function () {
+    //return Template.instance().partnerPicture;
+    return getPicture(this.user);
+  }
+});
+

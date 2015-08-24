@@ -2,14 +2,16 @@
   <div id="container" class="layout-classic">
     {{> headerClassic}}
 
-    {{> asideLeftClassic}}
-	  {{> accountsMeld}}
-
     <main id="content">
       {{> yield}}
     </main>
 
-    {{> connectionsList}}
+    {{> asideLeftClassic}}
+    {{> accountsMeld}}
+
+    {{#if currentUser}}
+      {{> connectionsList}}
+    {{/if}}
   </div>
 
 </template>
