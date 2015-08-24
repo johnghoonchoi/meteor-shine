@@ -198,7 +198,7 @@ article.notifications {
   width : 300px;
   bottom : 0;
   z-index: 3000;
-  background-color : #EEEEEE;
+  background-color : @chat-background;
   font-family: "Roboto", "HelveticaNeue-Light", "sans-serif";
 }
 
@@ -218,8 +218,8 @@ article.notifications {
     width: 100%;
     align-items: center;
 
-    .partner-name {
-      color: @chat-background;
+    .menu-left {
+      color: @chat-header-background;
     }
   }
 
@@ -270,28 +270,70 @@ article.notifications {
     }
   }
 }
+.menu-left {
+  width: 50%;
+  margin-left: 15px;
+  text-align: left;
+}
+
+.menu-right {
+  width: 50%;
+  margin-right: 15px;
+  text-align: right;
+}
 
 a.chat-minimize, a.chat-exit {
-  color: @chat-background;
+  color: @chat-header-background;
 }
 
 a.chat-minimize:hover, a.chat-exit:hover {
-  color: @chat-background-hover;
+  color: @chat-header-background-hover;
   text-decoration: none;
 }
 
-.text-left .chat-partner {
+.chat-partner {
   overflow-x: auto;
   margin-left: 40px;
+  line-height: @chat-message-line-height;
+  height: 100%;
+}
 
+.chat-self {
+  line-height: @chat-message-line-height;
+}
+
+.chat-date {
+  line-height: @chat-message-line-height;
+  color: #9197a3;
+  position: relative;
+}
+
+.chat-date:before {
+  content: attr(data-date);
+  z-index: 10;
+  position: absolute;
+  background-color: @chat-background;
+  left: 50px;
+  display: table;
+  padding: 0 5px;
+}
+
+.chat-date:after{
+  content: " ";
+  display: block;
+  width: 100%;
+  border: 1px solid #d1d1d1;
+  opacity: 0.3;
+  position: absolute;
+  top: 16px;
 }
 .chat-message-list {
   line-height: 1.28;
-  margin: 0 4px;
+  margin: @chat-message-margin;
   overflow: hidden;
   padding: 5px 0;
   text-align: left;
-
+  height: @chat-message-height;
   > a {
     float: left;
   }
