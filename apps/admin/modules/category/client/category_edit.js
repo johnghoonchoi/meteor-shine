@@ -43,6 +43,12 @@ Template.categoryEdit.helpers({
 });
 
 Template.categoryEdit.events({
+  'click #cancel': function(e) {
+    e.preventDefault();
+
+    history.back(-1);
+  },
+
   'submit #formCategoryEdit': function(e, instance) {
     e.preventDefault();
 
