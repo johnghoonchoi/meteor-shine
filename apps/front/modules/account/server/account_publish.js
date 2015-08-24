@@ -11,4 +11,3 @@ Meteor.publish("myData", function () {
     this.ready();
   }
 });
-

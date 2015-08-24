@@ -1,54 +1,72 @@
-var meldDBCallback = function(src_user, dst_user_id){
-  console.log('meldDBCallback invoked..');
+var meldUserCallback = function(srcUser, dstUser){
+  // create a melded user object here and return it
+  var meldedUser = _.clone(dstUser);
 
-  if (src_user.username)
-    Meteor.users.update(dst_user_id, { $set: {"username": src_user.username} });
+  // 'createdAt' field: keep the oldest between the two
+  if (srcUser.createdAt < dstUser.createdAt)
+    meldedUser.createdAt = srcUser.createdAt;
 
-  var user = Meteor.users.findOne(dst_user_id);
+  if (!dstUser.username && srcUser.username)
+    meldedUser.username = srcUser.username;
 
-  if (user.services.facebook){
-    var fbId = user.services.facebook.id;
-    var picture = "http://graph.facebook.com/" + fbId + "/picture?type=square&height=160&width=160";
-    var name = user.services.facebook.name;
+  dstUser.profile = dstUser.profile || {};
+  meldedUser.profile = _.extend(dstUser.profile, srcUser.profile || {});
+  dstUser.oauths = dstUser.oauths || {};
+  meldedUser.oauths = _.extend(dstUser.oauths, srcUser.oauths || {});
 
-    Meteor.users.update(dst_user_id, { $set: {"oauths.facebook.picture": picture} });
-
-    if (name)
-      Meteor.users.update(dst_user_id, { $set: {"oauths.facebook.name": name} });
-  }
-
-  if (user.services.meetup) {
-    if (user.services.meetup.name) {
-      var name = user.services.meetup.name;
-      Meteor.users.update(dst_user_id, { $set: {"oauths.meetup.name": name} });
-    }
-
-    if(user.services.meetup.photo && user.services.meetup.photo.photo_link !== "") {
-      var picture = userData.photo.photo_link;
-      Meteor.users.update(dst_user_id, { $set: {"oauths.meetup.picture": picture} })
-    }
-  }
-
-  // _id update
-  Posts.update({user_id: src_user._id}, {$set: {"author._id": dst_user_id}}, {multi: true});
-  PostComments.update({user_id: src_user._id}, {$set: {"user._id": dst_user_id}}, {multi: true});
-
-
-  // todo: 3rd parth services로 password service를 통합할 경우 username이 날라감
-  // todo: Meetup으로 로그인한 경우 인증된 email 프로퍼티값이 없으므로 이메일 입력을 받게해야하나..?
+  return meldedUser;
 };
 
-var serviceAddedCallback = function(user_id, service_name){
-  if (service_name === 'facebook'){
-    console.log('Facebook just added for user ' + user_id);
-  }
-  if (service_name === 'meetup'){
-    console.log('meetup just added for user ' + user_id);
-  }
+var meldDBCallback = function(src_user_id, dst_user_id){
+  // Here you can modify every collection you need for the document referencing
+  // to src_user_id to be modified in order to point to dst_user_id
+
+  // Todo : refactoring here
+  Posts.update(
+    {'author._id': src_user_id},
+    {$set: {'author._id': dst_user_id}},
+    {multi: true}
+  );
+  PostsComments.update(
+    {'user._id': src_user_id},
+    {$set: {'user._id': dst_user_id}},
+    {multi: true}
+  );
+};
+
+
+var serviceAddedCallback = function(userId, serviceName){
+    var user = Meteor.users.findOne(userId);
+    var set = {};
+    var picture;
+
+    if (user) {
+      var serviceData = user.services[serviceName];
+      var name = serviceData.name;
+
+      if (serviceName === 'facebook') {
+        var serviceId = user.services[serviceName].id;
+        picture = "http://graph.facebook.com/"+ serviceId +"/picture?type=square&height=160&width=160";
+      }
+
+      if (serviceName === 'google')
+        picture = serviceData.picture;
+
+      if (serviceName === 'twitter')
+        picture = serviceData.profile_image_url_https;
+
+      set["oauths." + serviceName + ".name"] = name || '';
+      set["oauths." + serviceName + ".picture"] = picture || '';
+
+      Meteor.users.update(userId, {$set: set});
+
+      console.log('External service just added for user');
+    }
 };
 
 AccountsMeld.configure({
   askBeforeMeld: true,
-  meldDBCallback: meldDBCallback
-  //serviceAddedCallback: serviceAddedCallback
+  meldUserCallback: meldUserCallback,
+  meldDBCallback: meldDBCallback,
+  serviceAddedCallback: serviceAddedCallback
 });

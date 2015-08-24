@@ -5,4 +5,3 @@ Template.layoutClassic.events({
     hideBalloons();
   }
 });
-

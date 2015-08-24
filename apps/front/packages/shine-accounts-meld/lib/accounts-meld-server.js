@@ -42,7 +42,8 @@
 // 3ab) in case the meld action cannot be performed because of the same service
 //      appearing inside both accounts but with different ids the server sets
 //      'meld': 'ask'
-//      ...the hope is the user can remove one of the two conflitting services
+//      todo: Fix typo `conflitting => conflicting`
+//      ...the hope is the user can remove one of the two conflicting services
 //      and then ask again to meld.
 //      should be probably very rare, but SOMETHING BETTER SHOULD BE DONE!
 // 3ac) when the meld action is completed the server sets 'meld': 'done'
@@ -97,6 +98,7 @@ MeldActions.allow({
 				return false;
 			}
 		}
+
 		// ...when meld is "melding" only answer "ok" is allowed
 		if (doc.meld === "melding") {
 			if (!_.isEqual(modifier, {
@@ -107,9 +109,12 @@ MeldActions.allow({
 				return false;
 			}
 		}
+
 		// ...only in case all the above conditions are satisfied:
 		return true;
 	},
+
+
 	remove: function(userId, doc) {
 		// no removals unless the meld action is completed!
 		return doc.meld === "done";
@@ -130,13 +135,17 @@ Meteor.publish("pendingMeldActions", function() {
 
 // Observe the changes of meld actions to respond to
 // client-side user interactions:
+//
 //  - remove unnecessary data when a meld action is marked
 //    as to be never performed
+//
 //  - actually proceed to meld accounts when the client-side
 //    answer is "yes"
 MeldActions.find().observeChanges({
 	changed: function(id, fields) {
+
 		if (fields.meld === "never") {
+
 			// Remove unnecessary data from the document
 			MeldActions.update(id, {
 				$unset: {
@@ -144,10 +153,12 @@ MeldActions.find().observeChanges({
 					dst_info: ""
 				}
 			});
+
 		} else if (fields.meld === "yes") {
 			// Proceed with actual melding of the two accounts...
 			AccountsMeld.executeMeldAction(id);
 		}
+
 	}
 });
 
@@ -168,6 +179,7 @@ AM.prototype.CONFIG_PAT = {
 	serviceAddedCallback: Match.Optional(Match.Where(_.isFunction))
 };
 
+
 // Current configuration values
 AM.prototype._config = {
 	// Flags telling whether to ask the user before melding any two accounts
@@ -182,19 +194,36 @@ AM.prototype._config = {
 	serviceAddedCallback: null
 };
 
+AM.prototype.getConfig = function(paramName) {
+  return this._config[paramName];
+};
+
+// project-root/server/config/accounts-meld.js
+AM.prototype.configure = function(config) {
+  check(config, this.CONFIG_PAT);
+  // Update the current configuration
+  this._config = _.defaults(config, this._config);
+};
+
+
 AM.prototype._meldUsersObject = function(srcUser, dstUser) {
 	// Checks whether a callback for melding users' object was specified
 	var meldUserCallback = this.getConfig('meldUserCallback');
+
 	// ...in case it was, uses the requested one
 	if (meldUserCallback) {
+
 		var meldedUser = meldUserCallback(srcUser, dstUser);
+
 		meldedUser = _.omit(
 			meldedUser,
 			'_id', 'services', 'emails', 'registered_emails'
 		);
+
 		_.each(meldedUser, function(value, key) {
-			dstUser[key] = value;
+      dstUser[key] = value;
 		});
+
 	}
 	// ...otherwise perfors some default fusion
 	else {
@@ -210,69 +239,93 @@ AM.prototype._meldUsersObject = function(srcUser, dstUser) {
 			dstUser.profile = profile;
 		}
 	}
+
+
 	// 'services' field (at this point we know some check was already done...)
 	// adds services appearing inside the src user which
 	// do not appear inside the destination user (but for 'resume')
-	// TODO: check whether we need to re-encrypt data using
-	//       'pinEncryptedFieldsToUser'. See
-	//       meteor/packages/accounts-base/accounts_server.js#L1136
+
+	// TODO: check whether we need to re-encrypt data using 'pinEncryptedFieldsToUser'.
+	// See meteor/packages/accounts-base/accounts_server.js#L1122
+  // https://github.com/meteor/meteor/blob/devel/packages/accounts-base/accounts_server.js
+
+  // OAuth service data is temporarily stored in the pending credentials collection
+  // during the oauth authentication process.
+  // Sensitive data such as access tokens are encrypted without the user id
+  // because we don't know the user id yet.
+  // We re-encrypt these fields with the user id included
+  // when storing the service data permanently in the users collection.
+  //
+  //function pinEncryptedFieldsToUser(serviceData, userId) {
+  //  _.each(_.keys(serviceData), function (key) {
+  //    var value = serviceData[key];
+  //    if (OAuthEncryption && OAuthEncryption.isSealed(value))
+  //      value = OAuthEncryption.seal(OAuthEncryption.open(value), userId);
+  //    serviceData[key] = value;
+  //  });
+  //}
+
 	var newServices = {};
+
 	var srcServices = _.omit(srcUser.services, _.keys(dstUser.services));
+
 	// NOTE: it is mandatory to skip also 'resume' data in order to prevent the
 	//       current login action to be interrupted in case the srcUser actually
 	//       has a different and outdated 'resume' data.
 	srcServices = _.omit(srcUser.services, "resume");
+
 	_.each(_.keys(srcServices), function(serviceName) {
 		newServices['services.' + serviceName] = srcServices[serviceName];
 		dstUser.services[serviceName] = srcServices[serviceName];
 	});
+
 	// TODO: check there are no overlapping services which have different ids!!!
 	//       'emails' field: fuses the two emails fields, giving precedence to
 	//       verified ones...
 	var srcEmails = srcUser.emails || [];
 	var dstEmails = dstUser.emails || [];
+
 	// creates an object with addresses as keys and verification status as values
 	var emails = {};
 	_.each(_.flatten([srcEmails, dstEmails]), function(email) {
 		emails[email.address] = emails[email.address] || email.verified;
 	});
+
 	// transforms emails back to
-	// [{address: addr1, verified: bool}, {address: addr2, verified: bool}, ...]
-	dstUser.emails = _.map(emails, function(verified, address) {
+	// [ { address: address1, verified: boolean }, { address: address2, verified: boolean }, ...]
+  // e.g. emails is obj.. { emailAddress@xxx.com: true }
+  dstUser.emails = _.map(emails, function(value, key) {
 		return {
-			address: address,
-			verified: verified
+			address: key,
+			verified: value
 		};
 	});
+
 	if (!dstUser.emails.length) {
 		delete dstUser.emails;
 	}
 	// updates the registered_emails field
+  // Reference : accounts-emails-field package
+  // https://github.com/splendido/meteor-accounts-emails-field/blob/master/lib/accounts-emails-field.js @Line131
 	AccountsEmailsField.updateEmails({
-		user: dstUser
+		user: srcUser
 	});
+
 	// Removes the old user
 	Meteor.users.remove(srcUser._id);
+
 	// Updates the current user
 	Meteor.users.update(dstUser._id, {
 		$set: _.omit(dstUser, "_id", "services")
 	});
+
 	Meteor.users.update(dstUser._id, {
 		$set: newServices
 	});
 };
 
-AM.prototype.getConfig = function(paramName) {
-	return this._config[paramName];
-};
-
-AM.prototype.configure = function(config) {
-	check(config, this.CONFIG_PAT);
-	// Update the current configuration
-	this._config = _.defaults(config, this._config);
-};
-
 AM.prototype.createMeldAction = function(srcUser, dstUser) {
+
 	MeldActions.insert({
 		src_user_id: srcUser._id,
 		dst_user_id: dstUser._id,
@@ -291,6 +344,7 @@ AM.prototype.createMeldAction = function(srcUser, dstUser) {
 AM.prototype.executeMeldAction = function(id) {
 	// Retrieve the meld action document
 	var meldAction = MeldActions.findOne(id);
+
 	// Marks the meld action as "melding"
 	MeldActions.update(meldAction._id, {
 		$set: {
@@ -300,27 +354,33 @@ AM.prototype.executeMeldAction = function(id) {
 
 	// Retrieve the source account
 	var srcUser = Meteor.users.findOne(meldAction.src_user_id);
+
 	// Retrieve the destination account
 	var dstUser = Meteor.users.findOne(meldAction.dst_user_id);
 
 	// Actually melds the two accounts
 	var meldResult = this.meldAccounts(srcUser, dstUser);
+
 	if (meldResult) {
+
 		// Marks the meld action as "done"
 		MeldActions.update(meldAction._id, {
 			$set: {
 				meld: "done"
 			}
 		});
+
 		// Possibly removes old meld actions registered for the same two
 		// accounts but for the opposite direction
 		var invMeldAction = MeldActions.findOne({
 			src_user_id: meldAction.dst_user_id,
-			dst_user_id: meldAction.src_user_id,
+			dst_user_id: meldAction.src_user_id
 		});
+
 		if (invMeldAction) {
 			MeldActions.remove(invMeldAction._id);
 		}
+
 	} else {
 		// XXX TODO: For now this seems the only thing to be improved in a near
 		//           future. Some error status and better client communication of
@@ -336,6 +396,7 @@ AM.prototype.executeMeldAction = function(id) {
 AM.prototype.meldAccounts = function(srcUser, dstUser) {
 	//checks there are no overlapping services which have different ids!!!
 	var canMeld = true;
+
 	// Checks for conflicting services before proceeding with actual melding
 	if (this.getConfig('checkForConflictingServices')) {
 		if (!!srcUser.services && !!dstUser.services) {
@@ -366,16 +427,21 @@ AM.prototype.meldAccounts = function(srcUser, dstUser) {
 	if (!canMeld) {
 		return false;
 	}
+
 	// Melds users'object
 	this._meldUsersObject(srcUser, dstUser);
+
 	// Check whether a callback for DB document migration was specified
 	var meldDBCallback = this.getConfig('meldDBCallback');
+
 	if (meldDBCallback) {
-		meldDBCallback(srcUser, dstUser._id);
+		meldDBCallback(srcUser._id, dstUser._id);
 	}
+
 	return true;
 };
 
+// AM class instance..
 AccountsMeld = new AM();
 
 
@@ -384,8 +450,6 @@ AccountsMeld = new AM();
 // ------------------------------------------------
 // Callback functions to be registered with 'hooks'
 // ------------------------------------------------
-
-
 
 checkForMelds = function(dstUser) {
 	// Updates all possibly pending meld actions...
@@ -399,7 +463,10 @@ checkForMelds = function(dstUser) {
 	}, {
 		multi: true
 	});
+
+
 	// Picks up verified email addresses and creates a list like
+
 	// [
 	//    {$elemMatch: {"address": addr1, "verified": true}},
 	//    {$elemMatch: {"address": addr2, "verified": true}},
@@ -417,6 +484,8 @@ checkForMelds = function(dstUser) {
 			};
 		})
 		.value();
+
+
 	// In case there is at least one registered address
 	if (queryEmails.length) {
 		// Finds users with at least one registered email address matching the
@@ -428,18 +497,23 @@ checkForMelds = function(dstUser) {
 		} else {
 			queryEmails = queryEmails[0];
 		}
+
 		// Excludes current user...
 		queryEmails._id = {
 			$ne: dstUser._id
 		};
+
 		var users = Meteor.users.find(queryEmails);
+
 		users.forEach(function(user) {
+
 			if (AccountsMeld.getConfig('askBeforeMeld')) {
 				// Checks if there is already a document about this meld action
 				var meldAction = MeldActions.findOne({
 					src_user_id: user._id,
 					dst_user_id: dstUser._id
 				});
+
 				if (meldAction) {
 					// If the last time the answer was "Not now", ask again...
 					if (meldAction.meld === "not_now") {
@@ -453,6 +527,7 @@ checkForMelds = function(dstUser) {
 					// Creates a new meld action
 					AccountsMeld.createMeldAction(user, dstUser);
 				}
+
 			} else {
 				// Directly melds the two accounts
 				AccountsMeld.meldAccounts(user, dstUser);
@@ -462,9 +537,23 @@ checkForMelds = function(dstUser) {
 };
 
 
-var createServiceSelector = function(serviceName, serviceData) {
+/**
+ *
+ * @param serviceName
+ * @param serviceData
+ * @returns {{}}
+ *
+ *
+ */
+
+// updateOrCreateUserFromExternalService 함수 내부에서 invoked
+var _createServiceSelector = function(serviceName, serviceData) {
+
 	// Selector construction copied from
-	// accounts-base/accounts_server.js Lines 1114-1131
+	// accounts-base/accounts_server.js Lines 1333~
+  // Start copy code :
+
+  // Look for a user with the appropriate service user id.
 	var selector = {};
 	var serviceIdKey = "services." + serviceName + ".id";
 
@@ -484,13 +573,17 @@ var createServiceSelector = function(serviceName, serviceData) {
 	}
 
 	return selector;
+
+  // End copy code
 };
 
-
+// 미티어 원본 소스 참조하는 변수
 var origUpdateOrCreateUserFromExternalService =
 	Accounts.updateOrCreateUserFromExternalService;
 
+// 외부 서비스로부터 유저를 생성하거나 업데이트(로그인한 유저가 외부서비스 연결)를 할때 사용하는 함수
 updateOrCreateUserFromExternalService = function(serviceName, serviceData, options) {
+
 	var
 		currentUser = Meteor.user(),
 		selector,
@@ -499,22 +592,28 @@ updateOrCreateUserFromExternalService = function(serviceName, serviceData, optio
 		user;
 
 	if (currentUser) {
-		// The user was already logged in with a different account
-		// Checks if the service is already registered with this same account
+
+    // Ko: 이미 유저가 다른 계정으로 로그인 되어 있다.
+    // 연결하려는 서비스가 이미 로그인 된 계정에 등록되어 있는지 확인
+
+    // The user was already logged in with a different account
+    // Checks if the service is already registered with this same account
 		if (!currentUser.services[serviceName]) {
-			// It may be that the same service is already used with a different
-			// account. Checks if there is already an account with this service
 
 			// Creates a selector for the current service
-			selector = createServiceSelector(serviceName, serviceData);
+			selector = _createServiceSelector(serviceName, serviceData);
+
 			// Look for a user with the appropriate service user id.
 			user = Meteor.users.findOne(selector);
-			if (!user) {
+
+      if (!user) {
 				// This service is being used for the first time!
 				// Simply add the service to the current user, and that's it!
 				setAttr = {};
 				serviceIdKey = "services." + serviceName + ".id";
 				setAttr[serviceIdKey] = serviceData.id;
+
+
 				// This is just to fake updateOrCreateUserFromExternalService so to have
 				// it attach the new service to the existing user instead of creating a
 				// new one
@@ -523,20 +622,25 @@ updateOrCreateUserFromExternalService = function(serviceName, serviceData, optio
 				}, {
 					$set: setAttr
 				});
+
 				// Now calls original updateOrCreateUserFromExternalService
 				origUpdateOrCreateUserFromExternalService.apply(this, arguments);
+
 				// Reloads updated currentUser
 				currentUser = Meteor.users.findOne(currentUser._id);
+
 				// Updates the registered_emails field
 				AccountsEmailsField.updateEmails({
 					user: currentUser
 				});
+
 				// Checks whether a callback for user update after a new service is
 				// added was specified
 				var serviceAddedCbk = AccountsMeld.getConfig('serviceAddedCallback');
 				if (serviceAddedCbk) {
 					serviceAddedCbk(currentUser._id, serviceName);
 				}
+
 				// Cancels the login to save some data exchange with the client
 				// currentUser will remain logged in
 				return {
@@ -547,6 +651,7 @@ updateOrCreateUserFromExternalService = function(serviceName, serviceData, optio
 					)
 				};
 			} else {
+
 				// This service was already registered for "user"
 				if (AccountsMeld.getConfig('askBeforeMeld')) {
 					// Checks if there is already a document about this meld action
@@ -554,7 +659,9 @@ updateOrCreateUserFromExternalService = function(serviceName, serviceData, optio
 						src_user_id: user._id,
 						dst_user_id: currentUser._id
 					});
+
 					if (meldAction) {
+
 						// If the last time the answer was "Not now", ask again...
 						if (meldAction.meld === "not_now") {
 							MeldActions.update(meldAction._id, {
@@ -563,6 +670,7 @@ updateOrCreateUserFromExternalService = function(serviceName, serviceData, optio
 								}
 							});
 						}
+
 					} else {
 						// Creates a new meld action
 						AccountsMeld.createMeldAction(user, currentUser);
@@ -590,24 +698,41 @@ updateOrCreateUserFromExternalService = function(serviceName, serviceData, optio
 				}
 			}
 		}
+
+
 	} else {
+    // 로그인된 유저가 없는 경우, 유저는 로그인 중에 있다.
+    // 유저에게 동일한 이메일을 가진 계정이 있으면 물어보는 설정이 되어 있지 않은 경우
+    // 즉, 자동으로 통합 수행
 		// The user is logging in now...
 		// Only In case automatic melding is set
 		if (!AccountsMeld.getConfig('askBeforeMeld')) {
+
+      // 현재 서비스로 로그인하기 위한 셀렉터 생성
 			// Creates a selector for the current service
-			selector = createServiceSelector(serviceName, serviceData);
+			selector = _createServiceSelector(serviceName, serviceData);
+
+      // 올바른 해당 서비스 user id를 가진 유저가 이미 계정에 존재하는지 찾는다.
 			// Look for a user with the appropriate service user id.
 			user = Meteor.users.findOne(selector);
+
 			if (!user) {
+        // 이 외부 서비스는 처음으로 사용되고 있는 중!
+        // 현재 외부 서비스와 연결된 email 주소를 추출
 				// This service is being used for the first time!
 				// Extracts the email address associated with the current service
 				var serviceEmails = AccountsEmailsField.getEmailsFromService(
-					serviceName, serviceData
+					serviceName,
+          serviceData
 				).filter(function(serviceEmail) {
 					return serviceEmail.verified;
 				});
+
+        // 인증된 메일이 있는 경우
 				// In case it is a verified email...
 				if (serviceEmails.length) {
+          // 해당 외부 서비스에서 사용된 인증된 이메일 주소가
+          // 이미 존재하는 다른 계정과 연결되어 있는지 확인
 					// ...checks whether the email address used with the service is
 					// already associated with an existing account.
 					selector = {
@@ -617,12 +742,18 @@ updateOrCreateUserFromExternalService = function(serviceName, serviceData, optio
 							};
 						})
 					};
+
+          // 셀렉터를 이용해서 외부서비스에서 인증된 이메일들과 동일한 이메일 주소를 가진 유저를 찾는다.
 					var otherUser = Meteor.users.findOne(selector);
 					if (otherUser) {
+            // 간단하게 서비스를 찾은 유저에 추가해라. 그게 전부다.
 						// Simply add the service to 'user', and that's it!
 						setAttr = {};
 						serviceIdKey = "services." + serviceName + ".id";
 						setAttr[serviceIdKey] = serviceData.id;
+
+            // 이것은 그저 updateOrCreateUserFromExternalService를 속여서
+            // 새로운 유저를 생성하지 않고 기존 유저에 새로운 서비스를 연결하도록 해준다.
 						// This is just to fake updateOrCreateUserFromExternalService so to
 						// have it attach the new service to the existing user instead of
 						// creating a new one
@@ -632,10 +763,12 @@ updateOrCreateUserFromExternalService = function(serviceName, serviceData, optio
 							$set: setAttr
 						});
 					}
+
 				}
 			}
 		}
 	}
+
 	// Let the user in!
 	return origUpdateOrCreateUserFromExternalService.apply(this, arguments);
 };

@@ -42,5 +42,9 @@ marked.setOptions({
 });
 
 Accounts.ui.config({
-  passwordSignupFields: 'USERNAME_AND_EMAIL'
+  passwordSignupFields: 'USERNAME_AND_EMAIL',
+  requestPermissions: {
+    facebook: [ 'email', 'publish_actions', 'user_likes', 'user_friends' ],
+    meetup: [ 'basic', 'messaging' ]
+  }
 });

@@ -17,7 +17,7 @@ Package.onUse(function(api) {
     'accounts-base',
     'check',
     'underscore',
-    'splendido:accounts-emails-field@1.2.0'
+    'davidsunny:accounts-emails-field'
   ], ['server']);
 
   api.addFiles([

@@ -53,7 +53,7 @@
 <template name="meldingCompleted">
   <div class="alert alert-success">
     <button type="button" class="close" id="closeButton">×</button>
-    <h4>계정 통합 성공!</h4>
+    <h4>계정을 성공적으로 통합했습니다.</h4>
 		<!--{{> meldDetails}}-->
   </div>
 </template>
@@ -88,9 +88,9 @@
         </div>
         <div class="panel-body">
           <p>
-            로그인 방법 :
+            로그인 방법 :<br>
 						{{#each dst_info.services}}
-							{{this}}
+							{{this}}<br>
 						{{/each}}
           </p>
           <p>
