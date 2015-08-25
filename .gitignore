@@ -2,7 +2,10 @@
 /logs
 /release
 /build
+/.npm
 
 *.sh
 conf/development/*.json
 conf/production/*.json
+
+devlocal
