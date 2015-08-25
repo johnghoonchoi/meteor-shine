@@ -103,8 +103,13 @@ getPicture = function(user) {
     if (user.oauths) {
       var services = [ 'facebook', 'google', 'meetup', 'twitter', 'github', 'meteor-developer', 'kakao', 'naver'];
       for (var i = 0; i < services.length; i++) {
-        if (user.oauths[services[i]] && user.oauths[services[i]].picture)
-          return "<img src='" + user.oauths[services[i]].picture + "'alt='Profile image' class='img-circle'>";
+        if (user.oauths[services[i]]) {
+          if (user.oauths[services[i]].picture) {
+            return "<img src='" + user.oauths[services[i]].picture + "'alt='Profile image' class='img-circle'>";
+          }
+          var initial = makeUppercase(user.oauths[services[i]].name);
+          return "<span class='avatar-initials'>"+initial+"</span>";
+        }
       }
     }
 
