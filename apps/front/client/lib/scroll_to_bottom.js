@@ -5,5 +5,5 @@
 ScrollToBottom = function (selector) {
   // scroll to bottom of element
   var element = $(selector)[0];
-  element.scrollTop = element.scrollHeight;
+  element.scrollTop = 999999;
 };

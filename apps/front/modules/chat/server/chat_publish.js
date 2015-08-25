@@ -5,16 +5,16 @@
 Meteor.publishComposite('chatMessages', function (toId, limit) {
   return {
     find: function () {
-      var query = { _id: this.userId };
+      var query = { _id: toId };
       limit = limit || 0;
 
       return Meteor.users.find(query, { fields: { services: 0 } });
 
     },
     children: [{
-      find: function (from_user) {
-        var senderQuery = {"from._id": from_user._id, "to._id": toId};
-        var receiverQuery = {"from._id": toId, "to._id": from_user._id};
+      find: function () {
+        var senderQuery = {"from._id": this.userId, "to._id": toId};
+        var receiverQuery = {"from._id": toId, "to._id": this.userId};
 
         var query = {$or: [ senderQuery, receiverQuery]};
 

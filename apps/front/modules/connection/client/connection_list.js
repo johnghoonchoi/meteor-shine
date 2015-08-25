@@ -1,4 +1,3 @@
-
 Template.connectionsList.onCreated(function() {
   var instance = this;
 

@@ -51,13 +51,11 @@ Template.chatFrame.onDestroyed(function () {
 
 Template.chatFrame.helpers({
   chatMessagesList: function () {
-    var result = ChatMessages.find({}, { sort : { createdAt: 1 } });
-    return result;
+    return ChatMessages.find({}, { sort : { createdAt: 1 } });
   },
 
   onTyping: function () {
-    var result = Counts.get('chatStatusCount');
-    return result > 0 ? true : false;
+    return Counts.get('chatStatusCount') > 0 ? true : false;
   }
 });
 
@@ -153,7 +151,7 @@ Template.chatMessageListItem.onCreated(function () {
 
 Template.chatMessageListItem.onRendered(function () {
   // scroll to bottom of main div
-  var selector = '.chat-message-lists';
+  var selector = 'main.body';
   ScrollToBottom(selector);
 });
 
@@ -167,7 +165,7 @@ Template.chatMessageListItem.helpers({
   },
 
   getPartnerPictures: function () {
-    return Template.instance().partnerPicture;
+    return Template.instance().parentInstance("chatFrame").partnerPicture;
   }
 });
 
@@ -175,14 +173,14 @@ Template.chatMessageListItem.helpers({
 // chatStatusListItem
 Template.chatStatusInput.onRendered(function () {
   // scroll to bottom of main div
-  var selector = '.chat-message-lists';
+  var selector = 'main.body';
   ScrollToBottom(selector);
 });
 
 Template.chatStatusInput.helpers({
   getPartnerPictures: function () {
-    //return Template.instance().partnerPicture;
-    return getPicture(this.user);
+
+    return Template.instance().parentInstance("chatFrame").partnerPicture;
+    //return getPicture(this.user);
   }
 });
-
