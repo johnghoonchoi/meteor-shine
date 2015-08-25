@@ -144,13 +144,6 @@ Template.chatFrame.events({
 
 //
 // chatMessageListItem
-Template.chatMessageListItem.onCreated(function () {
-  var instance = this;
-  var parentData = this.parentInstance("chatFrame");
-
-  instance.partnerPicture = parentData.partnerPicture;
-});
-
 Template.chatMessageListItem.onRendered(function () {
   // scroll to bottom of main div
   var selector = '.chat-message-lists';
@@ -167,7 +160,7 @@ Template.chatMessageListItem.helpers({
   },
 
   getPartnerPictures: function () {
-    return Template.instance().partnerPicture;
+    return Template.instance().parentInstance("chatFrame").partnerPicture;
   }
 });
 
@@ -181,8 +174,7 @@ Template.chatStatusInput.onRendered(function () {
 
 Template.chatStatusInput.helpers({
   getPartnerPictures: function () {
-    //return Template.instance().partnerPicture;
-    return getPicture(this.user);
+    return Template.instance().parentInstance("chatFrame").partnerPicture;
   }
 });
 

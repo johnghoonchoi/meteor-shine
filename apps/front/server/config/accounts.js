@@ -197,8 +197,7 @@ Accounts.onCreateUser(function(options, user) {
     var name = options.profile.name;
     options.profile = {
       github: {
-        name: name,
-        picture: '/default_avatar.png'
+        name: name
       }
     };
   }
@@ -207,8 +206,7 @@ Accounts.onCreateUser(function(options, user) {
     var name = options.profile.name;
     options.profile = {
       'meteor-developer': {
-        name: name,
-        picture: '/default_avatar.png'
+        name: name
       }
     };
   }
@@ -230,11 +228,8 @@ Accounts.onCreateUser(function(options, user) {
 
     user.services.meetup = response.data;
 
-    if(userData.photo && userData.photo.photo_link) {
+    if(userData.photo && userData.photo.photo_link)
       var picture = userData.photo.photo_link;
-    } else {
-      var picture = "/default-avatar.png";
-    }
 
     options.profile = {
       'meetup': {
@@ -265,7 +260,6 @@ Accounts.onCreateUser(function(options, user) {
       }
     }
   }
-
 
   if (options.profile) {
     user.oauths = {};
