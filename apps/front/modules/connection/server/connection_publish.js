@@ -14,7 +14,7 @@ Meteor.publish('connectionsSignInList', function(options) {
     return [];
   }
 
-  var query = { user: { $exists: true }, 'user._id': { $ne: this.userId }};
+  var query = { user: { $exists: true }, 'user._id': { $ne: this.userId}};
 
   Counts.publish(this, 'connectionsSignInListCount',
     Connection.collection.find(query));

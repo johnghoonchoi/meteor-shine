@@ -11,6 +11,7 @@ Meteor.publish("userData", function () {
 });
 
 Meteor.publish("accountData", function (filter) {
+
   check(filter, Object);
   return Meteor.users.find(filter, { fields: { services: 0 } });
 });

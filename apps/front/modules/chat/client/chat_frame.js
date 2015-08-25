@@ -13,6 +13,7 @@ Template.chatFrame.onCreated(function () {
   var instance = this;
   var data = Template.currentData();
   var toId = data.user._id;
+  instance.ready;
 
   // other side input message
   instance.status = "input";
@@ -23,7 +24,7 @@ Template.chatFrame.onCreated(function () {
   // subscribe
   instance.autorun(function () {
 
-    instance.subscribe('chatMessages', toId);
+    instance.ready = instance.subscribe('chatMessages', toId);
 
     instance.subscribe('chatStatus', toId, instance.status);
 
@@ -35,10 +36,15 @@ Template.chatFrame.onCreated(function () {
 
   instance.getPartnerPicture = function () {
     var result = Meteor.users.findOne({_id: toId});
-    return getPicture(result);
+    //console.log('result', result);
+    instance.partnerPicture = getPicture(result);
+    //return getPicture(result);
   };
 
-  instance.partnerPicture = instance.getPartnerPicture();
+
+  //instance.partnerPicture = instance.getPartnerPicture();
+
+
 });
 
 Template.chatFrame.onDestroyed(function () {
@@ -49,9 +55,21 @@ Template.chatFrame.onDestroyed(function () {
   Meteor.call('chatStatusRemove', this.status);
 });
 
+Template.chatFrame.onRendered(function() {
+  var instance = this;
+  instance.autorun(function() {
+    console.log('this.ready?', instance.ready.ready());
+  });
+
+});
+
 Template.chatFrame.helpers({
   chatMessagesList: function () {
-    return ChatMessages.find({}, { sort : { createdAt: 1 } });
+    if (Template.instance().ready.ready()){
+      Template.instance().getPartnerPicture();
+      return ChatMessages.find({}, { sort : { createdAt: 1 } });
+    }
+    //return ChatMessages.find({}, { sort : { createdAt: 1 } });
   },
 
   onTyping: function () {
@@ -173,6 +191,5 @@ Template.chatStatusInput.onRendered(function () {
 Template.chatStatusInput.helpers({
   getPartnerPictures: function () {
     return Template.instance().parentInstance("chatFrame").partnerPicture;
-    //return getPicture(this.user);
   }
 });

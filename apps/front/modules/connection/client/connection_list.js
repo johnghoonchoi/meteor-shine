@@ -57,6 +57,12 @@ Template.connectionsList.events({
   }
 });
 
+Template.connectionsListItem.helpers({
+  toUser: function () {
+    return Meteor.users.findOne({_id: this.user._id});
+  }
+});
+
 Template.connectionsListItem.events({
   'click a' : function (e, instance) {
     e.preventDefault();
