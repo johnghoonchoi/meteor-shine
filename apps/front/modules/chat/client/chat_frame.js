@@ -1,6 +1,9 @@
 /**
  * Created by ProgrammingPearls on 15. 8. 13..
  */
+
+
+
 //
 //
 // chatView
@@ -14,6 +17,7 @@ Template.chatFrame.onCreated(function () {
   // other side input message
   instance.status = "input";
   instance.isInput = false;
+
   Meteor.call('chatStatusRemove', instance.status);
 
   // subscribe
@@ -57,34 +61,15 @@ Template.chatFrame.helpers({
 
 Template.chatFrame.events({
 
-  //// header events
-  //'click a.chat-minimize': function (e, instance) {
-  //  e.preventDefault();
-  //  e.stopPropagation();
-  //},
-
-  'click a.chat-exit': function (e, instance) {
-
-    e.stopPropagation();
-    e.preventDefault();
-    var data = instance.data;
-
-    Blaze.remove(data.chatTemplate);
+  // header events
+  'click a.close': function (e, instance) {
+    Blaze.remove(instance.data.chatTemplate);
   },
 
   // footer events
-  'focus .chat-textarea': function (e) {
-    var thisElement = $(e.currentTarget)[0];
-    thisElement.style.background = "yellow";
-  },
+  'keyup textarea': function (e, instance) {
 
-  'focusout .chat-textarea': function (e) {
-    $(e.currentTarget).removeAttr('style');
-  },
-
-  'keyup .chat-textarea': function (e, instance) {
-
-    var thisElement = instance.find(".chat-textarea");
+    var thisElement = instance.find("textarea");
     var content = thisElement.value;
 
     // remove line breaks from string
@@ -159,8 +144,6 @@ Template.chatFrame.events({
 // chatMessageListItem
 Template.chatMessageListItem.onCreated(function () {
   var instance = this;
-
-  // add Blaze.TemplateInstance.prototype.parentInstance (find parenInstance of TemplateName)
   var parentData = this.parentInstance("chatFrame");
 
   instance.partnerPicture = parentData.partnerPicture;
@@ -168,7 +151,7 @@ Template.chatMessageListItem.onCreated(function () {
 
 Template.chatMessageListItem.onRendered(function () {
   // scroll to bottom of main div
-  var selector = '.chat-message-lists';
+  var selector = 'main.body';
   ScrollToBottom(selector);
 });
 
@@ -182,7 +165,7 @@ Template.chatMessageListItem.helpers({
   },
 
   getPartnerPictures: function () {
-    return Template.instance().partnerPicture;
+    return Template.instance().parentInstance("chatFrame").partnerPicture;
   }
 });
 
@@ -190,6 +173,13 @@ Template.chatMessageListItem.helpers({
 // chatStatusListItem
 Template.chatStatusInput.onRendered(function () {
   // scroll to bottom of main div
-  var selector = '.chat-message-lists';
+  var selector = 'main.body';
   ScrollToBottom(selector);
+});
+
+Template.chatStatusInput.helpers({
+  getPartnerPictures: function () {
+    return Template.instance().parentInstance("chatFrame").partnerPicture;
+    //return getPicture(this.user);
+  }
 });

@@ -1,25 +1,18 @@
-/*
-Meteor.publish('connectionsList', function() {
+/**
+ * return user list except me
+ */
+Meteor.publishComposite('connectionsSignInList', function(options) {
+  check(options, Match.ObjectIncluding({
+    "limit": Number,
+    "sort": Match.ObjectIncluding({
+      "createdAt": Match.Optional(Number),
+    })
+  }));
 
-  Counts.publish(this, 'connectionsListCount',
-    Connection.collection.find(), { noReady: true }
-  );
-
-  return Connection.collection.find();
-});
-*/
-Meteor.publishComposite('connectionsSignInList', function() {
   if (! this.userId)
     return [];
 
-  var query = {
-    user: { $exists: true },
-    'user._id': { $ne: this.userId }
-  };
-
-  var options = {
-    sort: { createdAt: -1 }
-  };
+  var query = { user: { $exists: true }, 'user._id': { $ne: this.userId }};
 
   return {
     find: function() {
@@ -33,10 +26,12 @@ Meteor.publishComposite('connectionsSignInList', function() {
         }
       }
     ]
-  }
+  };
 });
 
 Meteor.publish('connectionsSignInListCount', function() {
+  var query = { user: { $exists: true }, 'user._id': { $ne: this.userId }};
+
   Counts.publish(this, 'connectionsSignInListCount',
-    Connection.collection.find({ user: { $exists: true }}));
+    Connection.collection.find(query));
 });

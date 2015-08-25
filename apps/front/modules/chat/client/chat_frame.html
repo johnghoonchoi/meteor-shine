@@ -1,60 +1,54 @@
 <template name="chatFrame">
-  <div class="chat-frame opened focusedTab">
-    <div class="chat-view">
-      <header class="chat-header">
-        <div class="menu-left">
-          {{user.username}}
-        </div>
-        <div class="menu-right">
-          <!--<a class="button chat-minimize fa fa-minus-circle" data-hover="tooltip" title="탭 최소화"></a>-->
-          <a class="button chat-exit fa fa-times-circle" data-hover="tooltip" title="탭 닫기"></a>
-        </div>
-      </header>
+  <div class="chat-frame">
+    <header>
+      <p>{{user.username}}</p>
+      <a class="close">&times;</a>
+    </header>
 
-      <main class="chat-main">
-        <div class="chat-message-lists">
-          {{#each chatMessagesList}}
-            {{> chatMessageListItem this}}
-          {{/each}}
-          {{#if onTyping}}
-            {{>chatStatusInput}}
-          {{/if}}
-        </div>
-      </main>
-      <footer class="chat-footer">
-        <div class="chat-message-box">
-          <textarea class="chat-textarea"></textarea>
-        </div>
-      </footer>
-    </div>
+    <main class="body">
+      <div class="chat-message-lists">
+        {{#each chatMessagesList}}
+          {{> chatMessageListItem this}}
+        {{/each}}
+
+        {{#if onTyping}}
+          {{>chatStatusInput this}}
+        {{/if}}
+      </div>
+    </main>
+
+    <footer>
+      <textarea></textarea>
+    </footer>
   </div>
 </template>
 
 <template name="chatMessageListItem">
-  <div class="chat-message-list">
+  <div class="chat-message-item">
     {{#if isDate type}}
-      <div class="text-center chat-date" data-date="{{momentKoreanDate createdAt 5}}">
-
-      </div>
+      <p class="date"><span>{{momentKoreanDate createdAt 5}}</span></p>
     {{else}}
       {{#unless isUserMessage from}}
         <a href="#" class="avatar-sm">
           {{{getPartnerPictures}}}
         </a>
-        <div class="text-left chat-partner">
+        <p class="from chat-balloon right">
           {{content}}
-        </div>
+        </p>
       {{else}}
-        <div class="text-right chat-self">
+        <p class="me chat-balloon left">
           {{content}}
-        </div>
+        </p>
       {{/unless}}
     {{/if}}
   </div>
 </template>
 
 <template name="chatStatusInput">
-  <div class="text-left chat-partner">
-    입력중입니다......
+  <div class="chat-message-item">
+    <a href="#" class="avatar-sm">
+      {{{getPartnerPictures}}}
+    </a>
+    <p class="from chat-balloon right">...</p>
   </div>
 </template>

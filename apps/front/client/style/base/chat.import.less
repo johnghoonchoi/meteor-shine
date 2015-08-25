@@ -1,0 +1,186 @@
+//
+// Chat Balloon
+// --------------------------------------------------
+
+@chat-item-bg:                            #fff;
+@chat-item-border-color:                  #999;
+
+@chat-item-arrow-width:                   6px;
+@chat-item-arrow-outer-width:             6px;
+
+@chat-item-arrow-color:                   @chat-item-bg;
+@chat-item-arrow-outer-fallback-color:    @chat-item-border-color;
+@chat-item-arrow-outer-color:             @chat-item-border-color;
+
+
+p.chat-balloon
+{
+  position: relative;
+
+  padding: 5px;
+  border: 1px solid @chat-item-border-color;
+  border-radius: @input-border-radius;
+
+  background-color: @chat-item-bg;
+  line-height: 1.2em;
+
+  &.left:before {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    right: -12px;
+    top: 5px;
+    border: 6px solid;
+    border-color: transparent transparent transparent @chat-item-border-color;
+  }
+
+  &.left:after {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    right: -9px;
+    top: 6px;
+    border: 5px solid;
+    border-color: transparent transparent transparent @chat-item-bg;
+  }
+
+  &.right:before {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: -12px;
+    top: 5px;
+    border: 6px solid;
+    border-color: transparent @chat-item-border-color transparent transparent;
+
+  }
+
+  &.right:after {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: -9px;
+    top: 6px;
+    border: 5px solid;
+    border-color: transparent @chat-item-bg transparent transparent;
+  }
+}
+
+.chat-frame {
+  position: fixed;
+
+  bottom: 0;
+  right: 250px;
+
+  width: @chat-frame-width;
+  height: 300px;
+  border: none; //solid 1px @panel-info-border;
+  border-radius: @border-radius-base;
+  box-shadow: 0 1px 3px #666;
+
+  background: @brand-info;
+  z-index: @zindex-navbar-fixed;
+
+  .transition(@slide-transition-time ease-out all);
+
+  header {
+    position: relative;
+
+    height: 30px;
+
+    p {
+      margin: 0 5px;
+      padding: 0;
+      line-height: 30px;
+    }
+
+    .close {
+      position: absolute;
+      right: 5px;
+      top: 3px;
+    }
+  }
+
+  main {
+    height: 240px;
+    padding: 5px;
+    background: #f5f5f5;
+
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    .chat-message-item {
+
+      .clearfix();
+
+      a {
+        float: left;
+      }
+
+      p.date {
+        padding: 10px 0;
+        text-align: center;
+        line-height: 0.5;
+
+        span {
+          position: relative;
+          display: inline-block;
+
+          color: @gray-light;
+          font-size: 0.8em;
+        }
+
+        span:before, span:after {
+          content: "";
+          position: absolute;
+          height: 1px;
+          //border-bottom: 1px solid @input-border;
+          border-top: 1px solid @input-border;
+          top: 2px;
+          width: 100%;
+        }
+
+        span:before {
+          right: 100%;
+          margin-right: 5px;
+        }
+
+        span:after {
+          left: 100%;
+          margin-left: 5px;
+        }
+      }
+
+      p.from {
+        float: left;
+        margin-left: 5px;
+        margin-right: 50px;
+      }
+
+      p.me {
+        float: right;
+        margin-left: 50px;
+        background: lighten(@brand-info, 30%);
+
+        &:after {
+          border-color: transparent transparent transparent lighten(@brand-info, 30%);
+        }
+      }
+    }
+  }
+
+  footer {
+    height: 30px;
+
+    textarea {
+      width: 100%;
+      padding: 5px;
+      border-top: solid 1px @input-border;
+      background: #fff;
+    }
+  }
+}
