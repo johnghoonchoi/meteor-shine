@@ -1,6 +1,9 @@
+// The collection content referencing to the currently signed in user
+// is published under the name `pendingMeldActions`.
+// So, to be able to access it, the client should subscribe with:
 Meteor.subscribe("pendingMeldActions");
-
 MeldActions = new Meteor.Collection('meldActions');
+
 
 Template.accountsMeld.helpers({
   completed: function() {
@@ -16,6 +19,8 @@ Template.accountsMeld.helpers({
     return MeldActions.find().count() > 0;
   }
 });
+
+
 
 Template.meldAction.events({
   'click #meldActionYes': function(){

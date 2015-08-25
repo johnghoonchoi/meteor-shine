@@ -17,7 +17,7 @@
         </div>
         <div class="panel-body text-center">
           <div class="view-avatar avatar-md" title="Change the avatar">
-	          {{{getPicture currentUser._id}}}
+	          {{{getPicture currentUser}}}
           </div>
         </div>
       </div>
@@ -31,6 +31,139 @@
           {{> UI.dynamic template=templateProfile}}
         </div>
       </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <span>SNS 연결정보</span>
+        </div>
+	      {{#if isReady}}
+        <div class="panel-body text-center">
+          <section class="form-group">
+
+	          {{#if canFbConnect}}
+            <button data-action="connect-fb" class="btn btn-color-facebook btn-block">
+              <i class="fa fa-facebook"></i>&nbsp;
+                <span class="text-besides-image sign-in-text-facebook">Facebook 연결하기
+                </span>
+            </button>
+	          {{else}}
+              <button data-action="disconnect-fb" class="btn btn-default btn-block">
+                <i class="fa fa-facebook"></i>&nbsp;
+                <span class="text-besides-image sign-in-text-facebook">Facebook 연결해제
+                </span>
+              </button>
+	          {{/if}}
+
+	          {{#if canGoogleConnect}}
+              <button data-action="connect-google" class="btn btn-color-google btn-block">
+                <i class="fa fa-google"></i>&nbsp;
+                <span class="text-besides-image sign-in-text-google">
+					        Google 연결하기</span>
+              </button>
+	          {{else}}
+              <button data-action="disconnect-google" class="btn btn-default btn-block">
+                <i class="fa fa-google"></i>&nbsp;
+              <span class="text-besides-image sign-in-text-google">
+				        Google 연결해제</span>
+              </button>
+	          {{/if}}
+
+            {{#if canMeetupConnect}}
+            <button data-action="connect-meetup" class="btn btn-color-meetup btn-block">
+              <i class="fa fa-meetup"></i>&nbsp;
+                <span class="text-besides-image sign-in-text-meetup">
+					        Meetup 연결하기</span>
+            </button>
+            {{else}}
+            <button data-action="disconnect-meetup" class="btn btn-default btn-block">
+              <i class="fa fa-meetup"></i>&nbsp;
+              <span class="text-besides-image sign-in-text-meetup">
+				        Meetup 연결해제</span>
+            </button>
+            {{/if}}
+
+	          {{#if canNaverConnect}}
+              <button data-action="connect-naver" class="btn btn-color-naver btn-block">
+                <i class="fa fa-naver"></i>&nbsp;
+                <span class="text-besides-image sign-in-text-naver">
+					        Naver 연결하기</span>
+              </button>
+	          {{else}}
+              <button data-action="disconnect-naver" class="btn btn-default btn-block">
+                <i class="fa fa-naver"></i>&nbsp;
+              <span class="text-besides-image sign-in-text-naver">
+				        Naver 연결해제</span>
+              </button>
+	          {{/if}}
+
+	          {{#if canKakaoConnect}}
+              <button data-action="connect-kakao" class="btn btn-color-kakao btn-block">
+                <i class="fa fa-kakao"></i>&nbsp;
+                <span class="text-besides-image sign-in-text-kakao">
+					        Kakao 연결하기</span>
+              </button>
+	          {{else}}
+              <button data-action="disconnect-kakao" class="btn btn-default btn-block">
+                <i class="fa fa-kakao"></i>&nbsp;
+              <span class="text-besides-image sign-in-text-kakao">
+				        Kakao 연결해제</span>
+              </button>
+	          {{/if}}
+
+	          {{#if canTwitterConnect}}
+            <button data-action="connect-twitter" class="btn btn-color-twitter btn-block">
+              <i class="fa fa-twitter"></i>&nbsp;
+                <span class="text-besides-image sign-in-text-twitter">
+					        Twitter 연결하기</span>
+            </button>
+	          {{else}}
+	            <button data-action="disconnect-twitter" class="btn btn-default btn-block">
+	              <i class="fa fa-twitter"></i>&nbsp;
+	              <span class="text-besides-image sign-in-text-twitter">
+					        Twitter 연결해제</span>
+	            </button>
+	          {{/if}}
+
+
+	          {{#if canGithubConnect}}
+              <button data-action="connect-github" class="btn btn-color-github btn-block">
+                <i class="fa fa-github"></i>&nbsp;
+                <span class="text-besides-image sign-in-text-github">
+					        Github 연결하기</span>
+              </button>
+	          {{else}}
+              <button data-action="disconnect-github" class="btn btn-default btn-block">
+                <i class="fa fa-github"></i>&nbsp;
+	              <span class="text-besides-image sign-in-text-github">
+					        Github 연결해제</span>
+              </button>
+	          {{/if}}
+
+
+	          {{#if canMeteorConnect}}
+              <button data-action="connect-meteor" class="btn btn-color-meteor-developer btn-block">
+                <i class="fa fa-meteor"></i>&nbsp;
+                <span class="text-besides-image sign-in-text-meteor">
+					        Meteor 연결하기</span>
+              </button>
+	          {{else}}
+              <button data-action="disconnect-meteor" class="btn btn-default btn-block">
+                <i class="fa fa-meteor"></i>&nbsp;
+	              <span class="text-besides-image sign-in-text-meteor">
+					        Meteor 연결해제</span>
+              </button>
+	          {{/if}}
+
+
+
+
+          </section>
+        </div>
+	      {{else}}
+		      {{> loading}}
+	      {{/if}}
+      </div>
+
     </div>
   </article>
 

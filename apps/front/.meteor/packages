@@ -62,3 +62,9 @@ http
 raix:push
 davidsunny:accounts-meld-ui
 davidsunny:accounts-meld
+spectrum:accounts-naver
+spectrum:accounts-kakao
+accounts-google
+accounts-meteor-developer
+accounts-github
+accounts-twitter

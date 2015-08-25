@@ -179,6 +179,7 @@ Template.chatStatusInput.onRendered(function () {
 
 Template.chatStatusInput.helpers({
   getPartnerPictures: function () {
+
     return Template.instance().parentInstance("chatFrame").partnerPicture;
     //return getPicture(this.user);
   }

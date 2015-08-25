@@ -14,8 +14,6 @@ Template.connectionsList.onCreated(function() {
       sort: { createdAt: -1 }
     };
 
-    instance.subscribe('connectionsSignInListCount');
-
     instance.subscribe('connectionsSignInList', options, function() {
       instance.loaded.set(limit);
     });

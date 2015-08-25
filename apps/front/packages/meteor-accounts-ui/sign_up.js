@@ -166,7 +166,7 @@ Template.signUpPasswordService.events({
         var msg = error.reason || "error_unknown";
         Alerts.notifyModal('error', "accounts-ui:" + msg);
       } else {
-        $('#accountsUIModal').modal('hide');
+        Accounts.ui.dialog.hide();
         Alerts.dialog('msg', 'accounts-ui:text_verify_email');
       }
     });

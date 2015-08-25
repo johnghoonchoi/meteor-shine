@@ -1,7 +1,7 @@
 /**
  * return user list except me
  */
-Meteor.publishComposite('connectionsSignInList', function(options) {
+Meteor.publish('connectionsSignInList', function(options) {
   check(options, Match.ObjectIncluding({
     "limit": Number,
     "sort": Match.ObjectIncluding({
@@ -9,29 +9,15 @@ Meteor.publishComposite('connectionsSignInList', function(options) {
     })
   }));
 
-  if (! this.userId)
+  if (! this.userId) {
+    console.log('user not logged in');
     return [];
+  }
 
-  var query = { user: { $exists: true }, 'user._id': { $ne: this.userId }};
-
-  return {
-    find: function() {
-      return Connection.collection.find(query, options);
-    },
-
-    children: [
-      {
-        find: function(connection) {
-          return Meteor.users.find({ _id: connection.user._id });
-        }
-      }
-    ]
-  };
-});
-
-Meteor.publish('connectionsSignInListCount', function() {
   var query = { user: { $exists: true }, 'user._id': { $ne: this.userId }};
 
   Counts.publish(this, 'connectionsSignInListCount',
     Connection.collection.find(query));
+
+  return Connection.collection.find(query, options);
 });

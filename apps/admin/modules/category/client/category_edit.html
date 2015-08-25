@@ -1,23 +1,23 @@
 <template name="categoryEdit">
   <article class="page">
     <header>
-      <h3>{{_ 'title_category_edit'}}</h3>
+      <h3>{{_ 'title_category'}} <small>{{_ 'title_edit'}}</small></h3>
     </header>
 
     <div class="body">
-      <form id="formCategoryEdit">
+      <form id="formCategoryEdit" class="form-admin">
         <section class="form-group">
-          <label>id</label>
-          <p>{{category._id}}</p>
+          <label>ID</label>
+          <p class="form-control-static">{{category._id}}</p>
         </section>
 
         <section class="form-group">
-          <label>title</label>
+          <label>{{_ 'label_title'}}</label>
           <input type="text" class="form-control" name="title" value="{{category.title}}">
         </section>
 
         <section class="form-group">
-          <label>state</label>
+          <label>{{_ 'label_state'}}</label>
           <label class="radio-inline">
             <input type="radio" name="state" value="ON" {{isState 'ON'}}> ON
           </label>
@@ -27,7 +27,7 @@
         </section>
 
         <section class="form-group">
-          <label>Permission - read</label>
+          <label>{{_ 'label_permission_read'}}</label>
           <label class="radio-inline">
             <input type="radio" name="permissionRead" value="PUBLIC" {{isPermissionRead 'PUBLIC'}}> PUBLIC
           </label>
@@ -40,7 +40,7 @@
         </section>
 
         <section class="form-group">
-          <label>Permission - write</label>
+          <label>{{_ 'label_permission_write'}}</label>
           <label class="radio-inline">
             <input type="radio" name="permissionWrite" value="USER" {{isPermissionWrite 'USER'}}> USER
           </label>
@@ -50,17 +50,20 @@
         </section>
 
         <section class="form-group">
-          <label>createdAt</label>
-          <p>{{category.createdAt}}</p>
+          <label>{{_ 'label_created_at'}}</label>
+          <p class="form-control-static">{{momentFormat category.createdAt 'YYYY-MM-DD HH:mm:ss'}}</p>
         </section>
 
         <section class="form-group">
-          <label>updatedAt</label>
-          <p>{{category.updatedAt}}</p>
+          <label>{{_ 'label_updated_at'}}</label>
+          <p class="form-control-static">{{momentFormat category.updatedAt 'YYYY-MM-DD HH:mm:ss'}}</p>
         </section>
 
-        <section>
-          <button type="submit" class="btn btn-primary pull-right">{{_ 'command_save'}}</button>
+        <section class="form-actions">
+          <div class="btn-toolbar pull-right">
+            <button type="button" id="cancel" class="btn btn-default">{{_ 'command_cancel'}}</button>
+            <button type="submit" class="btn btn-primary">{{_ 'command_save'}}</button>
+          </div>
         </section>
       </form>
 
