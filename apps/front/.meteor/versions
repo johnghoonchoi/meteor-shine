@@ -26,7 +26,6 @@ cosmos:browserify@0.4.0
 davidsunny:accounts-emails-field@0.0.1
 davidsunny:accounts-meld@0.0.1
 davidsunny:accounts-meld-ui@0.0.1
-davidsunny:bothlog@0.0.1
 davidsunny:cropperjs@0.0.1
 dburles:collection-helpers@1.0.3
 dburles:mongo-collection-instances@0.3.4

@@ -142,13 +142,6 @@ Template.chatFrame.events({
 
 //
 // chatMessageListItem
-Template.chatMessageListItem.onCreated(function () {
-  var instance = this;
-  var parentData = this.parentInstance("chatFrame");
-
-  instance.partnerPicture = parentData.partnerPicture;
-});
-
 Template.chatMessageListItem.onRendered(function () {
   // scroll to bottom of main div
   var selector = 'main.body';
@@ -179,7 +172,6 @@ Template.chatStatusInput.onRendered(function () {
 
 Template.chatStatusInput.helpers({
   getPartnerPictures: function () {
-
     return Template.instance().parentInstance("chatFrame").partnerPicture;
     //return getPicture(this.user);
   }

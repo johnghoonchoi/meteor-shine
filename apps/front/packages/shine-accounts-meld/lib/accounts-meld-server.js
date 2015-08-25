@@ -577,12 +577,16 @@ var _createServiceSelector = function(serviceName, serviceData) {
   // End copy code
 };
 
+
 // 미티어 원본 소스 참조하는 변수
 var origUpdateOrCreateUserFromExternalService =
 	Accounts.updateOrCreateUserFromExternalService;
 
 // 외부 서비스로부터 유저를 생성하거나 업데이트(로그인한 유저가 외부서비스 연결)를 할때 사용하는 함수
 updateOrCreateUserFromExternalService = function(serviceName, serviceData, options) {
+  console.log('serviceName: ', serviceName);
+  console.log('serviceData: ', serviceData);
+  console.log('options: ', options);
 
 	var
 		currentUser = Meteor.user(),
@@ -591,28 +595,24 @@ updateOrCreateUserFromExternalService = function(serviceName, serviceData, optio
 		serviceIdKey,
 		user;
 
+  // 현재 로그인한 유저인지 체크
 	if (currentUser) {
-
-    // Ko: 이미 유저가 다른 계정으로 로그인 되어 있다.
-    // 연결하려는 서비스가 이미 로그인 된 계정에 등록되어 있는지 확인
-
-    // The user was already logged in with a different account
-    // Checks if the service is already registered with this same account
+    // 현재 로그인한 유저가 연결하려는 서비스를 사용중인지 체크
 		if (!currentUser.services[serviceName]) {
 
 			// Creates a selector for the current service
 			selector = _createServiceSelector(serviceName, serviceData);
 
 			// Look for a user with the appropriate service user id.
-			user = Meteor.users.findOne(selector);
 
+      // 셀렉터를 가지고 해당하는 서비스 유저 id를 가진 유저가 있는지 체크
+			user = Meteor.users.findOne(selector);
       if (!user) {
-				// This service is being used for the first time!
+				// 현재 로그인한 유저에 해당하는 서비스를 처음으로 추가
 				// Simply add the service to the current user, and that's it!
 				setAttr = {};
 				serviceIdKey = "services." + serviceName + ".id";
 				setAttr[serviceIdKey] = serviceData.id;
-
 
 				// This is just to fake updateOrCreateUserFromExternalService so to have
 				// it attach the new service to the existing user instead of creating a
@@ -638,7 +638,7 @@ updateOrCreateUserFromExternalService = function(serviceName, serviceData, optio
 				// added was specified
 				var serviceAddedCbk = AccountsMeld.getConfig('serviceAddedCallback');
 				if (serviceAddedCbk) {
-					serviceAddedCbk(currentUser._id, serviceName);
+					serviceAddedCbk(currentUser._id, serviceName, serviceData, options);
 				}
 
 				// Cancels the login to save some data exchange with the client

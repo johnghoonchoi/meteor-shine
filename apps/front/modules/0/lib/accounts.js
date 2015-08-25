@@ -12,19 +12,18 @@ userDisplayName = function (user) {
   if (! user)
     return "";
 
-  if (user.oauths) {
-    if (user.oauths.facebook)
-      return user.oauths.facebook.name;
-
-    if (user.oauths.meetup)
-      return user.oauths.meetup.name;
-  }
-
   if (user.profile && user.profile.name)
     return user.profile.name;
 
   if (user.username)
     return user.username;
+
+  if (user.oauths) {
+    var services = [ 'facebook', 'google', 'meetup', 'twitter', 'github', 'meteor-developer', 'kakao', 'naver'];
+    for (var i = 0; i < services.length; i++) {
+      if (user.oauths[services[i]]) return user.oauths[services[i]].name;
+    }
+  }
 
   if (user.emails && user.emails[0] && user.emails[0].address)
     return user.emails[0].address;
@@ -84,20 +83,33 @@ getPicture = function(user) {
   if (!user) return '';
 
   if (user) {
+    if (user.profile && user.profile.avatar) {
+      var url = user.profile.avatar;
+      return "<img src='"+url+"'alt='Profile image' class='img-circle'>";
+    }
+
     if (user.profile && user.profile.picture) {
-      var flag = myPicState(user);
-      if (flag === 'onlyOrigin' || flag === 'both') {
-        var url = user.profile.picture.origin.urlCropped;
-        return "<img src='"+url+"'alt='Profile image' class='img-circle'>";
+      if (user._id === Meteor.userId()) {
+        var flag = myPicState(user);
+        if (flag === 'onlyOrigin' || flag === 'both') {
+          var url = user.profile.picture.origin.urlCropped;
+          return "<img src='"+url+"'alt='Profile image' class='img-circle'>";
+        }
       }
+      var url = user.profile.picture.origin.urlCropped;
+      return "<img src='"+url+"'alt='Profile image' class='img-circle'>";
     }
 
     if (user.oauths) {
-      if (user.oauths.facebook && user.oauths.facebook.picture) {
-        return "<img src='"+user.oauths.facebook.picture+"'alt='Profile image' class='img-circle'>";
-      }
-      if (user.oauths.meetup && user.oauths.meetup.picture) {
-        return "<img src='"+user.oauths.meetup.picture+"'alt='Profile image' class='img-circle'>";
+      var services = [ 'facebook', 'google', 'meetup', 'twitter', 'github', 'meteor-developer', 'kakao', 'naver'];
+      for (var i = 0; i < services.length; i++) {
+        if (user.oauths[services[i]]) {
+          if (user.oauths[services[i]].picture) {
+            return "<img src='" + user.oauths[services[i]].picture + "'alt='Profile image' class='img-circle'>";
+          }
+          var initial = makeUppercase(user.oauths[services[i]].name);
+          return "<span class='avatar-initials'>"+initial+"</span>";
+        }
       }
     }
 
@@ -105,6 +117,12 @@ getPicture = function(user) {
       var initial = makeUppercase(user.username);
       return "<span class='avatar-initials'>"+initial+"</span>";
     }
+
+    if (user.emails && user.emails[0] && user.emails[0].address) {
+      var initial = makeUppercase(user.emails[0].address);
+      return "<span class='avatar-initials'>"+initial+"</span>";
+    }
+
   }
 };
 
