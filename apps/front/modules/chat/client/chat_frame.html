@@ -7,12 +7,16 @@
 
     <main class="body">
       <div class="chat-message-lists">
-        {{#each chatMessagesList}}
-          {{> chatMessageListItem this}}
-        {{/each}}
+        {{#if Template.subscriptionsReady}}
+          {{#each chatMessagesList}}
+            {{> chatMessageListItem}}
+          {{/each}}
 
-        {{#if onTyping}}
-          {{>chatStatusInput this}}
+          {{#if onTyping}}
+            {{>chatStatusInput}}
+          {{/if}}
+        {{else}}
+          Loading...
         {{/if}}
       </div>
     </main>
@@ -49,6 +53,12 @@
     <a href="#" class="avatar-sm">
       {{{getPartnerPictures}}}
     </a>
-    <p class="from chat-balloon right">...</p>
+    <div class="from chat-balloon right">
+      <div class="typing-indicator">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
   </div>
 </template>
