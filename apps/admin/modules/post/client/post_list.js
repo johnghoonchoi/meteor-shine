@@ -2,10 +2,11 @@ Template.postsList.onCreated(function() {
   var instance = this;
   var data;
 
+  instance.categories = new ReactiveVar();
+
   instance.increment = 10;
-  instance.categories = new ReactiveVar();;
   instance.limit = new ReactiveVar(instance.increment);
-  instance.loaded = new ReactiveVar(0);
+  instance.loaded = 0; //new ReactiveVar(0);
   instance.sortBy = function(value) {
     if (value === 'like') {
       return { 'count.likes': -1 };
@@ -22,7 +23,7 @@ Template.postsList.onCreated(function() {
     data = Template.currentData();
 
     query = (instance.categories.get()) ?
-      { $in: { categoryId: instance.categoryId.get() }} : {};
+      { $in: { categoryId: instance.categories.get() }} : {};
 
     var limit = instance.limit.get();
     var sort = instance.sortBy(data.sortBy);
@@ -31,12 +32,14 @@ Template.postsList.onCreated(function() {
 
     instance.subscribe('postsList', query, { limit: limit, sort: sort },
       function() {
-        instance.loaded.set(limit);
+//        instance.loaded.set(limit);
+        instance.loaded = limit;
       }
     );
 
-    Navigations.path.set('postsList');
   });
+
+    Navigations.path.set('postsList');
 
 
   instance.postsCount = function() {
@@ -44,10 +47,10 @@ Template.postsList.onCreated(function() {
   };
 
   instance.posts = function() {
-    var categoryId = instance.categoryId ? instance.categoryId.get() : null;
-    var query = (categoryId) ? { categoryId: categoryId } : {};
+    var query = (instance.categories.get()) ?
+      { $in: { categoryId: instance.categories.get() }} : {};
     return Posts.find(query, {
-      limit: instance.loaded.get(), sort: { publishedAt: 1 }
+      limit: instance.loaded/*.get()*/, sort: { publishedAt: 1 }
     });
   };
 });
@@ -56,7 +59,7 @@ Template.postsList.onCreated(function() {
 Template.postsList.onDestroyed(function() {
   this.categoryId = null;
   this.limit = null;
-  this.loaded = null;
+  //this.loaded = null;
   this.sortBy = null;
   this.postsCount = null;
   this.posts = null;
@@ -84,7 +87,7 @@ Template.postsList.helpers({
 
   hasMore: function() {
     var instance = Template.instance();
-    return (instance.postsCount() > instance.loaded.get());
+    return (instance.postsCount() > instance.loaded/*.get()*/);
   }
 });
 
