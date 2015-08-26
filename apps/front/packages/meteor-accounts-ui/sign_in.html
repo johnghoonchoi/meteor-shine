@@ -55,9 +55,9 @@
 <template name="signInOtherService">
   <section class="form-group">
     <button data-action="sign-in" class="btn btn-color-{{name}} btn-block {{#unless configured}}configure-button{{/unless}}">
-      <i class="fa fa-{{name}}"></i>&nbsp;
+      <i class="icon-{{name}} service-icon"></i><i class="icon-spin4 animate-spin loading-icon hidden"></i>
       {{#if configured}}
-        <span class="text-besides-image sign-in-text-{{name}}">
+        <span class="text-besides-image sign-in-text-{{name}}" style="display: none;">
           {{_ 'accounts-ui:label_sign_in_with' 0=capitalizedName}}</span>
       {{else}}
         <span class="text-besides-image configure-text-{{name}}">
@@ -66,6 +66,15 @@
     </button>
   </section>
 </template>
+
+<!--<template name="signInOtherService">-->
+  <!--<section class="form-group">-->
+	  <!--<a href="#">-->
+		  <!--<img src="/images/naver.png" width="50" height="50">-->
+	  <!--</a>-->
+  <!--</section>-->
+<!--</template>-->
+
 
 <template name="signInServiceSeparator">
   <section class="form-group">
