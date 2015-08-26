@@ -25,130 +25,94 @@ Accounts.config({
  * `meteor add accounts-meteor-developer`
  *  ...
  */
-var setupFacebookLogin = function() {
-  var facebook = Systems.findOne({ _id: 'facebookLogin' });
 
-  if (facebook) {
-    ServiceConfiguration.configurations.remove({ service: "facebook" });
+var _setupLoginSetting = function(serviceName, mode) {
+
+  var valueForReal = serviceName + "Login";
+  var valueForTest = serviceName + "LoginTest";
+  var valueForLocal = serviceName + "LoginLocal";
+
+  var serviceInfoForReal = Systems.findOne({ _id: valueForReal });
+  var serviceInfoForLocal = Systems.findOne({ _id: valueForLocal });
+  var serviceInfoForTest = Systems.findOne({ _id: valueForTest });
+
+  if (serviceName === 'meteor') serviceName = "meteor-developer";
+
+  if (mode==="realServer" && serviceInfoForReal) {
+
+    return;
+  }
+
+  if (mode==="testServer" && serviceInfoForTest) {
+    ServiceConfiguration.configurations.remove({ service: serviceName });
+
+    if (serviceName === "facebook") {
+      ServiceConfiguration.configurations.insert({
+        service: "facebook",
+        appId: serviceInfoForTest.appId,
+        secret: serviceInfoForTest.secret
+      });
+      return;
+    }
+    if (serviceName === "twitter") {
+      ServiceConfiguration.configurations.insert({
+        service: "twitter",
+        consumerKey: serviceInfoForTest.consumerKey,
+        secret: serviceInfoForTest.secret
+      });
+      return;
+    }
+    if (serviceName === 'kakao') {
+      ServiceConfiguration.configurations.insert({
+        service: "kakao",
+        clientId: serviceInfoForTest.clientId
+      });
+      return;
+    }
+
     ServiceConfiguration.configurations.insert({
-      service: "facebook",
-      appId: facebook.appId,
-      secret: facebook.secret
+      service: serviceName,
+      clientId: serviceInfoForTest.clientId,
+      secret: serviceInfoForTest.secret
     });
+    return;
   }
-};
 
-var setupGoogleLogin = function() {
-  var google = Systems.findOne({ _id: 'googleLogin' });
+  if (mode==="localServer" && serviceInfoForLocal) {
+    ServiceConfiguration.configurations.remove({ service: serviceName });
 
-  if (google) {
-    ServiceConfiguration.configurations.remove({ service: "google" });
+    if (serviceName === "facebook") {
+      ServiceConfiguration.configurations.insert({
+        service: "facebook",
+        appId: serviceInfoForLocal.appId,
+        secret: serviceInfoForLocal.secret
+      });
+      return;
+    }
+    if (serviceName === "twitter") {
+      ServiceConfiguration.configurations.insert({
+        service: "twitter",
+        consumerKey: serviceInfoForLocal.consumerKey,
+        secret: serviceInfoForLocal.secret
+      });
+      return;
+    }
+    if (serviceName === 'kakao') {
+      ServiceConfiguration.configurations.insert({
+        service: "kakao",
+        clientId: serviceInfoForLocal.clientId
+      });
+      return;
+    }
     ServiceConfiguration.configurations.insert({
-      service: "google",
-      clientId: google.clientId,
-      secret: google.secret
+      service: serviceName,
+      clientId: serviceInfoForLocal.clientId,
+      secret: serviceInfoForLocal.secret
     });
+    return;
   }
+
 };
-
-var setupTwitterLogin = function() {
-  var twitter = Systems.findOne({ _id: 'twitterLogin' });
-
-  if (twitter) {
-    ServiceConfiguration.configurations.remove({ service: "twitter" });
-    ServiceConfiguration.configurations.insert({
-      service: "twitter",
-      consumerKey: twitter.consumerKey,
-      secret: twitter.secret
-    })
-  }
-};
-
-var setupMeetupLogin = function() {
-  var meetup = Systems.findOne({ _id: 'meetupLogin' });
-
-  if (meetup) {
-    ServiceConfiguration.configurations.remove({ service: "meetup" });
-    ServiceConfiguration.configurations.insert({
-      service: "meetup",
-      clientId: meetup.clientId,
-      secret: meetup.secret,
-      apiKey: meetup.apiKey
-    });
-  }
-};
-
-var setupGithubLogin = function() {
-  var github = Systems.findOne({ _id: 'githubLogin' });
-
-  if (github) {
-    ServiceConfiguration.configurations.remove({ service: "github" });
-    ServiceConfiguration.configurations.insert({
-      service: "github",
-      clientId: github.clientId,
-      secret: github.secret
-    })
-  }
-};
-
-var setupMeteorLogin = function() {
-  var meteor = Systems.findOne({ _id: 'meteorLogin' });
-
-  if (meteor) {
-    ServiceConfiguration.configurations.remove({ service: "meteor-developer" });
-    ServiceConfiguration.configurations.insert({
-      service: "meteor-developer",
-      clientId: meteor.clientId,
-      secret: meteor.secret
-    })
-  }
-};
-
-//var setupLinkedInLogin = function() {
-//  var linkedIn = Systems.findOne({ _id: 'linkedInLogin' });
-//
-//  if (!linkedIn) {
-//    ServiceConfiguration.configurations.remove({ service: "linkedIn" });
-//    ServiceConfiguration.configurations.insert({
-//      service: "linkedIn",
-//      clientId: Meteor.settings.linkedIn.clientId,
-//      secret: Meteor.settings.linkedIn.secret
-//    })
-//  }
-//};
-
-/**
- *  have to add an external login services for Korean
- * `meteor add accounts-naver`
- * `meteor add accounts-kakao`
- */
-var setupNaverLogin = function() {
-  var naver = Systems.findOne({ _id: 'naverLogin' });
-
-  if (naver) {
-    ServiceConfiguration.configurations.remove({ service: "naver" });
-    ServiceConfiguration.configurations.insert({
-      service: "naver",
-      clientId: naver.clientId,
-      secret: naver.secret,
-      loginStyle: 'popup'
-    });
-  }
-};
-
-var setupKakaoLogin = function() {
-  var kakao = Systems.findOne({ _id: 'kakaoLogin' });
-
-  if (kakao) {
-    ServiceConfiguration.configurations.remove({ service: "kakao" });
-    ServiceConfiguration.configurations.insert({
-      service: "kakao",
-      clientId: kakao.clientId,
-      loginStyle: 'popup'
-    });
-  }
-};
-
 
 /**
  * check the validation of user information
@@ -313,6 +277,7 @@ Accounts.onLoginFailure(function(info) {
   //console.log('email..: ' + JSON.stringify(info.error.details.email, null, 2));
 });
 
+
 /**
  * validate user login
  *
@@ -332,25 +297,12 @@ Accounts.validateLoginAttempt(function(attempt) {
   return true;
 });
 
-Accounts.onLogin(function(info) {
-  //console.log('info, onLoginFailure: ', info);
-  //console.log('email..: ' + JSON.stringify(info.error.details.email, null, 2));
-});
-
-Accounts.onLoginFailure(function(info) {
-  //console.log('info, onLoginFailure: ', info);
-  //console.log('email..: ' + JSON.stringify(info.error.details.email, null, 2));
-});
-
 Meteor.startup(function() {
-  setupFacebookLogin();
-  setupGoogleLogin();
-  setupMeteorLogin();
-  setupGithubLogin();
-  setupMeetupLogin();
-  setupTwitterLogin();
-  //setupLinkedInLogin();
+  var services = ["facebook", "google", "twitter", "meetup", "github", "meteor", "naver", "kakao"];
+  // Select one of realServer, testServer, localServer
+  var mode = "localServer";
 
-  setupNaverLogin();
-  setupKakaoLogin();
+  for (var i = 0; i < services.length; i++) {
+    _setupLoginSetting(services[i], mode);
+  }
 });
