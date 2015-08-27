@@ -83,11 +83,6 @@ getPicture = function(user) {
   if (!user) return '';
 
   if (user) {
-    if (user.profile && user.profile.avatar) {
-      var url = user.profile.avatar;
-      return "<img src='"+url+"'alt='Profile image' class='img-circle'>";
-    }
-
     if (user.profile && user.profile.picture) {
       if (user._id === Meteor.userId()) {
         var flag = myPicState(user);
@@ -111,6 +106,11 @@ getPicture = function(user) {
           return "<span class='avatar-initials'>"+initial+"</span>";
         }
       }
+    }
+
+    if (user.profile && user.profile.avatar) {
+      var url = user.profile.avatar;
+      return "<img src='"+url+"'alt='Profile image' class='img-circle'>";
     }
 
     if (user.username) {
