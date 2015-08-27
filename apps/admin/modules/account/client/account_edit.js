@@ -36,6 +36,6 @@ Template.accountEdit.events({
   'click #cancel': function(e) {
     e.preventDefault();
 
-    history.back(-1);
+    history.back();
   }
 });

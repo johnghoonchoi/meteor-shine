@@ -1,0 +1,11 @@
+<template name="pagination">
+  {{#unless ready}}
+    {{> Template.dynamic template=spinner}}
+  {{else}}
+    {{#if hasMore}}
+      <button type="button" id="load-more" class="btn btn-default btn-block">
+        {{labelLoadMore}}
+      </button>
+    {{/if}}
+  {{/unless}}
+</template>

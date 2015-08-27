@@ -4,34 +4,41 @@ Template.accountsList.onCreated(function() {
 
   var instance = this;
 
-  instance.increment = 4;
-  instance.limit = new ReactiveVar(instance.increment);
-  instance.loaded = new ReactiveVar(0);
+  instance.sortBy = new ReactiveVar('username');
+  instance.sortAsc = new ReactiveVar(1);
 
-  instance.autorun(function() {
-    var limit = instance.limit.get();
-    var sort = { createdAt: -1 };
+  instance.subscribe('accountsListCount');
 
-    instance.subscribe('accountsList', { limit: limit, sort: sort },
-      function() { instance.loaded.set(limit); });
-  });
+  instance.pagination = new PagedSubscription({ increment: 5 });
+
+  var sort = {};
+  sort[instance.sortBy.get()] = instance.sortAsc.get();
+  instance.pagination.first('accountsList', {}, { sort: sort });
 
   instance.accountsCount = function() {
     return Counts.get('accountsListCount');
   };
 
-  instance.accounts = function() {
-    return Meteor.users.find({},
-      { limit: instance.loaded.get(), sort: { createdAt: -1 }});
-  };
+  instance.autorun(function() {
+    instance.accounts = function() {
+      var sort = {};
+      sort[instance.sortBy.get()] = instance.sortAsc.get();
+
+      var cursor = Meteor.users.find({},
+        { limit: instance.pagination.getLimit(), sort: sort });
+
+      instance.pagination.setLoaded(cursor.count());
+
+      return cursor;
+    };
+  });
 });
 
 Template.accountsList.onDestroyed(function() {
   this.limit = null;
-  this.loadead = null;
+  this.loaded = null;
   this.accounts = null;
 });
-
 
 Template.accountsList.helpers({
   accountsCount: function() {
@@ -42,17 +49,23 @@ Template.accountsList.helpers({
     return Template.instance().accounts();
   },
 
-  hasMore: function() {
-    var instance = Template.instance();
-    return (instance.accountsCount() > instance.loaded.get());
+  paging: function() {
+    return Template.instance().pagination;
   }
 });
 
 Template.accountsList.events({
-  'click #load-more': function(e, instance) {
-    e.preventDefault();
+  'click th': function(e, instance) {
+    var sortBy = e.currentTarget.getAttribute('data-sort');
+    var sort = {};
 
-    instance.limit.set(instance.limit.get() + instance.increment);
+    if (sortBy) {
+      if (instance.sortBy.get() === sortBy) {
+        instance.sortAsc.set(instance.sortAsc.get() * -1);
+      } else {
+        instance.sortBy.set(sortBy);
+      }
+    }
   }
 });
 
@@ -75,3 +88,26 @@ Template.accountsListItem.helpers({
     return (this.emails && this.emails[0]) ? this.emails[0].address : "";
   }
 });
+
+/*
+Template.accountsListPaging.helpers({
+  ready: function() {
+    var handle = Template.instance().handle;
+    return (handle) ? handle.ready() : true;
+  },
+
+  hasMore: function() {
+    return (this.limit.get() === this.loaded.get());
+  }
+});
+
+Template.accountsListPaging.events({
+  'click #load-more': function(e, instance) {
+    e.preventDefault();
+
+    var data = Template.currentData();
+    data.limit.set(data.limit.get() + data.increment);
+    instance.handle = data.subscribe(data.limit.get());
+  }
+});
+*/

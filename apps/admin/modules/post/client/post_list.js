@@ -2,11 +2,9 @@ Template.postsList.onCreated(function() {
   var instance = this;
   var data;
 
-  instance.categories = new ReactiveVar();
-
   instance.increment = 10;
   instance.limit = new ReactiveVar(instance.increment);
-  instance.loaded = 0; //new ReactiveVar(0);
+  instance.loaded = new ReactiveVar(0);
   instance.sortBy = function(value) {
     if (value === 'like') {
       return { 'count.likes': -1 };
@@ -17,29 +15,30 @@ Template.postsList.onCreated(function() {
 
   instance.subscribe('categoriesList', {}, { sort: { seq: 1 }});
 
-  var query;
+  var query, limit, sort;
+
+  Navigations.path.set('postsList');
 
   instance.autorun(function() {
+
     data = Template.currentData();
 
-    query = (instance.categories.get()) ?
-      { $in: { categoryId: instance.categories.get() }} : {};
+    query = (data.categoryId) ? { categoryId: data.categoryId } : {};
+    limit = instance.limit.get();
+    sort = instance.sortBy(data.sortBy);
 
-    var limit = instance.limit.get();
-    var sort = instance.sortBy(data.sortBy);
+    console.log('query: ' + JSON.stringify(query));
 
     instance.subscribe('postsListCount', query);
 
     instance.subscribe('postsList', query, { limit: limit, sort: sort },
       function() {
-//        instance.loaded.set(limit);
-        instance.loaded = limit;
+        instance.loaded.set(limit);
       }
     );
-
   });
 
-    Navigations.path.set('postsList');
+
 
 
   instance.postsCount = function() {
@@ -47,10 +46,10 @@ Template.postsList.onCreated(function() {
   };
 
   instance.posts = function() {
-    var query = (instance.categories.get()) ?
-      { $in: { categoryId: instance.categories.get() }} : {};
+    var query = (data.categoryId) ? { categoryId: data.categoryId } : {};
+
     return Posts.find(query, {
-      limit: instance.loaded/*.get()*/, sort: { publishedAt: 1 }
+      limit: instance.loaded.get(), sort: { publishedAt: 1 }
     });
   };
 });
@@ -59,7 +58,7 @@ Template.postsList.onCreated(function() {
 Template.postsList.onDestroyed(function() {
   this.categoryId = null;
   this.limit = null;
-  //this.loaded = null;
+  this.loaded = null;
   this.sortBy = null;
   this.postsCount = null;
   this.posts = null;
@@ -81,8 +80,12 @@ Template.postsList.helpers({
 
   postWithUser: function() {
     var post = this;
-    var author = Meteor.users.findOne(post.author._id);
-    return _.extend(post, { author: author });
+    if (post && post.author) {
+      var author = Meteor.users.findOne(post.author._id);
+      return _.extend(post, { author: author });
+    } else {
+      return "";
+    }
   },
 
   hasMore: function() {

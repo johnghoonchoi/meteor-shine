@@ -1,11 +1,7 @@
 Template.dashboard.onCreated(function() {
-  var instance = this;
-
   Navigations.path.set('dashboard');
 
-  instance.autorun(function() {
-    instance.subscribe('connectionsList');
-  });
+  this.subscribe('connectionsListCount');
 });
 
 Template.dashboard.helpers({
