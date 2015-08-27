@@ -5,7 +5,7 @@ Template.connectionsList.onCreated(function() {
   instance.limit = new ReactiveVar(instance.increment);
   instance.loaded = new ReactiveVar(0);
 
-  instance.chatTemplate = null;
+  instance.template = null;
 
   instance.autorun(function() {
     var limit = instance.limit.get();
@@ -64,17 +64,23 @@ Template.connectionsListItem.helpers({
 });
 
 Template.connectionsListItem.events({
-  'click a' : function (e, instance) {
+  'click a' : function (e) {
     e.preventDefault();
+    var userId = this.user._id;
 
+    //
     // singleton instance
-    if (instance.chatTemplate) {
-      Blaze.remove(instance.chatTemplate);
+
+    // template is exist and equal user
+    if (chatSingleton.template && userId !== chatSingleton.userId) {
+      Blaze.remove(chatSingleton.template);
     }
 
-    this.chatTemplate = Blaze.renderWithData(Template.chatFrame,
-      this, document.body);
+    // template is not exist or not equal user
+    if (!chatSingleton.template || userId !== chatSingleton.userId) {
+      chatSingleton.userId = this.user._id;
+      chatSingleton.template = Blaze.renderWithData(Template.chatFrame, this, document.body);
+    }
 
-    instance.chatTemplate = this.chatTemplate;
   }
 });
