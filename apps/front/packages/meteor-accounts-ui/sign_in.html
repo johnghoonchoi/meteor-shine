@@ -1,11 +1,11 @@
 <template name="signIn">
   <article id="accounts-ui-sign-in" class="accounts-ui-page">
-    {{> accountsUIHeader title='accounts-ui:nav_sign_in'}}
+    {{> accountsUIHeader title='accounts-ui:title_logo_name'}}
 
     <div class="body">
-      {{#if loggingIn}}
-        {{> accountsUILoading}}
-      {{/if}}
+      <!--{{#if loggingIn}}-->
+        <!--{{> accountsUILoading}}-->
+      <!--{{/if}}-->
 
       {{> meteorModalAlerts}}
 
@@ -46,25 +46,24 @@
 
     <section class="form-group">
       <button type="submit" class="btn btn-primary btn-block pull-right">
-        {{_ 'accounts-ui:command_sign_in'}}
+        <span class="service-icon">{{_ 'accounts-ui:command_sign_in'}}</span>
+        <i class="icon-spin4 animate-spin loading-icon hidden"></i>
       </button>
     </section>
   </form>
 </template>
 
 <template name="signInOtherService">
-  <section class="form-group">
-    <button data-action="sign-in" class="btn btn-color-{{name}} btn-block {{#unless configured}}configure-button{{/unless}}">
-      <i class="icon-{{name}} service-icon"></i><i class="icon-spin4 animate-spin loading-icon hidden"></i>
-      {{#if configured}}
-        <span class="text-besides-image sign-in-text-{{name}}" style="display: none;">
-          {{_ 'accounts-ui:label_sign_in_with' 0=capitalizedName}}</span>
-      {{else}}
-        <span class="text-besides-image configure-text-{{name}}">
-          {{_ 'accounts-ui:label_configure_sign_in' 0=capitalizedName}}</span>
-      {{/if}}
-    </button>
-  </section>
+  <button data-action="sign-in" class="button {{name}} {{#unless configured}}configure-button{{/unless}}">
+    <i class="icon-{{name}} service-icon"></i><i class="icon-spin4 animate-spin loading-icon hidden"></i>
+    {{#if configured}}
+      <span class="text-besides-image sign-in-text-{{name}}" style="display: none;">
+        {{_ 'accounts-ui:label_sign_in_with' 0=capitalizedName}}</span>
+    {{else}}
+      <span class="text-besides-image configure-text-{{name}}" style="display: none;">
+        {{_ 'accounts-ui:label_configure_sign_in' 0=capitalizedName}}</span>
+    {{/if}}
+  </button>
 </template>
 
 <!--<template name="signInOtherService">-->
