@@ -1,0 +1,49 @@
+@theme: "classic";
+
+@theme-path: "/client/templates/themes/@{theme}";
+
+@import "{leesangwon:bootstrap-less}/bootstrap.less";
+
+// Custom style
+@import "imports/variables.less";
+@import "imports/mixins.less";
+@import "@{theme-path}/imports/layout.less";
+//@import "imports/@{layout-path}/header.less";
+//@import "imports/@{layout-path}/tree-menu.less";
+//@import "imports/@{layout-path}/footer.less";
+@import "imports/page.less";
+@import "imports/form.less";
+@import "imports/modules.less";
+@import "imports/fontface.less";
+@import "imports/list-view.less";
+
+// Editor components
+@import "imports/editor.less";
+
+// User list Modal
+@import "imports/user-modal.less";
+
+// Posts
+@import "imports/post.less";
+
+// Profile
+@import "/modules/profile/client/styles/profile_picture.less";
+@import "/modules/profile/client/styles/profile_view.less";
+
+// Balloon
+@import "imports/balloon.less";
+
+// Chat
+@import "imports/chat.less";
+
+// Theme custom
+//@import "imports//client/style/base/theme_custom/default.less";
+//@import "imports//client/style/base/theme_custom/darkly.less";
+//@import "imports//client/style/base/theme_custom/paper.less";
+
+// Blogs
+//@import "imports//modules/blog/client/styles/blogs.less";
+
+// Blog Editor
+//@import "imports//modules/editor/client/less/inlineEditor-toolbar.less";
+//@import "imports//modules/editor/client/less/inlineEditor-draftModal.less";

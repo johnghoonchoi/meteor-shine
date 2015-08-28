@@ -8,38 +8,36 @@ Template.connectionsList.onCreated(function() {
 
   instance.increment = 10;
   instance.limit = new ReactiveVar(instance.increment);
-  instance.loadead = new ReactiveVar(0);
+  instance.loaded = new ReactiveVar(0);
 
   instance.autorun(function() {
     var limit = instance.limit.get();
     var sort = { createdAt: -1 };
 
-    instance.subscribe('connectionsList', { limit: limit, sort: sort });
+    instance.subscribe('connectionsList',
+      { limit: limit, sort: sort },
+      function() { instance.loaded.set(limit); }
+    );
   });
-
-
-  instance.connectionsCount = function() {
-    var count = Counts.get('connectionsListCount');
-    return (count > 0) ? count : 0;
-  };
 
   instance.connections = function() {
     return Connection.collection.find({},
-      { limit: instance.loadead.get(), sort: { createdAt: -1 }});
+      { limit: instance.loaded.get(), sort: { createdAt: -1 }});
   };
 
 });
 
 Template.connectionsList.onDestroyed(function() {
   this.limit = null;
-  this.loadead = null;
+  this.loaded = null;
   this.connections = null;
 });
 
 
 Template.connectionsList.helpers({
   connectionsCount: function() {
-    return Template.instance().connectionsCount();
+    var count = Counts.get('connectionsListCount');
+    return (count > 0) ? count : 0;
   },
 
   connections: function() {

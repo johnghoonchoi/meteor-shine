@@ -1,52 +1,48 @@
 <template name="postsList">
   <article class="page">
     <header>
-      <h3>{{_ 'title_posts_list'}}</h3>
+      <h3>{{_ 'title_post'}} <small>{{_ 'title_list'}}</small></h3>
     </header>
 
     <div class="body">
-      {{#if noPosts}}
-        {{_ 'text_no_blogs'}}
-      {{else}}
-        <div class="page-actions">
-          <div class="pull-left">
-            <p class="message">{{_ 'label_total_count'}}: {{postsCount}} {{!getPublishedCount 'postsListCount'}}</p>
-          </div>
-          <div class="pull-right">
-            {{#if currentUser}}
-              <a class="btn btn-primary" href="{{pathFor 'postWrite'}}">{{_ 'command_register'}}</a>
-            {{/if}}
-          </div>
+      <div class="page-actions">
+        <div class="pull-left">
+          <p class="message">{{_ 'label_total_count'}}: {{postsCount}} {{!getPublishedCount 'postsListCount'}}</p>
         </div>
-
-        <table class="table table-bordered table-striped">
-          <thead>
-          <tr>
-            <th>{{_ 'label_title'}}</th>
-            <th>{{_ 'label_author'}}</th>
-            <th>{{_ 'label_like'}}</th>
-            <th>{{_ 'label_comment'}}</th>
-            <th>{{_ 'label_updated_at'}}</th>
-            <th>{{_ 'label_created_at'}}</th>
-          </tr>
-          </thead>
-
-          <tbody>
-          {{#each posts}}
-            {{#with postWithUser}}
-              {{> postsListItem}}
-            {{/with}}
-          {{/each}}
-          </tbody>
-        </table>
-
-        {{#if Template.subscriptionsReady}}
-          {{#if hasMore}}
-            <button id="load-more" class="btn btn-default btn-block">{{_ 'command_load_more'}}</button>
+        <div class="pull-right">
+          {{#if currentUser}}
+            <a class="btn btn-primary" href="{{pathFor 'postWrite'}}">{{_ 'command_register'}}</a>
           {{/if}}
-        {{else}}
-          {{> listLoading}}
+        </div>
+      </div>
+
+      <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th>{{_ 'label_title'}}</th>
+          <th>{{_ 'label_author'}}</th>
+          <th>{{_ 'label_like'}}</th>
+          <th>{{_ 'label_comment'}}</th>
+          <th>{{_ 'label_updated_at'}}</th>
+          <th>{{_ 'label_created_at'}}</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {{#each posts}}
+          {{#with postWithUser}}
+            {{> postsListItem}}
+          {{/with}}
+        {{/each}}
+        </tbody>
+      </table>
+
+      {{#if Template.subscriptionsReady}}
+        {{#if hasMore}}
+          <button id="load-more" class="btn btn-default btn-block">{{_ 'command_load_more'}}</button>
         {{/if}}
+      {{else}}
+        {{> listLoading}}
       {{/if}}
     </div>
   </article>

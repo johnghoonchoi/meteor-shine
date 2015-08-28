@@ -3,7 +3,6 @@ Template.postsList.onCreated(function() {
   var data;
 
   instance.increment = 10;
-  instance.categories = new ReactiveVar();;
   instance.limit = new ReactiveVar(instance.increment);
   instance.loaded = new ReactiveVar(0);
   instance.sortBy = function(value) {
@@ -16,16 +15,19 @@ Template.postsList.onCreated(function() {
 
   instance.subscribe('categoriesList', {}, { sort: { seq: 1 }});
 
-  var query;
+  var query, limit, sort;
+
+  Navigations.path.set('postsList');
 
   instance.autorun(function() {
+
     data = Template.currentData();
 
-    query = (instance.categories.get()) ?
-      { $in: { categoryId: instance.categoryId.get() }} : {};
+    query = (data.categoryId) ? { categoryId: data.categoryId } : {};
+    limit = instance.limit.get();
+    sort = instance.sortBy(data.sortBy);
 
-    var limit = instance.limit.get();
-    var sort = instance.sortBy(data.sortBy);
+    console.log('query: ' + JSON.stringify(query));
 
     instance.subscribe('postsListCount', query);
 
@@ -34,18 +36,15 @@ Template.postsList.onCreated(function() {
         instance.loaded.set(limit);
       }
     );
-
-    Navigations.path.set('postsList');
   });
 
-
   instance.postsCount = function() {
-    return Counts.get('postListsCount');
+    return Counts.get('postsListCount');
   };
 
   instance.posts = function() {
-    var categoryId = instance.categoryId ? instance.categoryId.get() : null;
-    var query = (categoryId) ? { categoryId: categoryId } : {};
+    var query = (data.categoryId) ? { categoryId: data.categoryId } : {};
+
     return Posts.find(query, {
       limit: instance.loaded.get(), sort: { publishedAt: 1 }
     });
@@ -78,13 +77,17 @@ Template.postsList.helpers({
 
   postWithUser: function() {
     var post = this;
-    var author = Meteor.users.findOne(post.author._id);
-    return _.extend(post, { author: author });
+    if (post && post.author) {
+      var author = Meteor.users.findOne(post.author._id);
+      return _.extend(post, { author: author });
+    } else {
+      return "";
+    }
   },
 
   hasMore: function() {
     var instance = Template.instance();
-    return (instance.postsCount() > instance.loaded.get());
+    return (instance.postsCount() > instance.loaded/*.get()*/);
   }
 });
 

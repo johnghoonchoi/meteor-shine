@@ -12,35 +12,91 @@
       <div class="list">
         <table class="table table-bordered table-striped">
           <thead>
-            <tr>
-              <th>{{_ 'label_account'}}</th>
-              <th>{{_ 'label_oauth_account'}}</th>
-              <th>{{_ 'label_email'}}</th>
-              <th>{{_ 'label_last_login_at'}}</th>
-              <th>{{_ 'label_created_at'}}</th>
-            </tr>
+          <tr>
+            <th data-sort="username" style="width: 80px">{{_ 'label_account'}}</th>
+            <th style="width: 120px">{{_ 'label_oauth_account'}}</th>
+            <th style="width: 150px">{{_ 'label_email'}}</th>
+            <th data-sort="loginAt">{{_ 'label_last_login_at'}}</th>
+            <th data-sort="createdAt">{{_ 'label_created_at'}}</th>
+          </tr>
           </thead>
 
           <tbody>
-            {{#each accounts}}
-              {{> accountsListItem}}
-            {{/each}}
+          {{#each accounts}}
+            {{> accountsListItem}}
+          {{/each}}
           </tbody>
         </table>
 
-        {{#if Template.subscriptionsReady}}
-          {{#if hasMore}}
-            <button id="load-more" class="btn btn-default btn-block">{{_ 'command_load_more'}}</button>
-          {{/if}}
-        {{else}}
-          {{> listLoading}}
-        {{/if}}
+        {{> pagination paging}}
       </div>
     </div>
   </article>
 </template>
 
 <template name="accountsListItem">
+  <tr>
+    <td><a href="{{pathFor 'accountEdit'}}">{{username}}</a></td>
+    <td>{{oauthName}}</td>
+    <td>{{email}}</td>
+    <td>{{momentFormat loginAt 'YYYY-MM-DD HH:mm'}}</td>
+    <td>{{momentFormat createdAt 'YYYY-MM-DD HH:mm'}}</td>
+  </tr>
+</template>
+
+<template name="accountsListPaging">
+  {{#unless ready}}
+    {{> listLoading}}
+  {{else}}
+    {{#if hasMore}}
+      <button id="load-more" class="btn btn-default btn-block">{{_ 'command_load_more'}}</button>
+    {{/if}}
+  {{/unless}}
+</template>
+
+<template name="accountsLista">
+  <article class="page">
+    <header>
+      <h3>{{_ 'title_account'}} <small>{{_ 'title_list'}}</small></h3>
+    </header>
+
+    <div class="body">
+      <div class="page-actions">
+        <p class="message">{{_ 'label_total_count'}}: {{accountsCount}}</p>
+      </div>
+
+      <div class="list">
+        <table class="table table-bordered table-striped">
+          <thead>
+          <tr>
+            <th data-sort="username">{{_ 'label_account'}}</th>
+            <th>{{_ 'label_oauth_account'}}</th>
+            <th>{{_ 'label_email'}}</th>
+            <th data-sort="loginAt">{{_ 'label_last_login_at'}}</th>
+            <th data-sort="createdAt">{{_ 'label_created_at'}}</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          {{#each accounts}}
+            {{> accountsListItem}}
+          {{/each}}
+          </tbody>
+        </table>
+
+        {{#unless listReady}}
+          {{> listLoading}}
+        {{else}}
+          {{#if hasMore}}
+            <button id="load-more" class="btn btn-default btn-block">{{_ 'command_load_more'}}</button>
+          {{/if}}
+        {{/unless}}
+      </div>
+    </div>
+  </article>
+</template>
+
+<template name="accountsListItema">
   <tr>
     <td><a href="{{pathFor 'accountEdit'}}">{{username}}</a></td>
     <td>{{oauthName}}</td>

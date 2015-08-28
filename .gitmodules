@@ -1,0 +1,6 @@
+[submodule "apps/packages/connections"]
+	path = apps/packages/connections
+	url = https://github.com/miraten/meteor-connections
+[submodule "apps/packages/logger"]
+	path = apps/packages/logger
+	url = https://github.com/miraten/meteor-logger
