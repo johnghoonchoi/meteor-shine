@@ -4,6 +4,10 @@ Template.pagination.helpers({
     return (handle) ? handle.ready() : true;
   },
 
+  spinner: function() {
+    return this.spinnerTemplate;
+  },
+
   hasMore: function() {
     return (this.getLimit() === this.getLoaded());
   },

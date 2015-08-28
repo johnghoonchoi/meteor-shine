@@ -38,11 +38,8 @@ Template.postsList.onCreated(function() {
     );
   });
 
-
-
-
   instance.postsCount = function() {
-    return Counts.get('postListsCount');
+    return Counts.get('postsListCount');
   };
 
   instance.posts = function() {

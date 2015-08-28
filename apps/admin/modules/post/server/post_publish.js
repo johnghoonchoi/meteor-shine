@@ -49,7 +49,7 @@ Meteor.publish('postsListCount', function(query) {
     "categoryId": Match.Optional(String)
   }));
 
-  Counts.publish(this, 'postsListCount', Posts.find(query));
+  Counts.publish(this, 'postsListCount', Posts.find());
 });
 
 Meteor.publish('postView', function(postId) {
