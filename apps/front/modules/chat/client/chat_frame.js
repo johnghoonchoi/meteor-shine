@@ -1,75 +1,55 @@
 /**
  * Created by ProgrammingPearls on 15. 8. 13..
  */
-
-
-
 //
 //
 // chatView
 Template.chatFrame.onCreated(function () {
-
   // initialize
   var instance = this;
   var data = Template.currentData();
   var toId = data.user._id;
-  instance.ready;
 
   // other side input message
   instance.status = "input";
-  instance.isInput = false;
+  instance.onTyping = false;
 
   Meteor.call('chatStatusRemove', instance.status);
 
   // subscribe
   instance.autorun(function () {
-
-    instance.ready = instance.subscribe('chatMessages', toId);
-
+    instance.chatMessages = instance.subscribe('chatMessages', toId);
     instance.subscribe('chatStatus', toId, instance.status);
 
+  });
+
+  instance.autorun(function () {
+    // when subscribe is ready
+    if (instance.chatMessages.ready()) {
+      var result = Meteor.users.findOne({_id: toId});
+      // getPicture
+      instance.partnerPicture = getPicture(result);
+    }
   });
 
   instance.latelyDate = function () {
     return ChatMessages.findOne({}, { sort: { createdAt: -1 }});
   };
 
-  instance.getPartnerPicture = function () {
-    var result = Meteor.users.findOne({_id: toId});
-    //console.log('result', result);
-    instance.partnerPicture = getPicture(result);
-    //return getPicture(result);
-  };
-
-
-  //instance.partnerPicture = instance.getPartnerPicture();
-
-
 });
 
 Template.chatFrame.onDestroyed(function () {
-  this.data.chatTemplate = null;
+  chatSingleton.template = null;
+  chatSingleton.userId = null;
 
   // other side input message
-  this.isInput = false;
+  this.onTyping = false;
   Meteor.call('chatStatusRemove', this.status);
-});
-
-Template.chatFrame.onRendered(function() {
-  var instance = this;
-  instance.autorun(function() {
-    console.log('this.ready?', instance.ready.ready());
-  });
-
 });
 
 Template.chatFrame.helpers({
   chatMessagesList: function () {
-    if (Template.instance().ready.ready()){
-      Template.instance().getPartnerPicture();
       return ChatMessages.find({}, { sort : { createdAt: 1 } });
-    }
-    //return ChatMessages.find({}, { sort : { createdAt: 1 } });
   },
 
   onTyping: function () {
@@ -80,8 +60,8 @@ Template.chatFrame.helpers({
 Template.chatFrame.events({
 
   // header events
-  'click a.close': function (e, instance) {
-    Blaze.remove(instance.data.chatTemplate);
+  'click a.close': function (e) {
+    Blaze.remove(chatSingleton.template);
   },
 
   // footer events
@@ -101,8 +81,8 @@ Template.chatFrame.events({
 
     // input text
     if (content.length === 0 || content === "" || content === null) {
-      if (instance.isInput) {
-        instance.isInput = !instance.isInput;
+      if (instance.onTyping) {
+        instance.onTyping = !instance.onTyping;
         Meteor.call('chatStatusRemove', instance.status);
       }
 
@@ -110,8 +90,8 @@ Template.chatFrame.events({
       thisElement.value = "";
       return;
     } else {
-      if (!instance.isInput) {
-        instance.isInput = !instance.isInput;
+      if (!instance.onTyping) {
+        instance.onTyping = !instance.onTyping;
         Meteor.call('chatStatusInsert', data);
       }
     }
@@ -126,11 +106,12 @@ Template.chatFrame.events({
       thisElement.value = "";
 
       // lately date to less than 5 minutes date.
-      var latelyDate = instance.latelyDate() || new Date();
+      var latelyDate = instance.latelyDate() || 0;
 
       var inputDate = new Date();
 
       var diffMinutes = Math.abs(moment(latelyDate.createdAt).diff(inputDate, "minutes"));
+      console.log('diffMinutes', diffMinutes);
       var timeScope = 10;
 
       if (!latelyDate || diffMinutes >= timeScope) {
@@ -153,7 +134,7 @@ Template.chatFrame.events({
 
       // remove input status
       Meteor.call('chatStatusRemove', instance.status);
-      instance.isInput = false;
+      instance.onTyping = false;
     }
   }
 });

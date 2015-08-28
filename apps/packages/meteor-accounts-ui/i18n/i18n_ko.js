@@ -4,6 +4,7 @@ I18nAccountsUI_ko = {
   "nav_forgot_password"                : "비밀번호 찾기",
   "nav_reset_password"                 : "비밀번호 초기화",
   "nav_change_password"                : "비밀번호 변경",
+  "title_logo_name"                    : "S  H  I  N  E",
   "title_welcome"                      : "환영합니다.",
   "title_profile"                      : "프로파일",
   "title_change_picture"               : "프로파일 사진변경",

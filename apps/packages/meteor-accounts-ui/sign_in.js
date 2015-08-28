@@ -100,6 +100,11 @@ Template.signInPasswordService.events({
   },
 
   'submit #formSignIn': function(e, instance) {
+    var $loadingIcon = $(e.currentTarget).find('.loading-icon');
+    var $serviceIcon = $(e.currentTarget).find('.service-icon');
+    $loadingIcon.removeClass('hidden');
+    $serviceIcon.addClass('hidden');
+
     e.preventDefault();
 
     var username = instance.$('#login-username').val();
@@ -153,7 +158,12 @@ Template.signInOtherService.helpers({
 });
 
 Template.signInOtherService.events({
-  'click [data-action=sign-in]': function () {
+  'click [data-action=sign-in]': function (e) {
+    var $loadingIcon = $(e.currentTarget).find('.loading-icon');
+    var $serviceIcon = $(e.currentTarget).find('.service-icon');
+    $loadingIcon.removeClass('hidden');
+    $serviceIcon.addClass('hidden');
+
     loginOtherServices(this.name);
   }
 

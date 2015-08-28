@@ -82,42 +82,49 @@ article.accounts-ui-page > footer {
   border-top: solid 1px #ccc;
 }
 
-.btn-color-facebook {
-  background: #3b5998;
-  color: #fff;
-}
 
-.btn-color-google {
-  background: #ee331e;
-  color: #f3f3f3;
-}
 
-.btn-color-twitter {
-  background: #37d5fa;
-  color: #fff;
-}
+.body {
+  .button {
+    display: inline-block;
+    font-size: 30px;
+    margin-left: 6px;
+    margin-bottom: 10px;
+    border: none;
+    //border-radius: 50%;
 
-.btn-color-github {
-   background: #333333;
-   color: #fff;
- }
+    &.facebook {
+      background: #325c99;
+      color: #fff;
+    }
+    &.google {
+      background: #dd4b39;
+      color: #fff;
+    }
+    &.twitter {
+      background: #02acec;
+      color: #fff;
+    }
+    &.github {
+      background: #4c4c4c;
+      color: #fff;
+    }
+    &.meetup {
+      background: #e31e3c;
+      color: #fff;
+    }
+    &.meteor-developer {
+      background: #de4f4f;
+      color: #fff;
+    }
+    &.naver {
+      background: #1fbc02;
+      color: #fff;
+    }
+    &.kakao {
+      background: #ffef3f;
+      color: #31181a;
+    }
+  }
 
-.btn-color-meteor-developer {
-  background: #de4f4f;
-  color: #fff;
-}
-
-.btn-color-meetup {
-  background: #e0393e;
-  color: #fefefe;
-}
-
-.btn-color-naver {
-  background: #1fbc02;
-  color: #fefefe;
-}
-
-.btn-color-kakao {
-  background: #ffeb00;
-  color: #848581;
 }

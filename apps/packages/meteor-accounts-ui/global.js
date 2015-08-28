@@ -25,8 +25,14 @@ loginOtherServices = function(serviceName) {
   loginWithService(options, function (error) {
     console.log('error: ', error);
 
+    var $loadingIcon = $('.loading-icon');
+    var $serviceIcon = $('.service-icon');
+    $loadingIcon.addClass('hidden');
+    $serviceIcon.removeClass('hidden');
+
     if (! error) {
       Accounts.ui.dialog.hide();
+      Router.go('home');
     } else if (error instanceof Accounts.LoginCancelledError) {
       // do nothing
     } else if (error instanceof ServiceConfiguration.ConfigError) {
