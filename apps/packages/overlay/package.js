@@ -17,7 +17,7 @@ Package.onUse(function(api) {
     'reactive-var',
     'underscore',
     'templating',
-    'less',
+    'less@2.5.0-rc.2_1',
     'leesangwon:bootstrap-less',
     'leesangwon:alerts'
   ], 'client');
