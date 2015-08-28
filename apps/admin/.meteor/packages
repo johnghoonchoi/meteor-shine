@@ -39,3 +39,5 @@ matb33:collection-hooks
 leesangwon:logger
 leesangwon:connections
 leesangwon:pagination
+
+less@2.5.0-rc.2_1

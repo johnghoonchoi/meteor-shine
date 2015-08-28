@@ -13,6 +13,7 @@ Package.onUse(function(api) {
     'mongo-livedata',
     'templating',
     'underscore',
+    'less@2.5.0-rc.2_1',
     'leesangwon:bootstrap-less',
     'leesangwon:i18n@0.9.0'
   ], 'client');
