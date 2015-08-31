@@ -1,4 +1,4 @@
-
+/*
 Meteor.publish('postsList', function(query, options) {
   check(query, Match.ObjectIncluding({
     "categoryId": Match.Optional(String)
@@ -12,10 +12,18 @@ Meteor.publish('postsList', function(query, options) {
     })
   }));
 
-  return Posts.find(query, options);
-});
+  var posts = Posts.find(query, options);
 
-/*
+  var userIds = posts.map(function(post) {
+    return post.author._id;
+  });
+
+  var users = Meteor.users.find({ _id: { $in : userIds }});
+
+  return [ posts, users ];
+});
+*/
+
 Meteor.publishComposite('postsList', function(query, options) {
   check(query, Match.ObjectIncluding({
     "categoryId": Match.Optional(String)
@@ -42,10 +50,10 @@ Meteor.publishComposite('postsList', function(query, options) {
     ]
   };
 });
-*/
+
 
 Meteor.publish('postsListCount', function(query) {
-  check(query, Match.ObjectIncluding({
+  check(query, Match.Optional({
     "categoryId": Match.Optional(String)
   }));
 

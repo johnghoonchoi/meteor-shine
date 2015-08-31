@@ -7,7 +7,7 @@
     <div class="body">
       <div class="page-actions">
         <div class="pull-left">
-          <p class="message">{{_ 'label_total_count'}}: {{postsCount}} {{!getPublishedCount 'postsListCount'}}</p>
+          <p class="message">{{_ 'label_total_count'}}: {{postsCount}}</p>
         </div>
         <div class="pull-right">
           {{#if currentUser}}
@@ -39,7 +39,7 @@
 
       {{#if Template.subscriptionsReady}}
         {{#if hasMore}}
-          <button id="load-more" class="btn btn-default btn-block">{{_ 'command_load_more'}}</button>
+          <div id="load-more" class="load-more">{{_ 'command_load_more'}}</div>
         {{/if}}
       {{else}}
         {{> listLoading}}

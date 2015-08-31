@@ -28,7 +28,13 @@
           </tbody>
         </table>
 
-        {{> pagination paging}}
+        {{#unless Template.subscriptionsReady}}
+          {{> listLoading}}
+        {{else}}
+          {{#if hasMore}}
+            <div id="load-more" class="load-more">{{_ 'label_load_more'}}</div>
+          {{/if}}
+        {{/unless}}
       </div>
     </div>
   </article>

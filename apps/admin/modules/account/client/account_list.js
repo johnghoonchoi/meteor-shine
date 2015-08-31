@@ -1,3 +1,4 @@
+"use strict";
 
 Template.accountsList.onCreated(function() {
   Navigations.path.set('accountsList');
@@ -7,13 +8,15 @@ Template.accountsList.onCreated(function() {
   instance.sortBy = new ReactiveVar('username');
   instance.sortAsc = new ReactiveVar(1);
 
+  instance.increment = 5;
+  instance.limit = new ReactiveVar(instance.increment);
+
   instance.subscribe('accountsListCount');
 
-  instance.pagination = new PagedSubscription({ increment: 5 });
-
+  var limit = instance.limit.get();
   var sort = {};
   sort[instance.sortBy.get()] = instance.sortAsc.get();
-  instance.pagination.first('accountsList', {}, { sort: sort });
+  instance.subscribe('accountsList', { limit: limit, sort: sort });
 
   instance.accountsCount = function() {
     return Counts.get('accountsListCount');
@@ -21,22 +24,17 @@ Template.accountsList.onCreated(function() {
 
   instance.autorun(function() {
     instance.accounts = function() {
-      var sort = {};
+      let limit = instance.limit.get();
+      let sort = {};
       sort[instance.sortBy.get()] = instance.sortAsc.get();
 
-      var cursor = Meteor.users.find({},
-        { limit: instance.pagination.getLimit(), sort: sort });
-
-      instance.pagination.setLoaded(cursor.count());
-
-      return cursor;
+      return Meteor.users.find({}, { limit: limit, sort: sort });
     };
   });
 });
 
 Template.accountsList.onDestroyed(function() {
   this.limit = null;
-  this.loaded = null;
   this.accounts = null;
 });
 
@@ -49,8 +47,9 @@ Template.accountsList.helpers({
     return Template.instance().accounts();
   },
 
-  paging: function() {
-    return Template.instance().pagination;
+  hasMore: function() {
+    var instance = Template.instance();
+    return (instance.accountsCount() > instance.limit.get());
   }
 });
 
@@ -66,6 +65,17 @@ Template.accountsList.events({
         instance.sortBy.set(sortBy);
       }
     }
+  },
+
+  'click #load-more': function(e, instance) {
+    e.preventDefault();
+
+    instance.limit.set(instance.limit.get() + instance.increment);
+
+    var limit = instance.limit.get();
+    var sort = {};
+    sort[instance.sortBy.get()] = instance.sortAsc.get();
+    instance.subscribe('accountsList', { limit: limit, sort: sort });
   }
 });
 
@@ -88,26 +98,3 @@ Template.accountsListItem.helpers({
     return (this.emails && this.emails[0]) ? this.emails[0].address : "";
   }
 });
-
-/*
-Template.accountsListPaging.helpers({
-  ready: function() {
-    var handle = Template.instance().handle;
-    return (handle) ? handle.ready() : true;
-  },
-
-  hasMore: function() {
-    return (this.limit.get() === this.loaded.get());
-  }
-});
-
-Template.accountsListPaging.events({
-  'click #load-more': function(e, instance) {
-    e.preventDefault();
-
-    var data = Template.currentData();
-    data.limit.set(data.limit.get() + data.increment);
-    instance.handle = data.subscribe(data.limit.get());
-  }
-});
-*/
