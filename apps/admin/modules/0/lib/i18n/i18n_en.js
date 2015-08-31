@@ -68,6 +68,7 @@ I18n_data_en = {
   "label_facebook_login"          : "Facebook Login",
   "label_meetup_login"            : "Meetup Login",
   "label_site"                    : "Site",
+  "label_load_more"               : "Load more",
 
 
   "text_notification_new_comment" : "A new comment registered for {0}'s blog",

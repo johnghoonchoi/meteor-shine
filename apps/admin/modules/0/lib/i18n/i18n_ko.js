@@ -69,6 +69,7 @@ I18n_data_ko = {
   "label_facebook_login"          : "Facebook 로그인",
   "label_meetup_login"            : "Meetup 로그인",
   "label_site"                    : "사이트",
+  "label_load_more"               : "더 보기",
 
 
   "text_notification_new_comment" : "{0}님의 블로그에 새로운 댓글이 등록되었습니다.",

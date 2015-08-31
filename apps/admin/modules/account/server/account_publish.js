@@ -18,7 +18,7 @@ Meteor.publish('accountsListCount', function() {
   Counts.publish(this, 'accountsListCount', Meteor.users.find({}));
 });
 
-Meteor.publish('accountsList', function(query, options) {
+Meteor.publish('accountsList', function(options) {
   check(options, Match.ObjectIncluding({
     "limit": Match.Optional(Number),
     "sort": Match.ObjectIncluding({
