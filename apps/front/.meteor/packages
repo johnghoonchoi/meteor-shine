@@ -23,6 +23,7 @@ leesangwon:cloudinary-direct
 # User-Status
 
 reactive-var
+ecmascript
 
 reywood:publish-composite
 percolate:momentum

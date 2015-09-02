@@ -5,7 +5,7 @@
 ChatMessages = new Mongo.Collection('chatMessages');
 
 Meteor.methods({
-  chatMessageInsert : function (data) {
+  chatMessageInsert (data) {
 
     // check validation
     check(data, Match.ObjectIncluding({
@@ -24,9 +24,9 @@ Meteor.methods({
     }
 
     // build insert object
-    var toUser = Meteor.users.findOne({ _id: data.toId });
+    let toUser = Meteor.users.findOne({ _id: data.toId });
 
-    var chatMessage = {
+    let chatMessage = {
       from: {
         _id: Meteor.userId(),
         username: Meteor.user().username
@@ -57,7 +57,7 @@ Meteor.methods({
 ChatStatus = new Mongo.Collection('chatStatus');
 
 Meteor.methods({
-  chatStatusInsert : function (data) {
+  chatStatusInsert (data) {
 
     // check validation
     check(data, Match.ObjectIncluding({
@@ -66,12 +66,11 @@ Meteor.methods({
     }));
 
     // check permission
-    if (! Meteor.userId) {
+    if (! Meteor.userId)
       throw new Meteor.Error(ERROR_CODE_SECURITY, "error_access_denied");
-    }
 
     // build insert object
-    var chatMessage = {
+    let chatMessage = {
       from: {
         _id: Meteor.userId()
       },
@@ -94,7 +93,7 @@ Meteor.methods({
 
   },
 
-  chatStatusRemove: function (status) {
+  chatStatusRemove (status) {
     // check validation
     check(status, String);
     // check permission
