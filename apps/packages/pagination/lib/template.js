@@ -4,12 +4,12 @@ Template.pagination.helpers({
     return (handle) ? handle.ready() : true;
   },
 
-  spinner: function() {
-    return this.spinnerTemplate;
-  },
-
   hasMore: function() {
-    return (this.getLimit() === this.getLoaded());
+    return this.hasMore();
+  }/*,
+
+  loading: function() {
+    return this.loadingTemplate;
   },
 
   spinner: function() {
@@ -18,7 +18,7 @@ Template.pagination.helpers({
 
   labelLoadMore: function() {
     return "load more";
-  }
+  }*/
 });
 
 Template.pagination.events({
@@ -27,6 +27,7 @@ Template.pagination.events({
 
     var data = Template.currentData();
 
-    instance.handle = data.next();
+    data.limitInc();
+    instance.handle = data.subscribe(instance);
   }
 });

@@ -50,16 +50,6 @@
   </tr>
 </template>
 
-<template name="accountsListPaging">
-  {{#unless ready}}
-    {{> listLoading}}
-  {{else}}
-    {{#if hasMore}}
-      <button id="load-more" class="btn btn-default btn-block">{{_ 'command_load_more'}}</button>
-    {{/if}}
-  {{/unless}}
-</template>
-
 <template name="accountsLista">
   <article class="page">
     <header>
@@ -75,9 +65,9 @@
         <table class="table table-bordered table-striped">
           <thead>
           <tr>
-            <th data-sort="username">{{_ 'label_account'}}</th>
-            <th>{{_ 'label_oauth_account'}}</th>
-            <th>{{_ 'label_email'}}</th>
+            <th data-sort="username" style="width: 80px">{{_ 'label_account'}}</th>
+            <th style="width: 120px">{{_ 'label_oauth_account'}}</th>
+            <th style="width: 150px">{{_ 'label_email'}}</th>
             <th data-sort="loginAt">{{_ 'label_last_login_at'}}</th>
             <th data-sort="createdAt">{{_ 'label_created_at'}}</th>
           </tr>
@@ -90,24 +80,14 @@
           </tbody>
         </table>
 
-        {{#unless listReady}}
+        {{#unless Template.subscriptionsReady}}
           {{> listLoading}}
         {{else}}
           {{#if hasMore}}
-            <button id="load-more" class="btn btn-default btn-block">{{_ 'command_load_more'}}</button>
+            <div id="load-more" class="load-more">{{_ 'label_load_more'}}</div>
           {{/if}}
         {{/unless}}
       </div>
     </div>
   </article>
-</template>
-
-<template name="accountsListItema">
-  <tr>
-    <td><a href="{{pathFor 'accountEdit'}}">{{username}}</a></td>
-    <td>{{oauthName}}</td>
-    <td>{{email}}</td>
-    <td>{{momentFormat loginAt 'YYYY-MM-DD HH:mm'}}</td>
-    <td>{{momentFormat createdAt 'YYYY-MM-DD HH:mm'}}</td>
-  </tr>
 </template>
