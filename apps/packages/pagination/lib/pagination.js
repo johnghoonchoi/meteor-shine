@@ -1,4 +1,47 @@
 PagedSubscription = function(options) {
+  // force to be called with `new`
+  if (! (this instanceof PagedSubscription)) {
+    return new PagedSubscription(options);
+  }
+
+  if (! options || ! options.default) {
+    options.default = { increment: 10 };
+  }
+
+  if (! options || ! options.name) {
+    throw new Meteor.Error('subscription name undefined')
+  }
+
+  this.name = options.name;
+  this.query = options.query || {};
+  this.options = options.options || {};
+  this.callback = options.callback;
+
+  this.increment = options.default.increment;
+  this.limit = new ReactiveVar(options.default.limit || options.default.increment);
+  this.sort = new ReactiveVar(options.default.sort);
+
+  this.loadMoreTemplate = options.loadMoreTemplate || Template.paginationLoadMore;
+  this.loadingTemplate = options.loadingTemplate || Template.paginationLoading;
+
+  this.subscribe = function(instance) {
+    var queryOptions = _.extend(this.options, {
+      limit: this.limit.get(), sort: this.sort.get()
+    });
+
+    return instance.subscribe(this.name, this.query, queryOptions, this.callback);
+  };
+
+  this.hasMore = function() {
+    return options.hasMore();
+  };
+
+  this.limitInc = function() {
+    this.limit.set(this.limit.get() + this.increment);
+  };
+};
+/*
+PagedSubscription = function(options) {
   // called without `new`
   if (! (this instanceof PagedSubscription)) {
     return new PagedSubscription(options);
@@ -59,3 +102,4 @@ PagedSubscription = function(options) {
   };
 };
 
+*/

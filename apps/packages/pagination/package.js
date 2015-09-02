@@ -22,6 +22,7 @@ Package.onUse(function(api) {
   ], 'client');
 
   api.export('PagedSubscription');
+//  api.export('Pagination');
 });
 
 Package.onTest(function(api) {
