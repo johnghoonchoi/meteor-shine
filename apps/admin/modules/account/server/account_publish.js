@@ -14,8 +14,10 @@ Meteor.publish("userData", function () {
   }
 });
 
+var queryNotAdmin = { roles: { $ne : 'ROLE_ADMIN' }};
+
 Meteor.publish('accountsListCount', function() {
-  Counts.publish(this, 'accountsListCount', Meteor.users.find({}));
+  Counts.publish(this, 'accountsListCount', Meteor.users.find(queryNotAdmin));
 });
 
 Meteor.publish('accountsList', function(query, options) {
@@ -28,7 +30,7 @@ Meteor.publish('accountsList', function(query, options) {
     })
   }));
 
-  var accounts = Meteor.users.find({}, options);
+  var accounts = Meteor.users.find(queryNotAdmin, options);
   return accounts;
 });
 

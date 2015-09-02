@@ -24,7 +24,7 @@ Template.accountsList.onCreated(function() {
 
   instance.autorun(function() {
     instance.accounts = function() {
-      return Meteor.users.find({}, {
+      return Meteor.users.find({ roles: { $ne: 'ROLE_ADMIN' }}, {
         limit: instance.pagination.limit.get(),
         sort: instance.pagination.sort.get()
       });
