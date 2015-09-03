@@ -33,8 +33,10 @@ Meteor.methods({
     check(imageId, String);
 
     var removed = PostImages.remove({ _id: imageId });
-    if (removed > 0) {
-      // remove image from repo
+    
+    // remove image from repo
+    if (Meteor.isServer && removed > 0) {
+        
     }
   }
 });

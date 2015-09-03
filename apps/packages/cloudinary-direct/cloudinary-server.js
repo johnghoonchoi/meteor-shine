@@ -18,7 +18,8 @@ Meteor.methods({
     options = _.extend(options, { callback: cloudinary_cors });
     return cloudinary.uploader.image_upload_tag(elementId, options);
   },
-  removeImage: function(imageId) {
+
+  cloudinaryRemoveImage: function(imageId) {
     var future = new Future();
 
     cloudinary.uploader.destroy(imageId, function(result) {

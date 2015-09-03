@@ -23,7 +23,9 @@ Meteor.methods({
 
         Systems.insert(object);
       } else {
-        object = _.extend(object, {
+        var id = object._id;
+
+        object = _.extend(_.omit(object, '_id'), {
           workBy: {
             _id: user._id,
             username: user.username,
@@ -32,9 +34,43 @@ Meteor.methods({
           updatedAt: now
         });
 
-        Systems.update({ _id: query._id }, { $set: object });
+        Systems.update({ _id: id }, { $set: object });
       }
     }
-  }
+  },
 
+  systemLogoUpsert: function(object) {
+    var prepareImageData = function(data) {
+      var user = Meteor.user();
+
+      return _.extend(_.pick(data, 'url', 'surl', 'size', 'width', 'height',
+        'urlFit', 'surlFit', 'widthFit', 'heightFit',
+        'ext', 'mime', 'original', 'repoId'), {
+        user: {
+          _id: user._id,
+          username: user.username,
+          name: user.name
+        },
+        createdAt: new Date()
+      });
+    };
+
+    var saved = Systems.findOne({ _id: 'logo' });
+
+    var image = prepareImageData(object);
+
+    if (saved) {
+      var removed = Systems.remove({ _id: 'logo' });
+
+      if (removed > 0) {
+        cloudinaryRemoveImage(image.repoId);
+      }
+
+      return Systems.update({ _id: 'logo' }, { $set: image })
+    } else {
+      image = _.extend({ _id: 'logo'}, image);
+
+      return Systems.insert(image);
+    }
+  }
 });
