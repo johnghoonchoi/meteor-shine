@@ -69,7 +69,8 @@ I18n_data_en = {
   "label_meetup_login"            : "Meetup Login",
   "label_site"                    : "Site",
   "label_load_more"               : "Load more",
-
+  "label_system_general"          : "General",
+  "label_system_accounts"         : "Accounts",
 
   "text_notification_new_comment" : "A new comment registered for {0}'s blog",
   "text_no_blogs"                 : "There is no blog registered.",

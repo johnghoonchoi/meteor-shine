@@ -1,0 +1,123 @@
+<template name="systemEditAccounts">
+  <form id="formSystemEdit" class="form-admin">
+    <fieldset>
+      <legend>{{_ 'label_facebook_login'}}</legend>
+      <section class="form-group">
+        <label>AppId</label>
+        <input type="text" id="facebook-id" class="form-control"
+               name="facebook-id" value="{{facebookLogin.appId}}" >
+      </section>
+
+      <section class="form-group">
+        <label>Secret</label>
+        <input type="text" id="facebook-secret" class="form-control"
+               name="facebook-secret" value="{{facebookLogin.secret}}" >
+      </section>
+    </fieldset>
+
+    <fieldset>
+      <legend>{{_ 'label_meetup_login'}}</legend>
+      <section class="form-group">
+        <label>ClientId</label>
+        <input type="text" id="meetup-id" class="form-control"
+               name="meetup-id" value="{{meetupLogin.clientId}}" >
+      </section>
+      <section class="form-group">
+        <label>Secret</label>
+        <input type="text" id="meetup-secret" class="form-control"
+               name="meetup-secret" value="{{meetupLogin.secret}}" >
+      </section>
+      <section class="form-group">
+        <label>API Key</label>
+        <input type="text" id="meetup-api-key" class="form-control"
+               name="meetup-api-key" value="{{meetupLogin.apiKey}}" >
+      </section>
+    </fieldset>
+
+    <fieldset>
+      <legend>{{_ 'label_google_login'}} :</legend>
+      <section class="form-group">
+        <label>ClientId</label>
+        <input type="text" id="google-id" class="form-control"
+               name="google-id" value="{{googleLogin.clientId}}" >
+      </section>
+      <section class="form-group">
+        <label>Secret</label>
+        <input type="text" id="google-secret" class="form-control"
+               name="google-secret" value="{{googleLogin.secret}}" >
+      </section>
+    </fieldset>
+
+    <fieldset>
+      <legend>{{_ 'label_github_login'}} :</legend>
+      <section class="form-group">
+        <label>ClientId</label>
+        <input type="text" id="github-id" class="form-control"
+               name="github-id" value="{{githubLogin.clientId}}" >
+      </section>
+      <section class="form-group">
+        <label>Secret</label>
+        <input type="text" id="github-secret" class="form-control"
+               name="github-secret" value="{{githubLogin.secret}}" >
+      </section>
+    </fieldset>
+
+    <fieldset>
+      <legend>{{_ 'label_twitter_login'}} :</legend>
+      <section class="form-group">
+        <label>ConsumerKey</label>
+        <input type="text" id="twitter-id" class="form-control"
+               name="twitter-id" value="{{twitterLogin.consumerKey}}" >
+      </section>
+      <section class="form-group">
+        <label>Secret</label>
+        <input type="text" id="twitter-secret" class="form-control"
+               name="twitter-secret" value="{{twitterLogin.secret}}" >
+      </section>
+    </fieldset>
+
+    <fieldset>
+      <legend>{{_ 'label_meteor_login'}} :</legend>
+      <section class="form-group">
+        <label>ClientId</label>
+        <input type="text" id="meteor-id" class="form-control"
+               name="meteor-id" value="{{meteorLogin.clientId}}" >
+      </section>
+      <section class="form-group">
+        <label>Secret</label>
+        <input type="text" id="meteor-secret" class="form-control"
+               name="meteor-secret" value="{{meteorLogin.secret}}" >
+      </section>
+    </fieldset>
+
+
+    <fieldset>
+      <legend>{{_ 'label_naver_login'}} :</legend>
+      <section class="form-group">
+        <label>ClientId</label>
+        <input type="text" id="naver-id" class="form-control"
+               name="naver-id" value="{{naverLogin.clientId}}" >
+      </section>
+      <section class="form-group">
+        <label>Secret</label>
+        <input type="text" id="naver-secret" class="form-control"
+               name="naver-secret" value="{{naverLogin.secret}}" >
+      </section>
+    </fieldset>
+
+    <fieldset>
+      <legend>{{_ 'label_kakao_login'}} :</legend>
+      <section class="form-group">
+        <label>ClientId</label>
+        <input type="text" id="kakao-id" class="form-control"
+               name="kakao-id" value="{{kakaoLogin.clientId}}" >
+      </section>
+    </fieldset>
+
+    <section class="form-actions">
+      <div class="btn-toolbar pull-right">
+        <button type="submit" class="btn btn-primary">{{_ 'command_save'}}</button>
+      </div>
+    </section>
+  </form>
+</template>

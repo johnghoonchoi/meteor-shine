@@ -1,0 +1,28 @@
+<template name="systemEditGeneral">
+  <form id="formSystemEditGeneral" class="form-admin">
+    <fieldset>
+      <legend>{{_ 'label_site'}}</legend>
+      <section class="form-group">
+        <label>{{_ 'label_name'}}</label>
+        <input type="text" id="siteName" class="form-control"
+               name="siteName" value="{{siteName.value}}" >
+      </section>
+
+      <section class="form-group">
+        <label>{{_ 'label_logo'}}</label>
+        {{#if logo}}
+          <img src="{{logo.surl}}">
+        {{/if}}
+        {{> cloudinaryUploader}}
+      </section>
+    </fieldset>
+
+    <section class="form-actions">
+      <div class="btn-toolbar pull-right">
+        <button type="submit" class="btn btn-primary">{{_ 'command_save'}}</button>
+      </div>
+    </section>
+  </form>
+
+  {{> cloudinaryProgressBar}}
+</template>
