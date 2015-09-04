@@ -80,14 +80,18 @@ Template.myworksList.events({
 
 Template.myworksDraft.events({
   'click #remove': function() {
-    Meteor.call('postDraftRemove', this._id, function (error) {
-      if (!error) {
-        Alerts.notify('success', 'text_draft_removed');
+    var self = this;
+    Alerts.dialog('confirm', '정말 삭제하시겠습니까?', function(confirm){
+      if(confirm){
+        Meteor.call('postDraftRemove', self._id, function(error){
+          if(!error){
+            Alerts.notify('success','text_draft_removed');
+          }
+        })
       }
-    });
+    })
   }
 });
-
 
 Template.myworksNav.onCreated(function() {
   var instance = this;
