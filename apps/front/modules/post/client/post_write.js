@@ -2,10 +2,18 @@ Template.postWrite.onCreated(function() {
   var instance = this;
   var data = Template.currentData();
 
-  instance.draftId = data.draftId;
 
   instance.autoSave = new Autosave();
   instance.draftId = data.draftId;
+  instance.postStatus = new ReactiveVar('');
+
+  if(data.draftId)
+    instance.postStatus.set('Draft')
+  else
+    instance.postStatus.set('NewPost')
+
+
+
 
   instance.autorun(function() {
     if (instance.draftId) instance.subscribe('postDraftEdit', instance.draftId);
@@ -19,6 +27,8 @@ Template.postWrite.onCreated(function() {
     return Categories.findOne({ _id: data.categoryId, state: 'ON' });
   };
 
+
+
 });
 
 Template.postWrite.onDestroyed(function() {
@@ -31,6 +41,10 @@ Template.postWrite.onDestroyed(function() {
 
 
 Template.postWrite.helpers({
+  postStatus: function(){
+    return Template.instance().postStatus.get();
+  },
+
   draft: function() {
     return Template.instance().draft();
   },
@@ -47,7 +61,7 @@ Template.postWrite.helpers({
 
   category: function() {
     return Template.instance().category();
-  }
+  },
 });
 
 
@@ -56,6 +70,7 @@ Template.postWrite.events({
     e.preventDefault();
 
     instance.autoSave.clear();
+
     instance.autoSave.set(function() {
 
       var categoryId = (instance.draftId && instance.draft()) ?
@@ -88,8 +103,14 @@ Template.postWrite.events({
           Meteor.call('postDraftUpdate', instance.draftId, object, function(error) {
             if (error)
               Alerts.notify('error', error.reason);
-            else
+            else {
               Alerts.notify('success', 'text_draft_updated');
+              instance.postStatus.set('Saved');
+              Meteor.setTimeout(function(){
+                instance.postStatus.set('Draft');
+              }, 1000);
+            }
+
           });
         }
       } else {
@@ -98,19 +119,27 @@ Template.postWrite.events({
         Meteor.call('postDraftInsert', object, function(error, id) {
           if (error)
             Alerts.notify('error', error.reason);
-          else instance.draftId = id;
+          else {
+            instance.draftId = id;
             Alerts.notify('success', 'text_draft_inserted');
+            instance.postStatus.set('Saved');
+            Meteor.setTimeout(function(){
+              instance.postStatus.set('Draft');
+            }, 1000);
+          }
         });
       }
     }, 3000);
   },
+
+
 
   'submit #formPostWrite': function(e, instance) {
     e.preventDefault();
 
     instance.autoSave.clear();
 
-    var categoryId = (instance.draftId && instance.draft()) ?
+    var categoryId =(instance.draftId && instance.draft()) ?
       instance.draft().categoryId : instance.category()._id;
 
     var object = {
@@ -138,6 +167,8 @@ Template.postWrite.events({
         }
         Alerts.notify('success', 'text_post_insert_success');
         Router.go('postView', { _id: result });
+
+
       }
     });
   }

@@ -1,38 +1,44 @@
 <template name="postWrite">
-  <article class="page">
-    <header>
-      <h3>{{category.title}} <small>{{_ 'label_new_post'}}</small></h3>
-    </header>
-    <div class="body">
-      <form id="formPostWrite">
-        <div class="panel panel-default">
-          <div class="panel-body block-wrapper">
-            <h3><input {{titleAttrs}} value="{{draft.title}}"></h3>
-            <article id="articleWrap">
-              <section id="contentWrapper">
-                {{#if draft}}
-                  {{> postTextarea content=draft.content.data}}
-                {{else}}
-                  {{> postTextarea}}
-                {{/if}}
-              </section>
-            </article>
-          </div>
-          <div class="panel-footer clearfix">
-            <div class="btn-toolbar pull-right">
-              <div class="btn-group">
-                <button type="button" class="btn btn-default">{{_ 'command_cancel'}}</button>
-              </div>
-              <div class="btn-group">
-                <button type="submit" class="btn btn-primary">{{_ 'command_publish'}}</button>
-              </div>
+    <article class="page">
+        <header>
+            <div class="clearfix">
+                <h3>{{category.title}} <small>{{_ 'label_new_post'}}</small></h3>
+                <!--<div class="btn-toolbar pull-right col-md-3">-->
+                <!--<div class="btn-group">-->
+                <!--<button type="button" class="btn_post_cancel btn btn-default">{{_ 'command_cancel'}}</button>-->
+                <!--</div>-->
+
+                <div class="row">
+                    <div class="status_text col-xs-9">
+                        <h3><small>{{postStatus}}</small></h3>
+                    </div>
+                    <div class="btn-toolbar btn-group col-xs-3">
+                        <button type="submit" class="glyphicon glyphicon-pencil btn btn-primary pull-right"> {{_ 'command_publish'}}</button>
+                    </div>
+                </div>
             </div>
-          </div>
+        </header>
+        <div class="body">
+            <form id="formPostWrite">
+                <div class="panel panel-default">
+                    <div class="panel-body block-wrapper">
+                        <h3><input {{titleAttrs}} value="{{draft.title}}"></h3>
+                        <article id="articleWrap">
+                            <section id="contentWrapper">
+                                {{#if draft}}
+                                    {{> postTextarea content=draft.content.data}}
+                                {{else}}
+                                    {{> postTextarea}}
+                                {{/if}}
+                            </section>
+                        </article>
+                    </div>
+
+                </div>
+            </form>
         </div>
-      </form>
-    </div>
-  </article>
-  {{> cloudinaryProgressBar}}
+    </article>
+    {{> cloudinaryProgressBar}}
 </template>
 <!--<div id="ie-clipboard-contenteditable" class="hidden" contenteditable="true"></div>-->
 <!--<input id="hidden-input" class="hidden" type="text" value="" />-->
